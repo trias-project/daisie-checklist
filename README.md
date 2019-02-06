@@ -1,8 +1,7 @@
-# Inventory of alien species in Europe (DAISIE)
-
+# DAISIE - Inventory of alien species in Europe
 ## Rationale
 
-This repository contains the functionality to standardize the data of the [Inventory of alien species in Europe (DAISIE)](http://www.europe-aliens.org/) --> to a [Darwin Core checklist](https://www.gbif.org/dataset-classes) that can be harvested by [GBIF](http://www.gbif.org).
+This repository contains the functionality to standardize the data of the [DAISIE - Inventory of alien species in Europe](http://www.europe-aliens.org/) --> to a [Darwin Core checklist](https://www.gbif.org/dataset-classes) that can be harvested by [GBIF](http://www.gbif.org).
 
 ## Workflow
 
