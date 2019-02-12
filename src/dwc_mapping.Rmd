@@ -42,6 +42,7 @@ library(rgbif)          # To use GBIF services
 
 ```{r}
 taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
+vernacular_names <- read.csv(here("data", "raw", "input_vernacular_names.csv"))
 ```
 
 # Taxon core
@@ -116,7 +117,7 @@ The following terms contain information about the taxon:
 ### taxonID
 
 ```{r}
-taxon %<>% mutate(dwc_taxonID = sp_idspecies)
+taxon %<>% mutate(dwc_taxonID = idspecies)
 ```
 
 ### scientificName
@@ -220,7 +221,11 @@ write_csv(taxon, here("data", "processed", "taxon.csv"), na = "")
 
 # Vernacular names extension
 
+Preview data:
 
+```{r}
+vernacular_names %>% head(n = 5)
+```
 
 # Distribution extension
 

@@ -1,4 +1,4 @@
-SP_idspecies,SP_genus,SP_species,SP_authority,SP_subtaxon,SP_subtaxon_rank,SP_subtaxon_authority,TG_taxon_group,SP_phylum,SP_class,SP_ordo,SP_family,EG_ecofunct_group,SP_sourceid
+idspecies,SP_genus,SP_species,SP_authority,SP_subtaxon,SP_subtaxon_rank,SP_subtaxon_authority,TG_taxon_group,SP_phylum,SP_class,SP_ordo,SP_family,EG_ecofunct_group,SP_sourceid
 "5","Telaranea","murphyae","Paton","","","","Bryophyta","Marchantiophyta","Jungermanniopsida","Jungermanniales","Lepidoziaceae",\N,"6"
 "6","Telaranea","tetradactyla","","","","","Bryophyta","Marchantiophyta","Jungermanniopsida","Jungermanniales","Lepidoziaceae",\N,"17500"
 "7","Lophocolea","bispinosa","(Hook. f. & Taylor) Gottsche et al.","","","","Bryophyta","Marchantiophyta","Jungermanniopsida","Jungermanniales","Geocalycaceae",\N,"17500"
