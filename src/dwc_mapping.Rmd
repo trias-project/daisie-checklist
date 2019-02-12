@@ -227,5 +227,70 @@ Preview data:
 vernacular_names %>% head(n = 5)
 ```
 
+## Tidy data
+
+Clean data somewhat:
+
+```{r}
+vernacular_names <- 
+  vernacular_names %>% 
+    remove_empty("rows") %>% 
+    clean_names()
+  
+```
+
+##• Term mapping
+
+Display all unique language information:
+
+```{r}
+vernacular_names %>% 
+  group_by(cn_language) %>% 
+  summarize(records = n())
+```
+
+Map language information to [ISO 639-1 Language Codes](https://tools.gbif.org/dwca-validator/vocabulary.do?id=http://iso.org/639-1)
+
+```{r}
+vernacular_names %<>% mutate(dwc_language = recode(cn_language,
+  "Belorussian" = "be",
+  "Czech" = "cs",
+  "Danish" = "da",
+  "Dutch" = "nl",
+  "English" = "en",
+  "Estonian" = "et",
+  "Faeroese" = "fo",
+  "Finnish" = "fi",
+  "French" = "fr",
+  "German" = "de",
+  "Greek" = "el",
+  "Hebrew (western characters)" = "he",
+  "Hebrew (Hebrew characters)" = "he",
+  "Hungarian" = "hu",
+  "Icelandic" = "is",
+  "Italian" = "it",
+  "Latvian" = "lv",
+  "Lithuanian" = "lt",
+  "Maltese" = "mt",
+  "Norwegian" = "no",
+  "Polish" = "pl",
+  "Portuguese" = "pt",
+  "Romanian" = "ro",
+  "Spanish" = "es",
+  "Swedish" = "sv",
+  "Turkish" = "tr"
+))
+```
+
+Show mapping:
+
+```{r}
+vernacular_names %>% 
+  group_by(cn_language, dwc_language) %>% 
+  summarize(records = n())
+```
+
+
+
 # Distribution extension
 
