@@ -90,6 +90,9 @@ taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/lega
 taxon %<>% mutate(dwc_rightsHolder = "Centre for Ecology and Hydrology")
 ```
 
+### reference
+
+
 ### datasetID
 
 ```{r}
@@ -165,7 +168,7 @@ taxon %<>% mutate(dwc_family = sp_family)
 taxon %<>% mutate(dwc_genus = sp_genus) 
 ```
 
-### specificEpithet: species
+### specificEpithet
 
 ```{r}
 taxon %<>% mutate(dwc_specificEpithet = sp_species) 
@@ -177,30 +180,17 @@ taxon %<>% mutate(dwc_specificEpithet = sp_species)
 taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon) 
 ```
 
-### taxonRank: to be searched by GBIF
-
-Inspect values:
-
-```{r}
-
-```
-
-Map values by recoding to the [GBIF rank vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml):
-
-```{r}
-
-
-```
-
-Inspect mapped values: 
-
-```{r}
-
-```
+### taxonRank
 
 ### scientificNameAuthorship
 
 ### taxonRemarks
+
+This field will include the information on ecofunctional groups (contained in `eg_ecofunct_group`)
+
+```{r}
+taxon %<>% mutate(taxonRemarks = paste("Ecofunctional_group", "=", eg_ecofunct_group, sep = " ")) 
+```
 
 
 ## Post-processing
