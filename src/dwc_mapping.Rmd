@@ -189,11 +189,16 @@ taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon)
 This field will include the information on ecofunctional groups (contained in `eg_ecofunct_group`)
 
 ```{r}
-taxon %<>% mutate(taxonRemarks = paste("Ecofunctional_group", "=", eg_ecofunct_group, sep = " ")) 
+taxon %<>% mutate(dwc_taxonRemarks = paste("Ecofunctional_group", "=", eg_ecofunct_group, sep = " ")) 
 ```
 
-
 ## Post-processing
+
+Only keep the Darwin Core columns:
+
+```{r}
+taxon %<>% select(starts_with("dwc_"))
+```
 
 Drop the `dwc_` prefix:
 
