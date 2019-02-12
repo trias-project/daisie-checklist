@@ -113,74 +113,44 @@ The following terms contain information about the taxon:
 ### taxonID
 
 ```{r}
-taxon %<>% mutate(dwc_taxonID = taxon_id)
 ```
 
 ### scientificName
 
 ```{r}
-taxon %<>% mutate(dwc_scientificName = scientific_name)
 ```
 
 ### kingdom
 
-Inspect values:
 
 ```{r}
-taxon %>%
-  group_by(kingdom) %>%
-  count()
 ```
 
-Map values:
 
 ```{r}
-taxon %<>% mutate(dwc_kingdom = kingdom)
 ```
 
-### taxonRank
 
-Inspect values:
 
 ```{r}
-taxon %>%
-  group_by(rankmarker) %>%
-  count()
 ```
 
 Map values by recoding to the [GBIF rank vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml):
 
 ```{r}
-taxon %<>% mutate(dwc_taxonRank = recode(rankmarker,
-  "agg."      = "speciesAggregate",
-  "infrasp."  = "infraspecificname",
-  "sp."       = "species",
-  "var."      = "variety",
-  .default    = "",
-  .missing    = ""
-))
 ```
 
-Inspect mapped values: 
 
 ```{r}
-taxon %>%
-  group_by(rankmarker, dwc_taxonRank) %>%
-  count()
 ```
 
-### nomenclaturalCode
 
 ```{r}
-taxon %<>% mutate(dwc_nomenclaturalCode = "my_nomenclaturalCode") # e.g. "ICZN"
 ```
 
-## Post-processing
 
-Only keep the Darwin Core columns:
 
 ```{r}
-taxon %<>% select(starts_with("dwc_"))
 ```
 
 Drop the `dwc_` prefix:
