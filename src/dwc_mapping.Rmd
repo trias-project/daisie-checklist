@@ -75,37 +75,37 @@ Start with record-level terms which contain metadata about the dataset (which is
 ### language
 
 ```{r}
-taxon %<>% mutate(dwc_language = "my_language") # e.g. "en"
+taxon %<>% mutate(dwc_language = "my_language") 
 ```
 
 ### license
 
 ```{r}
-taxon %<>% mutate(dwc_license = "my_license") # e.g. "http://creativecommons.org/publicdomain/zero/1.0/"
+taxon %<>% mutate(dwc_license = "my_license") 
 ```
 
 ### rightsHolder
 
 ```{r}
-taxon %<>% mutate(dwc_rightsHolder = "my_rights_holder") # e.g. "INBO"
+taxon %<>% mutate(dwc_rightsHolder = "my_rights_holder")
 ```
 
 ### datasetID
 
 ```{r}
-taxon %<>% mutate(dwc_datasetID = "my_dataset_doi") # e.g. "https://doi.org/10.15468/xvuzfh"
+taxon %<>% mutate(dwc_datasetID = "my_dataset_doi") 
 ```
 
 ### institutionCode
 
 ```{r}
-taxon %<>% mutate(dwc_institutionCode = "my_institution_code") # e.g. "INBO"
+taxon %<>% mutate(dwc_institutionCode = "my_institution_code") 
 ```
 
 ### datasetName
 
 ```{r}
-taxon %<>% mutate(dwc_datasetName = "my_dataset_title") # e.g. "Checklist of non-native freshwater fishes in Flanders, Belgium"
+taxon %<>% mutate(dwc_datasetName = "my_dataset_title") 
 ```
 
 The following terms contain information about the taxon:
