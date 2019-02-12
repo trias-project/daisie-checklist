@@ -41,18 +41,29 @@ library(rgbif)          # To use GBIF services
 # Read source data
 
 ```{r}
+taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
 ```
 
+# Taxon core
 
 Preview data:
 
 ```{r}
+taxon %>% head(n = 5)
 ```
 
 ## Pre-processing
 
+### Tidy data
+
+Clean data somewhat:
 
 ```{r}
+taxon <- 
+  taxon %>% 
+    remove_empty("rows") %>% 
+    clean_names()
+  
 ```
 
 ## Term mapping
