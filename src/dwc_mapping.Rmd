@@ -113,45 +113,97 @@ The following terms contain information about the taxon:
 ### taxonID
 
 ```{r}
+taxon %<>% mutate(dwc_taxonID = sp_idspecies)
 ```
 
 ### scientificName
 
+The information in `scientificName` is contained in several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`:
+
 ```{r}
+taxon %<>% mutate(dwc_scientificName = paste(sp_genus, sp_species, sp_authority, sp_subtaxon, sp_subtaxon_authority, sep = " "))
+```
+
+Use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist:
+
+```{r}
+parsed_names <- taxon %>%
+  distinct(dwc_scientificName) %>%
+  pull() %>% # Create vector from dataframe
+  parsenames() # An rgbif function
 ```
 
 ### kingdom
 
+### phylum
 
 ```{r}
+taxon %<>% mutate(dwc_phylum = sp_phylum)
 ```
 
+### class
 
 ```{r}
+taxon %<>% mutate(dwc_class = sp_class) 
 ```
 
-
+### order
 
 ```{r}
+taxon %<>% mutate(dwc_order = sp_ordo) 
+```
+
+### family
+
+```{r}
+taxon %<>% mutate(dwc_family = sp_family) 
+```
+
+### genus
+
+```{r}
+taxon %<>% mutate(dwc_genus = sp_genus) 
+```
+
+### specificEpithet: species
+
+```{r}
+taxon %<>% mutate(dwc_specificEpithet = sp_species) 
+```
+
+### infraspecificEpithet
+
+```{r}
+taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon) 
+```
+
+### taxonRank: to be searched by GBIF
+
+Inspect values:
+
+```{r}
+
 ```
 
 Map values by recoding to the [GBIF rank vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml):
 
 ```{r}
+
+
 ```
 
+Inspect mapped values: 
 
 ```{r}
+
 ```
 
+### scientificNameAuthorship
 
-```{r}
-```
+### taxonRemarks
 
 
-
-```{r}
-```
+## Post-processing
 
 Drop the `dwc_` prefix:
 
