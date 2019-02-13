@@ -129,15 +129,6 @@ The information in `scientificName` is contained in several fields: `sp_genus`, 
 taxon %<>% mutate(dwc_scientificName = paste(sp_genus, sp_species, sp_authority, sp_subtaxon, sp_subtaxon_authority, sep = " "))
 ```
 
-Use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist:
-
-```{r}
-parsed_names <- taxon %>%
-  distinct(dwc_scientificName) %>%
-  pull() %>% # Create vector from dataframe
-  parsenames() # An rgbif function
-```
-
 ### kingdom
 
 ### phylum
@@ -183,6 +174,8 @@ taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon)
 ```
 
 ### taxonRank
+
+Information for `taxonRank` is provided in the field `
 
 ### scientificNameAuthorship
 
