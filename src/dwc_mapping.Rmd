@@ -42,10 +42,9 @@ library(lubridate)
 # Read source data
 
 ```{r}
-taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
-vernacular_names <- read.csv(here("data", "raw", "input_vernacular_names.csv"))
-distribution <- read.csv(here("data", "raw", "input_distribution.csv"), na.strings = "")
-
+taxon <- read.csv("../data/raw/input_taxon.csv") 
+vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
+distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
 ```
 
 # Taxon core
@@ -129,6 +128,38 @@ The information in `scientificName` is contained in several fields: `sp_genus`, 
 taxon %<>% mutate(dwc_scientificName = paste(sp_genus, sp_species, sp_authority, sp_subtaxon, sp_subtaxon_authority, sep = " "))
 ```
 
+Use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist:
+
+```{r}
+parsed_names <- taxon %>%
+  distinct(dwc_scientificName) %>%
+  pull() %>% # Create vector from dataframe
+  parsenames() # An rgbif function
+```
+
+Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed. Note: these are not necessarily incorrect.
+
+```{r}
+nomenclatural_issues <- parsed_names %>%
+  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE"))
+```
+
+Amount of scientific names with nomenclatural issues:
+
+```{r}
+nrow(nomenclatural_issues)
+```
+Inspect how many taxa are categorized under the different types:
+
+```{r}
+nomenclatural_issues %>% 
+  group_by(type) %>% 
+  summarize(records = n())
+```
+
+These species require some further inspection.
+
 ### kingdom
 
 ### phylum
@@ -175,7 +206,24 @@ taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon)
 
 ### taxonRank
 
-Information for `taxonRank` is provided in the field `
+Information for `taxonRank` is provided in the field `subtaxon_rank`. However, this is only for the subtaxon level. The information is also provided by the GBIF nameparser function
+
+Inspect values:
+
+```{r}
+taxon %>% 
+  group_by(sp_subtaxon_rank) %>% 
+  summarize(records = n())
+```
+
+SOme of these taxon ranks are erroneous:
+- `Cytosporina sp.`
+- `Crous`
+
+`Cytosporina sp.` is the taxon_rank of 
+
+
+
 
 ### scientificNameAuthorship
 
