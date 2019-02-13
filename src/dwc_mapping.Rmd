@@ -43,6 +43,8 @@ library(rgbif)          # To use GBIF services
 ```{r}
 taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
 vernacular_names <- read.csv(here("data", "raw", "input_vernacular_names.csv"))
+distribution <- read.csv(here("data", "raw", "input_distribution.csv"))
+
 ```
 
 # Taxon core
@@ -239,7 +241,27 @@ vernacular_names <-
   
 ```
 
-##• Term mapping
+## Term mapping
+
+### taxonID
+
+```{r}
+vernacular_names %<>% mutate(dwc_taxonID = idspecies) 
+```
+
+### vernacularName
+
+```{r}
+vernacular_names %<>% mutate(dwc_vernacularName = cn_name) 
+```
+
+### source
+
+```{r}
+
+```
+
+### language
 
 Display all unique language information:
 
@@ -290,7 +312,31 @@ vernacular_names %>%
   summarize(records = n())
 ```
 
+## Post-processing
 
+Only keep the Darwin Core columns:
+
+```{r}
+vernacular_names %<>% select(starts_with("dwc_"))
+```
+
+Drop the `dwc_` prefix:
+
+```{r}
+colnames(vernacular_names) <- str_replace(colnames(vernacular_names), "dwc_", "")
+```
+
+Preview data:
+
+```{r}
+vernacular_names %>% head()
+```
+
+Save to CSV:
+
+```{r}
+write_csv(vernacular_names, here("data", "processed", "vernacular_names.csv"), na = "")
+```
 
 # Distribution extension
 
