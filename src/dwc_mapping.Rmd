@@ -36,6 +36,7 @@ library(janitor)        # To clean input data
 library(readxl)         # To read Excel files
 library(digest)         # To generate hashes
 library(rgbif)          # To use GBIF services
+library(lubridate)
 ```
 
 # Read source data
@@ -628,5 +629,44 @@ distribution %>%
 
 ### eventDate
 
+Inspect content of `sir_start_year`, which contains the information for `eventDate`:
 
+```{r}
+distribution %>% 
+  group_by(sir_start_year) %>% 
+  summarize(records = n())
+```
 
+Attempt to clean data using the `parse_date_time()` function.
+
+First a test whether this works:
+
+```{r}
+parse_date_time("1.10.1981.", orders = c("%d/%m/%Y", "%d.%m.%Y."), quiet = TRUE)
+```
+
+This works. This is one of the dates in `sir_start_year`. 
+
+SO, now try this on `sir_start_year`.
+First, change date information in `sir_start_year` from factor to numeric:
+
+```{r}
+distribution $ start_year_numeric <- as.character(distribution $ sir_start_year)
+```
+
+Show content:
+
+```{r}
+distribution %>% 
+  group_by(start_year_numeric) %>% 
+  summarize(records = n())
+```
+
+Use parse_date_time() function
+
+```{r}
+parse_date_time(distribution $ start_year_numeric, orders = c("%d/%m/%Y", "%d.%m.%Y."), quiet = TRUE)
+```
+
+This does not work...
+HELP :-) !!
