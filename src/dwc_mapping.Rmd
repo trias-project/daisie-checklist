@@ -42,9 +42,9 @@ library(lubridate)
 # Read source data
 
 ```{r}
-taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
-vernacular_names <- read.csv(here("data", "raw", "input_vernacular_names.csv"))
-distribution <- read.csv(here("data", "raw", "input_distribution.csv"), na.strings = "")
+taxon <- read.csv("../data/raw/input_taxon.csv") 
+vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
+distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
 
 ```
 
@@ -138,6 +138,30 @@ parsed_names <- taxon %>%
   parsenames() # An rgbif function
 ```
 
+Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed. Note: these are not necessarily incorrect.
+
+```{r}
+nomenclatural_issues <- parsed_names %>%
+  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE"))
+```
+
+Amount of scientific names with nomenclatural issues:
+
+```{r}
+nrow(nomenclatural_issues)
+```
+
+Inspect how many taxa are categorized under the different types:
+
+```{r}
+nomenclatural_issues %>% 
+  group_by(type) %>% 
+  summarize(records = n())
+```
+
+Some taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
+
 ### kingdom
 
 ### phylum
@@ -183,6 +207,24 @@ taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon)
 ```
 
 ### taxonRank
+
+Information for `taxonRank` is provided in the field `subtaxon_rank`. However, this is only for the subtaxon level. The information is also provided by the GBIF nameparser function. We extract this information from the `parsed_names` and add it to `taxon`:
+
+```{r}
+taxon %<>% left_join(
+  select(parsed_names, scientificname, rankmarker),
+  by = c("dwc_scientificName" = "scientificname"))
+```
+
+Inspect `rankmarker` values and compare with `subtaxon_rank` information:
+
+```{r}
+taxon %>% 
+  group_by(rankmarker, sp_subtaxon_rank) %>% 
+  summarize(records = n()) %>% 
+  arrange(desc(records)) %>% 
+  kable()
+```
 
 ### scientificNameAuthorship
 
@@ -759,7 +801,6 @@ distribution  %>%
   select(sir_start_year) %>%
   filter(!str_detect(sir_start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
 ```
-
 
 Show content:
 
