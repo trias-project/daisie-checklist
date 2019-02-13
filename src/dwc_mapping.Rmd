@@ -42,9 +42,10 @@ library(lubridate)
 # Read source data
 
 ```{r}
-taxon <- read.csv("../data/raw/input_taxon.csv") 
-vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
-distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
+taxon <- read.csv(here("data", "raw", "input_taxon.csv")) 
+vernacular_names <- read.csv(here("data", "raw", "input_vernacular_names.csv"))
+distribution <- read.csv(here("data", "raw", "input_distribution.csv"), na.strings = "")
+
 ```
 
 # Taxon core
@@ -137,29 +138,6 @@ parsed_names <- taxon %>%
   parsenames() # An rgbif function
 ```
 
-Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed. Note: these are not necessarily incorrect.
-
-```{r}
-nomenclatural_issues <- parsed_names %>%
-  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
-  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE"))
-```
-
-Amount of scientific names with nomenclatural issues:
-
-```{r}
-nrow(nomenclatural_issues)
-```
-Inspect how many taxa are categorized under the different types:
-
-```{r}
-nomenclatural_issues %>% 
-  group_by(type) %>% 
-  summarize(records = n())
-```
-
-These species require some further inspection.
-
 ### kingdom
 
 ### phylum
@@ -205,25 +183,6 @@ taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon)
 ```
 
 ### taxonRank
-
-Information for `taxonRank` is provided in the field `subtaxon_rank`. However, this is only for the subtaxon level. The information is also provided by the GBIF nameparser function
-
-Inspect values:
-
-```{r}
-taxon %>% 
-  group_by(sp_subtaxon_rank) %>% 
-  summarize(records = n())
-```
-
-SOme of these taxon ranks are erroneous:
-- `Cytosporina sp.`
-- `Crous`
-
-`Cytosporina sp.` is the taxon_rank of 
-
-
-
 
 ### scientificNameAuthorship
 
@@ -385,7 +344,7 @@ Clean data somewhat:
 ```{r}
 distribution <- 
   distribution %>% 
-    remove_empty("rows") %>% 
+    remove_empty_rows() %>% 
     clean_names()
 ```
 
@@ -674,40 +633,139 @@ Inspect content of `sir_start_year`, which contains the information for `eventDa
 
 ```{r}
 distribution %>% 
+  mutate(sir_start_year = as.character(sir_start_year)) %>%
   group_by(sir_start_year) %>% 
-  summarize(records = n())
+  summarize(records = n()) %>%
+  arrange(desc(records))
 ```
 
-Attempt to clean data using the `parse_date_time()` function.
+Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) and a smaller group of _others_:
 
-First a test whether this works:
+- NA cases:
+  * Unknown -> NA
+  * unknown -> NA
+  * . -> NA
+  * ? -> NA
+  * since long -> NA
+- negative years: also to NA
+  * -5300, -2200, -750 -> NA
+- before/after cases, question marks,... remove the </>/? signs
+  * <1925   -> 1925, i.e. year itself
+  * year with question mark, e;g. 1921?, 1930 ? -> year itself is best guess, so extract year
+  * 1999\n -> clean to 1999  
+- full dates: 10.06.1995., 01/04/1993, 15/10/2005,...  
+- multiple years:
+  * range of years: 1889-1892  -> take first year
+  * options: '2000, 2001'; 1992 or 2010, 2000 OR 2004 -> take first year occurrence
+- specials: 20. century, 1957*; 2008**, , 2004, earlier unconformed records, March,1993, 90`s
+  * try to extract a 4-digit year (or use Damianos improvd funtionality)
+
+The remaining will probably require some claenup manually. 
+
+Get an overview of the amount of records with just a `YYYY` year format:
 
 ```{r}
-parse_date_time("1.10.1981.", orders = c("%d/%m/%Y", "%d.%m.%Y."), quiet = TRUE)
+distribution %>%
+  select(sir_start_year) %>%
+  filter(str_detect(sir_start_year, "^[0-9]{4}$")) %>% nrow()
 ```
 
-This works. This is one of the dates in `sir_start_year`. 
-
-SO, now try this on `sir_start_year`.
-First, change date information in `sir_start_year` from factor to numeric:
+We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
 
 ```{r}
-distribution $ start_year_numeric <- as.character(distribution $ sir_start_year)
+distribution %>%
+  select(sir_start_year) %>%
+  filter(str_detect(sir_start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
 ```
+
+Let's clean the start years information step by step:
+
+1. Everything that is NA or should be NA, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(sir_start_year = as.character(sir_start_year)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "Unknown", NA)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "unknown", NA)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == ".", NA)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "?", NA)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "since long", NA)) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "Since long", NA))
+
+```
+
+2. For all negative values, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(sir_start_year = 
+           if_else(str_detect(sir_start_year, "^-[0-9]*"),
+                   NA_character_, sir_start_year))
+```
+
+3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
+
+```{r}
+distribution %<>% 
+  mutate(sir_start_year = str_replace(sir_start_year, "<|>|\\?", ""))
+```
+
+4. When a full date is available, parse it to ISO 8601 date format:
+
+```{r}
+full_date_indices <- str_detect(distribution$sir_start_year, 
+                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$sir_start_year)
+parsed_dates <- parse_date_time(distribution$sir_start_year[full_date_indices], orders = "dmy")
+parsed_dates_char <- strftime(parsed_dates, "%d-%m-%Y")
+distribution$sir_start_year[full_date_indices] <- parsed_dates_char
+```
+
+5. When textwise containing a single or multiple years, exrtact the first year in the text:
+
+```{r}
+# ignore already parsed dates for this replacement
+not_date_indices <- !str_detect(distribution$sir_start_year, 
+                               "[0-9]{2}-[0-9]{2}-[0-9]{4}") & !is.na(distribution$sir_start_year)
+records_to_parse <- distribution$sir_start_year[not_date_indices]
+extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
+                           records_to_parse,
+                           str_extract(records_to_parse, "[0-9]{4}"))
+distribution$sir_start_year[not_date_indices] <- extracted_years
+```
+
+5. Replace some specials still present:
+
+First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
+
+```{r}
+distribution  %>%
+  select(sir_start_year) %>%
+  filter(!str_detect(sir_start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+```
+
+and replace those values:
+
+```{r}
+distribution %<>% 
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "20. century", "1900")) %>%
+  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "90`s ", "1990"))
+```
+
+
+recheck cleanup action:
+
+```{r}
+distribution  %>%
+  select(sir_start_year) %>%
+  filter(!str_detect(sir_start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+```
+
 
 Show content:
 
 ```{r}
 distribution %>% 
-  group_by(start_year_numeric) %>% 
+  group_by(sir_start_year) %>% 
   summarize(records = n())
 ```
 
-Use parse_date_time() function
-
-```{r}
-parse_date_time(distribution $ start_year_numeric, orders = c("%d/%m/%Y", "%d.%m.%Y."), quiet = TRUE)
-```
-
-This does not work...
-HELP :-) !!
