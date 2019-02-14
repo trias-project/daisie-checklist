@@ -322,22 +322,8 @@ write_csv(taxon, here("data", "processed", "taxon.csv"), na = "")
 
 # Vernacular names extension
 
-Preview data:
-
 ```{r}
 vernacular_names %>% head(n = 5)
-```
-
-## Tidy data
-
-Clean data somewhat:
-
-```{r}
-vernacular_names <- 
-  vernacular_names %>% 
-    remove_empty("rows") %>% 
-    clean_names()
-  
 ```
 
 ## Term mapping
@@ -351,13 +337,24 @@ vernacular_names %<>% mutate(dwc_taxonID = idspecies)
 ### vernacularName
 
 ```{r}
-vernacular_names %<>% mutate(dwc_vernacularName = cn_name) 
+vernacular_names %<>% mutate(dwc_vernacularName = name) 
 ```
 
 ### source
 
-```{r}
+Join `vernacular_names` with `shortref` information in `literature_references`:
 
+```{r}
+vernacular_names %<>% left_join(
+  select(literature_references, sourceid, shortref),
+  by = "sourceid"
+) 
+```
+
+Rename and clean `sourceid`:
+
+```{r}
+vernacular_names %<>% mutate(dwc_source = str_replace_na(shortref, replacement =  "")) 
 ```
 
 ### language
@@ -366,14 +363,14 @@ Display all unique language information:
 
 ```{r}
 vernacular_names %>% 
-  group_by(cn_language) %>% 
+  group_by(language) %>% 
   summarize(records = n())
 ```
 
 Map language information to [ISO 639-1 Language Codes](https://tools.gbif.org/dwca-validator/vocabulary.do?id=http://iso.org/639-1)
 
 ```{r}
-vernacular_names %<>% mutate(dwc_language = recode(cn_language,
+vernacular_names %<>% mutate(dwc_language = recode(language,
   "Belorussian" = "be",
   "Czech" = "cs",
   "Danish" = "da",
@@ -407,7 +404,7 @@ Show mapping:
 
 ```{r}
 vernacular_names %>% 
-  group_by(cn_language, dwc_language) %>% 
+  group_by(language, dwc_language) %>% 
   summarize(records = n())
 ```
 
@@ -434,7 +431,7 @@ vernacular_names %>% head()
 Save to CSV:
 
 ```{r}
-write_csv(vernacular_names, here("data", "processed", "vernacular_names.csv"), na = "")
+write_csv(vernacular_names, "../data/processed/vernacular_names.csv", na = "")
 ```
 
 # Distribution extension
