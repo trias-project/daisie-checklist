@@ -126,9 +126,15 @@ taxon %>%
 Add sources to taxon core:
 
 ```{r}
-taxon %>% left_join(
+taxon %<>% left_join(
   select(literature_references, so_sourceid, so_shortref, so_longref),
   by = c("sp_sourceid" = "so_sourceid"))
+```
+
+Inspect longref:
+
+```{r}
+taxon %>% distinct(so_longref)
 ```
 
 ### datasetID
@@ -416,15 +422,6 @@ write_csv(vernacular_names, here("data", "processed", "vernacular_names.csv"), n
 ```
 
 # Distribution extension
-
-Clean data somewhat:
-
-```{r}
-distribution <- 
-  distribution %>% 
-    remove_empty_rows() %>% 
-    clean_names()
-```
 
 ## Term mapping
 
