@@ -670,24 +670,24 @@ distribution %<>%
 
 ```{r}
 distribution %<>% 
-  mutate(sir_start_year = 
-           if_else(str_detect(sir_start_year, "^-[0-9]*"),
-                   NA_character_, sir_start_year))
+  mutate(start_year = 
+           if_else(str_detect(start_year, "^-[0-9]*"),
+                   NA_character_, start_year))
 ```
 
 3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
 
 ```{r}
 distribution %<>% 
-  mutate(sir_start_year = str_replace(sir_start_year, "<|>|\\?", ""))
+  mutate(start_year = str_replace(start_year, "<|>|\\?", ""))
 ```
 
 4. When a full date is available, parse it to ISO 8601 date format:
 
 ```{r}
-full_date_indices <- str_detect(distribution$sir_start_year, 
-                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$sir_start_year)
-parsed_dates <- parse_date_time(distribution$sir_start_year[full_date_indices], orders = "dmy")
+full_date_indices <- str_detect(distribution$start_year, 
+                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$start_year)
+parsed_dates <- parse_date_time(distribution$start_year[full_date_indices], orders = "dmy")
 parsed_dates_char <- strftime(parsed_dates, "%d-%m-%Y")
 distribution$sir_start_year[full_date_indices] <- parsed_dates_char
 ```
@@ -696,13 +696,13 @@ distribution$sir_start_year[full_date_indices] <- parsed_dates_char
 
 ```{r}
 # ignore already parsed dates for this replacement
-not_date_indices <- !str_detect(distribution$sir_start_year, 
-                               "[0-9]{2}-[0-9]{2}-[0-9]{4}") & !is.na(distribution$sir_start_year)
-records_to_parse <- distribution$sir_start_year[not_date_indices]
+not_date_indices <- !str_detect(distribution$start_year, 
+                               "[0-9]{2}-[0-9]{2}-[0-9]{4}") & !is.na(distribution$start_year)
+records_to_parse <- distribution$start_year[not_date_indices]
 extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
                            records_to_parse,
                            str_extract(records_to_parse, "[0-9]{4}"))
-distribution$sir_start_year[not_date_indices] <- extracted_years
+distribution$start_year[not_date_indices] <- extracted_years
 ```
 
 5. Replace some specials still present:
@@ -711,16 +711,16 @@ First have a look at the specials remaining, not being a integer year (1 or more
 
 ```{r}
 distribution  %>%
-  select(sir_start_year) %>%
-  filter(!str_detect(sir_start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+  select(start_year) %>%
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
 ```
 
 and replace those values:
 
 ```{r}
 distribution %<>% 
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "20. century", "1900")) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "90`s ", "1990"))
+  mutate(start_year = replace(start_year, start_year == "20. century", "1900")) %>%
+  mutate(start_year = replace(start_year, start_year == "90`s ", "1990"))
 ```
 
 
@@ -728,17 +728,178 @@ recheck cleanup action:
 
 ```{r}
 distribution  %>%
-  select(sir_start_year) %>%
-  filter(!str_detect(sir_start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+  select(start_year) %>%
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
 ```
 
 Show content:
 
 ```{r}
 distribution %>% 
-  group_by(sir_start_year) %>% 
+  group_by(start_year) %>% 
   summarize(records = n())
 ```
+
+#### Clean end_year
+
+Inspect content of `end_year`, which contains the information for `eventDate`:
+
+```{r}
+distribution %>% 
+  mutate(end_year = as.character(end_year)) %>%
+  group_by(end_year) %>% 
+  summarize(records = n()) %>%
+  arrange(desc(records))
+```
+
+Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) and a smaller group of _others_:
+
+- NA cases:
+  * unknown -> NA
+  *   -> NA
+  * ? -> NA
+- negative years: also to NA
+  * -2200, -750 -> NA
+- before/after cases, question marks,... remove the </>/? signs
+  * year with question mark, 2004? -> year itself is best guess, so extract year
+- full dates: 15.06.2003.
+- specials: 20. century, 1950's*
+  try to extract a 4-digit year (or use Damianos improvd funtionality)
+
+The remaining will probably require some claenup manually. 
+
+Get an overview of the amount of records with just a `YYYY` year format:
+
+```{r}
+distribution %>%
+  select(end_year) %>%
+  filter(str_detect(end_year, "^[0-9]{4}$")) %>% nrow()
+```
+
+We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
+
+```{r}
+distribution %>%
+  select(end_year) %>%
+  filter(str_detect(end_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+```
+
+Let's clean the start years information step by step:
+
+1. Everything that is NA or should be NA, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = as.character(end_year)) %>%
+  mutate(end_year = replace(end_year, end_year == " ", NA)) %>% 
+  mutate(end_year = replace(end_year, end_year == "        ", NA)) %>% 
+  mutate(end_year = replace(end_year, end_year == "unknown", NA)) %>%
+  mutate(end_year = replace(end_year, end_year == "?", NA)) 
+```
+
+2. For all negative values, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = 
+           if_else(str_detect(end_year, "^-[0-9]*"),
+                   NA_character_, end_year))
+```
+
+3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = str_replace(end_year, "<|>|\\?", ""))
+```
+
+4. When a full date is available, parse it to ISO 8601 date format:
+
+```{r}
+full_date_indices <- str_detect(distribution$end_year, 
+                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$end_year)
+parsed_dates <- parse_date_time(distribution$end_year[full_date_indices], orders = "dmy")
+parsed_dates_char <- strftime(parsed_dates, "%d-%m-%Y")
+distribution$end_year[full_date_indices] <- parsed_dates_char
+```
+
+5. When textwise containing a single or multiple years, exrtact the first year in the text:
+
+```{r}
+# ignore already parsed dates for this replacement
+not_date_indices <- !str_detect(distribution$end_year, 
+                               "[0-9]{2}-[0-9]{2}-[0-9]{4}") & !is.na(distribution$end_year)
+records_to_parse <- distribution$end_year[not_date_indices]
+extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
+                           records_to_parse,
+                           str_extract(records_to_parse, "[0-9]{4}"))
+distribution$end_year[not_date_indices] <- extracted_years
+```
+
+5. Replace some specials still present:
+
+First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
+
+```{r}
+distribution  %>%
+  select(end_year) %>%
+  filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+```
+
+and replace those values:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = replace(end_year, end_year == "19th century", "1800")) %>%
+  mutate(end_year = replace(end_year, end_year == "1950's", "1950"))
+```
+
+
+recheck cleanup action:
+
+```{r}
+distribution  %>%
+  select(end_year) %>%
+  filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+```
+
+Show content:
+
+```{r}
+distribution %>% 
+  group_by(end_year) %>% 
+  summarize(records = n())
+```
+
+#### map eventDate
+
+Inspect all combinations for `start_year` and `end_year`:
+
+```{r}
+distribution %>% group_by(start_year, end_year) %>% summarize(records = n())
+```
+
+Inspect which `end_year` falls before `start_year`:
+
+```{r}
+distribution %>% 
+  mutate(end_year = as.numeric(end_year)) %>% 
+  mutate(start_year = as.numeric(start_year)) %>% 
+  filter(end_year < start_year) %>% 
+  select(idspecies, end_year, start_year)
+```
+
+Create eventDate:
+
+```{r}
+distribution %<>% mutate(dwc_eventDate = case_when(
+  is.na(start_year) & is.na(end_year) ~ "",
+  is.na(start_year) & !is.na(end_year) ~ end_year,
+  !is.na(start_year) & is.na(end_year) ~ start_year,
+  !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep="/")
+))
+```
+
 
 # Literature reference extension
 
