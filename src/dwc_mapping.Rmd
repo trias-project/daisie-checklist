@@ -258,6 +258,42 @@ Inspect `rankmarker` values and compare with `subtaxon_rank` information:
 ```{r}
 taxon %>% 
   group_by(rankmarker, sp_subtaxon_rank) %>% 
+  group_by(rankmarker, subtaxon_rank) %>% 
+  summarize(records = n()) %>% 
+  arrange(desc(records)) 
+```
+
+We decided to use the information contained in `rankmarker` because GBIF rankmarker will provide cleaner information than `subtaxon_rank`, even if there might be some loss of information.
+
+Show unique values for `rankmarker`:
+
+```{r}
+taxon %>% distinct(rankmarker)
+```
+
+
+```{r}
+taxon %<>% mutate(dwc_taxonRank = recode(rankmarker,
+   "sp." = "species",
+   "infrasp." = "infraspecificname",
+   "cv." = "cultivar",
+    "<NA>" = "",
+   "infrasubsp." = "infrasubspecificname",
+   "var." = "variety",
+   "morph" = "morphovar",
+   "subvar." = "subvariety",
+   "subf." = "subform",
+   "subsp." = "subspecies",
+   "f." = "form",
+   "pv." = "pathovar"
+   ))
+```
+
+summarize mapping:
+
+```{r}
+taxon %>% 
+  group_by(rankmarker, dwc_taxonRank) %>% 
   summarize(records = n()) %>% 
   arrange(desc(records)) 
 ```
