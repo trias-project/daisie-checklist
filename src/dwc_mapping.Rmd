@@ -430,156 +430,30 @@ distribution %<>% mutate(dwc_taxonID = idspecies)
 
 ### locationID
 
-Information for `locationID`, `locality` and `countryCode` is contained in the fields `re_region_country`, `re_region_coast`. The fields `re_system_country` and `re_system_coast` refer to the vocabularies used. The following vocabularies are used:
+
+In this field, we integrate information contained in `re_system_country`, `re_code_region`. When coastal information is provided, we combine this infomation with `re_system_coast` and `re_code_coast`.
 
 ```{r}
-distribution %>% 
-  group_by(re_system_country,re_system_coast) %>% 
-  summarize(records = n())
-```
-
-`DAISIE` and `DIHO23_4Û` are vocabularies specifically developped for DAISIE. These are not recognized by GBIF. To simplify the mapping to `locationID`, we decided to:
-
-1. Exclude coastal information from `locationID`. Coastal areas are always linked with country information. We thus only use country information to map in `locationID`.
-
-```{r}
-distribution %>% 
-  filter(!is.na(re_region_coast)) %>% 
-  group_by(re_region_country,re_region_coast) %>% 
-  summarize(records = n())
-```
-
-2. Only use the official TDWG codes in `locationID`. 
-3. Combine all original information (regions + systems) in `locality`. 
-
-Inspect country information contained in `re_region_country` and `re_system_country`:
-
-```{r}
-distribution %>% 
-  group_by(re_region_country, re_system_country) %>% 
-  summarize(records = n())
-```
-
-Translate to the [TDWG World Geographical Scheme for Recording Plant Distributions](https://github.com/tdwg/prior-standards/tree/master/world-geographical-scheme-for-recording-plant-distributions):
-
-```{r}
-distribution %<>% mutate(locationID = recode(re_region_country,
-"Albania"	                = "ALB-OO",
-"Algeria"	                = "ALG-OO",
-"Andorra"	                = "SPA-AN",
-"Austria"	                = "AUT-AU",
-"Azores"                  = "AZO-OO",
-"Baleares"	              = "BAL-OO",
-"Belarus"	                = "BLR-OO",
-"Belgium"	                = "GBM-BE",
-"Bosnia-Herzegovina"	    = "YUG-BH",
-"Bulgaria"	              = "BUL-OO",
-"Canary Is."	            = "CNY-OO",
-"Channel Is."	            = "FRA-CI",
-"Corse (Corsica)"	        = "COR-OO",
-"Croatia"	                = "YUG-CR",
-"Cyprus"	                = "CYP-OO",
-"Czech Republic"	        = "CZE-CZ",
-"Denmark"	                = "DEN-00",
-"Egypt"                 	= "EGY-OO",
-"England"	                = "GRB-OO",
-"Estonia"                 = "BLT-ES",
-"Europe"	                = "1",
-"European part of Russia"	= "RUN-OO|RUE-OO|RUC-OO| RUS-OO",
-"Faroyar (Faroes)"	      = "FOR-OO",
-"Finland"	                = "FIN-OO",
-"France"	                = "FRA-FR",
-"Germany"	                = "GER-OO",
-"Gilbraltar"	            = "SPA-GI",
-"Great Britain"	          = "GRB-OO",
-"Greece"	                = "GRC-OO",
-"Greece (East Aegean)"	  = "EAI-OO",
-"Greece (Ionian Islands)" = "GRC-OO",
-"Greece (North Aegean)"   = "GRC-00",
-"Greece (South Aegean)"   = "GRC-00",
-"Greenland"	              = "GNL-OO",
-"Hungary"	                = "HUN-OO",
-"Iceland"	                = "ICE-OO",
-"Ireland"	                = "IRE-IR",
-"Israel"	                = "PAL-IS",
-"Italy"	                  = "ITA-IT",
-"Kriti (Crete)"	          = "KRI-OO",
-"Latvia"	                = "BLT-LA",
-"Lebanon"	                = "LBS-LB",
-"Libya"	                  = "LBY-OO",
-"Liechtenstein"	          = "AUT-LI",
-"Lithuania"	              = "BLT-LI",
-"Luxembourg"	            = "BGM-LU",
-"Macedonia"	              = "YUG-MA",
-"Madeira"	                = "MDR-OO",
-"Malta"	                  = "SIC-MA",
-"Moldova"	                = "UKR-MO",
-"Monaco"	                = "FRA-MO",
-"Montenegro"	            = "YUG-MN",
-"Morocco"	                = "MOR-MO",
-"Netherlands"	            = "NET-OO",
-"Northern Ireland"	      = "IRE-NI",
-"Norway"	                = "NOR-OO",
-"Poland"	                = "POL-OO",
-"Portugal"	              = "POR-OO",
-"Romania"	                = "ROM-OO",
-"Russian Far East"	      = "31",
-"San Marino"	            = "ITA-SM",
-"Sardegna (Sardinia)"	    = "SAR-OO",
-"Scotland"	              = "GRB-OO",
-"Serbia"	                = "YUG-SE",
-"Sicilia"	                = "SIC-SI",
-"Sicilia (Sicily)"	      = "SIC-SI",
-"Slovakia"	              = "CZE-SL",
-"Slovenia"	              = "YUG-SL",
-"Spain"	                  = "SPA-SP",
-"Svalbard"	              = "SVA-OO",
-"Sweden"	                = "SWE-OO",
-"Switzerland"	            = "SWI-OO",
-"Syria"	                  = "LBS-SY",
-"Tunisia"	                = "TUN-OO",
-"Turkey (in Europe)"	    = "TUR-OO",
-"Ukraine"	                = "UKR-UK",
-"United Kingdom"	        = "GRB-OO",
-"Wales"	                  = "GRB-OO",
-"Yugoslavia"	            = "YUG"
+distribution %<>% mutate(dwc_locationID = case_when(
+  is.na(re_region_coast) ~ paste(re_system_country, re_code_region, sep = ":"),
+  TRUE ~ paste(
+    paste(re_system_country, re_code_region, sep = ":"),
+    paste(re_system_coast, re_code_coast, sep = ":"),
+    sep = " - ")
 ))
-```
-
-Add prefix "TDWG:" to `locationID`:
-
-```{r}
-distribution %<>% mutate(locationID = paste0(
-  "TDWG",
-  ":",
-  locationID))
 ```
 
 ### locatliy
 
-In this field, we integrate all information contained in `re_region_country`, `re_system_country`, `re_region_coast` and `re_system_coast`. 
+In this field, we integrate all verbatim information contained in `re_region_country` and `re_region_coast` 
 The format will be:
 
-> country (system) - coast (system)
+> country - coast
 
 ```{r}
-distribution %<>% mutate(locality = case_when(
-  !is.na(re_region_coast) ~ paste0(
-    re_region_country,
-    " (",
-    re_system_country,
-    ") ",
-    " - ",
-    re_region_coast,
-    " (",
-    re_system_coast,
-    ") "),
-  is.na(re_region_coast) ~ paste(
-    re_region_country,
-    " (",
-    re_system_country,
-    ") ")
-)) 
+distribution %<>% mutate(dwc_locality = case_when(
+  !is.na(re_region_coast) ~ paste(re_region_country, re_region_coast, sep = " - "),
+  is.na(re_region_coast) ~ re_region_country)) 
 ```
 
 ### countryCode
