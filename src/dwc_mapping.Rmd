@@ -615,12 +615,14 @@ distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
 
 ### eventDate
 
-Inspect content of `sir_start_year`, which contains the information for `eventDate`:
+#### Clean start_year
+
+Inspect content of `start_year`, which contains the information for `eventDate`:
 
 ```{r}
 distribution %>% 
-  mutate(sir_start_year = as.character(sir_start_year)) %>%
-  group_by(sir_start_year) %>% 
+  mutate(start_year = as.character(start_year)) %>%
+  group_by(start_year) %>% 
   summarize(records = n()) %>%
   arrange(desc(records))
 ```
@@ -652,16 +654,16 @@ Get an overview of the amount of records with just a `YYYY` year format:
 
 ```{r}
 distribution %>%
-  select(sir_start_year) %>%
-  filter(str_detect(sir_start_year, "^[0-9]{4}$")) %>% nrow()
+  select(start_year) %>%
+  filter(str_detect(start_year, "^[0-9]{4}$")) %>% nrow()
 ```
 
 We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
 
 ```{r}
 distribution %>%
-  select(sir_start_year) %>%
-  filter(str_detect(sir_start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+  select(start_year) %>%
+  filter(str_detect(start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
 ```
 
 Let's clean the start years information step by step:
@@ -670,13 +672,13 @@ Let's clean the start years information step by step:
 
 ```{r}
 distribution %<>% 
-  mutate(sir_start_year = as.character(sir_start_year)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "Unknown", NA)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "unknown", NA)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == ".", NA)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "?", NA)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "since long", NA)) %>%
-  mutate(sir_start_year = replace(sir_start_year, sir_start_year == "Since long", NA))
+  mutate(start_year = as.character(start_year)) %>%
+  mutate(start_year = replace(start_year, start_year == "Unknown", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "unknown", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == ".", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "?", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "since long", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "Since long", NA))
 
 ```
 
