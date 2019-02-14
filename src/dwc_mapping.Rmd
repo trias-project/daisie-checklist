@@ -446,7 +446,7 @@ distribution %<>% mutate(dwc_locationID = case_when(
 ))
 ```
 
-### locatliy
+### locality
 
 In this field, we integrate all verbatim information contained in `re_region_country` and `re_region_coast` 
 The format will be:
@@ -455,8 +455,15 @@ The format will be:
 
 ```{r}
 distribution %<>% mutate(dwc_locality = case_when(
-  !is.na(re_region_coast) ~ paste(re_region_country, re_region_coast, sep = " - "),
-  is.na(re_region_coast) ~ re_region_country)) 
+  is.na(re_region_coast) ~ paste(re_region_country),
+  !is.na(re_region_coast) ~ paste(re_region_country, re_region_coast, sep = " - ")))
+```
+
+Save this information in a separate vector, as this is needed for the mapping of the descirption extension.
+
+```{r}
+species_localities <- distribution %>% 
+  select(idspecies, id_sp_region, dwc_locationID)
 ```
 
 ### countryCode
