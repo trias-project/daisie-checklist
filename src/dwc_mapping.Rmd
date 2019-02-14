@@ -448,30 +448,29 @@ distribution %<>% mutate(dwc_taxonID = idspecies)
 
 ### locationID
 
-
-In this field, we integrate information contained in `re_system_country`, `re_code_region`. When coastal information is provided, we combine this infomation with `re_system_coast` and `re_code_coast`.
+In this field, we integrate information contained in `system_country`, `code_region`. When coastal information is provided, we combine this infomation with `system_coast` and `code_coast`.
 
 ```{r}
 distribution %<>% mutate(dwc_locationID = case_when(
-  is.na(re_region_coast) ~ paste(re_system_country, re_code_region, sep = ":"),
+  is.na(region_coast) ~ paste(system_country, code_region, sep = ":"),
   TRUE ~ paste(
-    paste(re_system_country, re_code_region, sep = ":"),
-    paste(re_system_coast, re_code_coast, sep = ":"),
+    paste(system_country, code_region, sep = ":"),
+    paste(system_coast, code_coast, sep = ":"),
     sep = " - ")
 ))
 ```
 
 ### locality
 
-In this field, we integrate all verbatim information contained in `re_region_country` and `re_region_coast` 
+In this field, we integrate all verbatim information contained in `region_country` and `region_coast` 
 The format will be:
 
 > country - coast
 
 ```{r}
 distribution %<>% mutate(dwc_locality = case_when(
-  is.na(re_region_coast) ~ paste(re_region_country),
-  !is.na(re_region_coast) ~ paste(re_region_country, re_region_coast, sep = " - ")))
+  is.na(region_coast) ~ paste(region_country),
+  !is.na(region_coast) ~ paste(region_country, region_coast, sep = " - ")))
 ```
 
 Save this information in a separate vector, as this is needed for the mapping of the descirption extension.
@@ -485,7 +484,7 @@ species_localities <- distribution %>%
 ### countryCode
 
 ```{r}
-distribution %<>% mutate(countryCode = recode(re_region_country, 
+distribution %<>% mutate(countryCode = recode(region_country, 
 "Albania"	                = "AL",
 "Algeria"	                = "DZ",
 "Andorra"	                = "AD",
@@ -572,28 +571,29 @@ distribution %<>% mutate(countryCode = recode(re_region_country,
 
 ```{r}
 distribution %>% 
-  group_by(ab_abundance, ps_population_status) %>% 
+  group_by(abundance, population_status) %>% 
   summarize(records = n())
 ```
 
+
 ```{r}
 distribution %<>% mutate(occurrenceStatus = case_when(
-  ab_abundance == "Absent or extinct" & ps_population_status !="Extinct"     ~ "absent",
-  ab_abundance == "Absent or extinct" & is.na(ps_population_status)          ~ "absent",
-  (ps_population_status != "Extinct" | is.na(ps_population_status)) & ab_abundance == "Abundant"       ~ "common",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Common"        ~ "common",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Local"         ~ "present",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Rare"          ~ "rare",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Single record" ~ "present",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Sporadic"      ~ "irregular",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & ab_abundance == "Unknown"       ~ "doubtful",
-  (ps_population_status != "Extinct" | is.na(ps_population_status))  & is.na(ab_abundance)             ~ "",
-  ps_population_status == "Extinct"                                    ~ "extinct"))
+  abundance == "Absent or extinct" & population_status !="Extinct"     ~ "absent",
+  abundance == "Absent or extinct" & is.na(population_status)          ~ "absent",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Abundant"       ~ "common",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Common"        ~ "common",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Local"         ~ "present",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Rare"          ~ "rare",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Single record" ~ "present",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Sporadic"      ~ "irregular",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Unknown"       ~ "doubtful",
+  (population_status != "Extinct" | is.na(population_status))  & is.na(abundance)             ~ "",
+  population_status == "Extinct"                                    ~ "extinct"))
 ```
 
 ```{r}
 distribution %>% 
-  group_by(ab_abundance, ps_population_status, occurrenceStatus) %>% 
+  group_by(abundance, population_status, occurrenceStatus) %>% 
   summarize(records = n())
 ```
 
