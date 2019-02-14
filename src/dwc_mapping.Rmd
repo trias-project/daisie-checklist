@@ -254,8 +254,14 @@ taxon %>%
 
 ### scientificNameAuthorship
 
-```{r}
+The `taxon` file now contains two fields refering to an authorship: `authority` and `subtaxon_authority`. When values for `subtaxon_authority` are provided, we use these values as `scientificNameAuthorship`. If only a value for `authority` is provided, we use this value.
 
+```{r}
+taxon %<>% mutate(dwc_scientificNameAuthorship = case_when(
+  authority == "" & subtaxon_authority == "" ~ authority,
+  authority == "" & subtaxon_authority != "" ~ subtaxon_authority,
+  authority != "" & subtaxon_authority == "" ~ authority,
+  authority != "" & subtaxon_authority != "" ~ subtaxon_authority))
 ```
 
 ### taxonRemarks
