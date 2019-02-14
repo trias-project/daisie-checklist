@@ -749,11 +749,41 @@ literature_references %>%
 
 # Description extension
 
-## Pathway information
+## Pathways
 
 ```{r}
 pathways %>% 
   group_by(pathway) %>% 
   summarize(records = n())
 ```
+
+Add regional information:
+
+```{r}
+pathways %<>% left_join(
+  select(species_localities, id_sp_region, dwc_locationID),
+  by = "id_sp_region") 
+```
+
+Map DwC terms:
+
+### taxonID
+
+```{r}
+pathways %<>% mutate(dwc_taxonID = idspecies) 
+```
+
+### description
+
+```{r}
+pathways %<>% mutate(dwc_description = paste(dwc_locationID, pathway, sep = " - ")) 
+```
+
+### type
+
+```{r}
+pathways %<>% mutate(dwc_type = "pathway") 
+```
+
+### source
 
