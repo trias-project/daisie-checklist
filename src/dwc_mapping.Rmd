@@ -291,7 +291,9 @@ taxon %>%
 This field will include the information on ecofunctional groups (contained in `eg_ecofunct_group`)
 
 ```{r}
-taxon %<>% mutate(dwc_taxonRemarks = paste("Ecofunctional_group", "=", eg_ecofunct_group, sep = " ")) 
+taxon %<>% mutate(dwc_taxonRemarks =  case_when(
+  ecofunct_group == "" ~ "",
+  TRUE  ~  paste("Ecofunctional_group", "=", ecofunct_group, sep = " "))) 
 ```
 
 ## Post-processing
@@ -317,7 +319,7 @@ taxon %>% head()
 Save to CSV:
 
 ```{r}
-write_csv(taxon, here("data", "processed", "taxon.csv"), na = "")
+write_csv(taxon, "../data/processed/taxon.csv", na = "")
 ```
 
 # Vernacular names extension
