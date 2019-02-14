@@ -104,15 +104,31 @@ taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/lega
 taxon %<>% mutate(dwc_rightsHolder = "Centre for Ecology and Hydrology")
 ```
 
-### reference
+### bibliographicCitation
 
-Inspect field `sourceID`:
+information for `bibliographicCitation` is contained in the field `longref`. We extract this information and add it to the taxon core:
+
+```{r}
+taxon %<>% left_join(
+  select(literature_references, sourceid, longref),
+  by = "sourceid")
+```
+
 
 ```{r}
 taxon %>% 
-  group_by(sp_sourceid) %>% 
+  group_by(longref) %>% 
   summarise(records = n())
 ```
+
+These references could need some cleaning, but this is out of the scope here.
+
+Rename `longref`:
+
+```{r}
+taxon %<>% rename("dwc_bibliographicCitation" = "longref") 
+```
+
 
 Add sources to taxon core:
 
@@ -147,7 +163,7 @@ taxon %<>% mutate(dwc_taxonID = idspecies)
 The information in `scientificName` is contained in several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`:
 
 ```{r}
-taxon %<>% mutate(dwc_scientificName = paste(sp_genus, sp_species, sp_authority, sp_subtaxon, sp_subtaxon_authority, sep = " "))
+taxon %<>% mutate(dwc_scientificName = paste(genus, species, authority, subtaxon, subtaxon_authority, sep = " "))
 ```
 
 Use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist:
@@ -188,43 +204,43 @@ Some taxa need special inspection, especially the doubtful ones (probably due to
 ### phylum
 
 ```{r}
-taxon %<>% mutate(dwc_phylum = sp_phylum)
+taxon %<>% mutate(dwc_phylum = phylum)
 ```
 
 ### class
 
 ```{r}
-taxon %<>% mutate(dwc_class = sp_class) 
+taxon %<>% mutate(dwc_class = class) 
 ```
 
 ### order
 
 ```{r}
-taxon %<>% mutate(dwc_order = sp_ordo) 
+taxon %<>% mutate(dwc_order = ordo) 
 ```
 
 ### family
 
 ```{r}
-taxon %<>% mutate(dwc_family = sp_family) 
+taxon %<>% mutate(dwc_family = family) 
 ```
 
 ### genus
 
 ```{r}
-taxon %<>% mutate(dwc_genus = sp_genus) 
+taxon %<>% mutate(dwc_genus = genus) 
 ```
 
 ### specificEpithet
 
 ```{r}
-taxon %<>% mutate(dwc_specificEpithet = sp_species) 
+taxon %<>% mutate(dwc_specificEpithet = species) 
 ```
 
 ### infraspecificEpithet
 
 ```{r}
-taxon %<>% mutate(dwc_infraspecificEpithet = sp_subtaxon) 
+taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon) 
 ```
 
 ### taxonRank
