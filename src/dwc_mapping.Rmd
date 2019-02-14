@@ -87,34 +87,6 @@ taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/lega
 taxon %<>% mutate(dwc_rightsHolder = "Centre for Ecology and Hydrology")
 ```
 
-### bibliographicCitation
-
-information for `bibliographicCitation` is contained in the field `longref`. We extract this information and add it to the taxon core:
-
-```{r}
-taxon %<>% left_join(
-  select(literature_references, sourceid, longref),
-  by = "sourceid")
-```
-
-
-```{r}
-taxon %>% 
-  group_by(longref) %>% 
-  summarise(records = n())
-```
-
-These references could need some cleaning, but this is out of the scope here.
-
-Rename `longref`:
-
-```{r}
-taxon %<>% rename("dwc_bibliographicCitation" = "longref") 
-```
-
-
-Add sources to taxon core:
-
 ### datasetID
 
 ```{r}
@@ -288,15 +260,37 @@ taxon %>%
 
 ### taxonRemarks
 
-This field will include the information on ecofunctional groups (contained in `eg_ecofunct_group`)
+`taxon` contains a reference to sources (`sourceid`) which can not be classified a bibliographic citations. For this reason, we map these sources here.
 
 ```{r}
-taxon %<>% mutate(dwc_taxonRemarks =  case_when(
-  ecofunct_group == "" ~ "",
-  TRUE  ~  paste("Ecofunctional_group", "=", ecofunct_group, sep = " "))) 
+taxon %<>% left_join(
+  select(literature_references, sourceid, longref),
+  by = "sourceid")
+```
+
+
+```{r}
+taxon %>% 
+  group_by(longref) %>% 
+  summarise(records = n())
+```
+
+These references could need some cleaning, but this is out of the scope here.
+
+Rename `longref`:
+
+```{r}
+taxon %<>% rename("dwc_taxonRemarks" = "longref") 
 ```
 
 ## Post-processing
+
+
+Save information about taxon group (`taxon_group`):
+
+```{r}
+taxon_group <- taxon %>% select(idspecies, taxon_group, sourceid)
+```
 
 Only keep the Darwin Core columns:
 
@@ -915,7 +909,6 @@ distribution %<>% mutate(dwc_eventDate = case_when(
   !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep="/")
 ))
 ```
-
 
 # Literature reference extension
 
