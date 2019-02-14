@@ -787,3 +787,47 @@ pathways %<>% mutate(dwc_type = "pathway")
 
 ### source
 
+## Vector information
+
+```{r}
+vectors %>% 
+  group_by(vector2) %>% 
+  summarize(records = n())
+```
+
+Add regional information:
+
+```{r}
+vectors %<>% left_join(
+  select(species_localities, id_sp_region, dwc_locationID),
+  by = "id_sp_region") 
+```
+
+Map DwC terms:
+
+### taxonID
+
+```{r}
+vectors %<>% mutate(dwc_taxonID = idspecies) 
+```
+
+### description
+
+```{r}
+vectors %<>% mutate(dwc_description = paste(dwc_locationID, vector2, sep = " - ")) 
+```
+
+### type
+
+```{r}
+vectors %<>% mutate(dwc_type = "vector") 
+```
+
+### source
+
+```{r}
+
+```
+
+
+
