@@ -48,11 +48,31 @@ distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
 literature_references <- read.csv("../data/raw/input_literature_references.csv", na.strings = "")
 ```
 
+# Clean source data
+
+```{r}
+taxon <- taxon %>% clean_names()
+vernacular_names <- vernacular_names %>% clean_names()
+distribution <- distribution %>% clean_names()
+literature_references <- literature_references %>% clean_names()
+```
+
+
 # Pre-processing
 
+Extract information form `litarture_references` for sources or bibliographicCItation in the checklist:
 
+```{r}
+shortref <- literature_references %>% select(so_sourceid, so_shortref)
+```
 
+Inspect shortref values:
 
+```{r}
+shortref %>% 
+  group_by(so_shortref) %>% 
+  summarize(records = n())
+```
 
 # Taxon core
 
@@ -62,17 +82,6 @@ Preview data:
 taxon %>% head(n = 5)
 ```
 
-## Pre-processing
-
-Clean data somewhat:
-
-```{r}
-taxon <- 
-  taxon %>% 
-    remove_empty("rows") %>% 
-    clean_names()
-  
-```
 
 ## Term mapping
 
@@ -108,6 +117,13 @@ taxon %>%
   summarise(records = n())
 ```
 
+Add sources to taxon core:
+
+```{r}
+taxon %>% left_join(
+  select(literature_references, so_sourceid, so_shortref, so_longref),
+  by = c("sp_sourceid" = "so_sourceid"))
+```
 
 ### datasetID
 
