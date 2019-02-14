@@ -50,6 +50,8 @@ literature_references <- read.csv("../data/raw/input_literature_references.csv",
 # FOr the description extension:
 pathways <- read.csv("../data/raw/input_pathways.csv")
 vectors  <- read.csv("../data/raw/input_vectors.csv")
+habitat <- read.csv("../data/raw/input_habitat.csv")
+native_range <- read.csv("../data/raw/input_native_range.csv")
 ```
 
 # Clean source data
@@ -61,8 +63,9 @@ distribution <- distribution %>% clean_names()
 literature_references <- literature_references %>% clean_names()
 pathways <- pathways %>% clean_names()
 vectors <- vectors %>% clean_names()
+habitat <- habitat %>% clean_names()
+native_range <- native_range %>% clean_names()
 ```
-
 
 # Pre-processing
 
@@ -264,8 +267,7 @@ Inspect `rankmarker` values and compare with `subtaxon_rank` information:
 taxon %>% 
   group_by(rankmarker, sp_subtaxon_rank) %>% 
   summarize(records = n()) %>% 
-  arrange(desc(records)) %>% 
-  kable()
+  arrange(desc(records)) 
 ```
 
 ### scientificNameAuthorship
