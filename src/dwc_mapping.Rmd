@@ -599,6 +599,20 @@ distribution %>%
 
 ### establishmentMeans
 
+```{r}
+distribution %>% distinct(species_status)
+```
+
+```{r}
+distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
+    "Alien" = "introduced",
+    "Cryptogenic" = "uncertain",
+    "<NA>" = "",
+    "Naturalized" = "naturalised",
+    "casual" = "naturalised",
+    "Alien_invasive" = "invasive")) 
+```
+
 ### eventDate
 
 Inspect content of `sir_start_year`, which contains the information for `eventDate`:
