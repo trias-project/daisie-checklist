@@ -55,22 +55,6 @@ native_range <- read.csv("../data/raw/input_native_range.csv")
 donor_area <- read.csv("../data/raw/input_donor_area.csv")
 ```
 
-# Clean source data
-
-```{r}
-taxon <- taxon %>% clean_names()
-vernacular_names <- vernacular_names %>% clean_names()
-distribution <- distribution %>% clean_names()
-literature_references <- literature_references %>% clean_names()
-pathways <- pathways %>% clean_names()
-vectors <- vectors %>% clean_names()
-habitat <- habitat %>% clean_names()
-native_range <- native_range %>% clean_names()
-```
-
-# Pre-processing
-
-
 # Taxon core
 
 Preview data:
@@ -78,7 +62,6 @@ Preview data:
 ```{r}
 taxon %>% head(n = 5)
 ```
-
 
 ## Term mapping
 
@@ -257,7 +240,6 @@ Inspect `rankmarker` values and compare with `subtaxon_rank` information:
 
 ```{r}
 taxon %>% 
-  group_by(rankmarker, sp_subtaxon_rank) %>% 
   group_by(rankmarker, subtaxon_rank) %>% 
   summarize(records = n()) %>% 
   arrange(desc(records)) 
@@ -299,6 +281,10 @@ taxon %>%
 ```
 
 ### scientificNameAuthorship
+
+```{r}
+
+```
 
 ### taxonRemarks
 
