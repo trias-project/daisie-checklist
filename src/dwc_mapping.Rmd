@@ -45,8 +45,14 @@ library(lubridate)
 taxon <- read.csv("../data/raw/input_taxon.csv") 
 vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
 distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
-
+literature_references <- read.csv("../data/raw/input_literature_references.csv", na.strings = "")
 ```
+
+# Pre-processing
+
+
+
+
 
 # Taxon core
 
@@ -93,6 +99,14 @@ taxon %<>% mutate(dwc_rightsHolder = "Centre for Ecology and Hydrology")
 ```
 
 ### reference
+
+Inspect field `sourceID`:
+
+```{r}
+taxon %>% 
+  group_by(sp_sourceid) %>% 
+  summarise(records = n())
+```
 
 
 ### datasetID
@@ -810,3 +824,25 @@ distribution %>%
   summarize(records = n())
 ```
 
+# Literature reference extension
+
+## Tidy data
+
+Clean data somewhat:
+
+```{r}
+literature_references <- 
+  literature_references %>% 
+    remove_empty("rows") %>% 
+    clean_names()
+```
+
+## Term mapping
+
+Inspect shortref
+
+```{r}
+literature_references %>% 
+  group_by(so_shortref) %>% 
+  summarize(records = n())
+```
