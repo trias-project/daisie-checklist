@@ -52,6 +52,7 @@ pathways <- read.csv("../data/raw/input_pathways.csv")
 vectors  <- read.csv("../data/raw/input_vectors.csv")
 habitat <- read.csv("../data/raw/input_habitat.csv")
 native_range <- read.csv("../data/raw/input_native_range.csv")
+donor_area <- read.csv("../data/raw/input_donor_area.csv")
 ```
 
 # Clean source data
@@ -69,19 +70,6 @@ native_range <- native_range %>% clean_names()
 
 # Pre-processing
 
-Extract information form `litarture_references` for sources or bibliographicCItation in the checklist:
-
-```{r}
-shortref <- literature_references %>% select(so_sourceid, so_shortref)
-```
-
-Inspect shortref values:
-
-```{r}
-shortref %>% 
-  group_by(so_shortref) %>% 
-  summarize(records = n())
-```
 
 # Taxon core
 
@@ -127,18 +115,6 @@ taxon %>%
 ```
 
 Add sources to taxon core:
-
-```{r}
-taxon %<>% left_join(
-  select(literature_references, so_sourceid, so_shortref, so_longref),
-  by = c("sp_sourceid" = "so_sourceid"))
-```
-
-Inspect longref:
-
-```{r}
-taxon %>% distinct(so_longref)
-```
 
 ### datasetID
 
@@ -465,7 +441,8 @@ Save this information in a separate vector, as this is needed for the mapping of
 
 ```{r}
 species_localities <- distribution %>% 
-  select(idspecies, id_sp_region, dwc_locationID)
+  select(idspecies, id_sp_region, dwc_locationID) %>% 
+  rename("locationID" = "dwc_locationID")
 ```
 
 ### countryCode
@@ -763,7 +740,7 @@ Add regional information:
 
 ```{r}
 pathways %<>% left_join(
-  select(species_localities, id_sp_region, dwc_locationID),
+  select(species_localities, id_sp_region, locationID),
   by = "id_sp_region") 
 ```
 
@@ -778,7 +755,7 @@ pathways %<>% mutate(dwc_taxonID = idspecies)
 ### description
 
 ```{r}
-pathways %<>% mutate(dwc_description = paste(dwc_locationID, pathway, sep = " - ")) 
+pathways %<>% mutate(dwc_description = paste(locationID, pathway, sep = " - ")) 
 ```
 
 ### type
@@ -787,7 +764,11 @@ pathways %<>% mutate(dwc_description = paste(dwc_locationID, pathway, sep = " - 
 pathways %<>% mutate(dwc_type = "pathway") 
 ```
 
-### source
+Keep only dwc_columns and `sourceid` field:
+
+```{r}
+pathways %<>% select(starts_with("dwc_"), sourceid)
+```
 
 ## Vector information
 
@@ -801,7 +782,7 @@ Add regional information:
 
 ```{r}
 vectors %<>% left_join(
-  select(species_localities, id_sp_region, dwc_locationID),
+  select(species_localities, id_sp_region, locationID),
   by = "id_sp_region") 
 ```
 
@@ -816,7 +797,7 @@ vectors %<>% mutate(dwc_taxonID = idspecies)
 ### description
 
 ```{r}
-vectors %<>% mutate(dwc_description = paste(dwc_locationID, vector2, sep = " - ")) 
+vectors %<>% mutate(dwc_description = paste(locationID, vector2, sep = " - ")) 
 ```
 
 ### type
@@ -825,11 +806,124 @@ vectors %<>% mutate(dwc_description = paste(dwc_locationID, vector2, sep = " - "
 vectors %<>% mutate(dwc_type = "vector") 
 ```
 
-### source
+Keep only dwc_columns and `sourceid` field:
 
 ```{r}
-
+vectors %<>% select(starts_with("dwc_"), sourceid)
 ```
 
+## Habitat information
+
+Map DwC terms:
+
+### taxonID
+
+```{r}
+habitat %<>% mutate(dwc_taxonID = idspecies) 
+```
+
+### description
+
+Unite the information in `ideunis`, `level` and `notes` together to generate one column with habitat information
+
+```{r}
+habitat %<>% mutate(dwc_description = paste(ideunis, "level", level, "-", habitat))
+```
+
+### type
+
+```{r}
+habitat %<>% mutate(dwc_type = "eunis_habitat") 
+```
+
+Keep only dwc_columns and `sourceid` field:
+
+```{r}
+habitat %<>% select(starts_with("dwc_"), sourceid)
+```
+
+## Native range information
+
+filter out information for which `region` is empty:
+
+```{r}
+native_range %<>% filter(region != "") 
+```
+
+Information for native ranges are duplicated within a certain taxa. This is because for most taxa, we have one record with `notes` populated, and one (or more) records for `lats_update`. We only need the taxon x native range information once, so we filter out the duplicates. For this, we make a new column where we combine
+
+```{r}
+native_range %<>% distinct(idspecies,region, .keep_all = TRUE)
+```
+
+### taxonID
+
+```{r}
+native_range %<>% mutate(dwc_taxonID = idspecies) 
+```
+
+### description
+
+```{r}
+native_range %<>% mutate(dwc_description = region) 
+```
+
+### type
+
+```{r}
+native_range %<>% mutate(dwc_type = "native_range") 
+```
+
+Keep only dwc_columns and `sourceid` field:
+
+```{r}
+native_range %<>% select(starts_with("dwc_"), sourceid)
+```
+
+## Donor area
+
+Remove empty records for `donor_area`:
+
+```{r}
+donor_area %<>% filter(region != "") 
+```
+
+Add regional information to `donor_area`:
+
+```{r}
+donor_area %<>% left_join(
+  select(species_localities, id_sp_region, locationID),
+  by = "id_sp_region") 
+```
+
+### taxonID
+
+```{r}
+donor_area %<>% mutate(taxonID = idspecies) 
+```
+
+### description
+
+```{r}
+donor_area %<>% mutate(dwc_description = paste(locationID, region, sep = " - ")) 
+```
+
+### type
+
+```{r}
+donor_area %<>% mutate(dwc_type = "donor_area") 
+```
+
+Keep only dwc_columns and `sourceid` field:
+
+```{r}
+donor_area %<>% select(starts_with("dwc_"), sourceid)
+```
+
+## Union information:
+
+```{r start_description_ext}
+description <- bind_rows(pathways, vectors, habitat, native_range, donor_area)
+```
 
 
