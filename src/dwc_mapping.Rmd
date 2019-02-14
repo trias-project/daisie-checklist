@@ -46,6 +46,10 @@ taxon <- read.csv("../data/raw/input_taxon.csv")
 vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
 distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
 literature_references <- read.csv("../data/raw/input_literature_references.csv", na.strings = "")
+
+# FOr the description extension:
+pathways <- read.csv("../data/raw/input_pathways.csv")
+vectors  <- read.csv("../data/raw/input_vectors.csv")
 ```
 
 # Clean source data
@@ -55,6 +59,8 @@ taxon <- taxon %>% clean_names()
 vernacular_names <- vernacular_names %>% clean_names()
 distribution <- distribution %>% clean_names()
 literature_references <- literature_references %>% clean_names()
+pathways <- pathways %>% clean_names()
+vectors <- vectors %>% clean_names()
 ```
 
 
@@ -736,3 +742,14 @@ literature_references %>%
   group_by(so_shortref) %>% 
   summarize(records = n())
 ```
+
+# Description extension
+
+## Pathway information
+
+```{r}
+pathways %>% 
+  group_by(pathway) %>% 
+  summarize(records = n())
+```
+
