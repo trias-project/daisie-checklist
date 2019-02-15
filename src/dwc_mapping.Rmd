@@ -582,7 +582,7 @@ distribution %>%
 
 
 ```{r}
-distribution %<>% mutate(occurrenceStatus = case_when(
+distribution %<>% mutate(dwc_occurrenceStatus = case_when(
   abundance == "Absent or extinct" & population_status !="Extinct"     ~ "absent",
   abundance == "Absent or extinct" & is.na(population_status)          ~ "absent",
   (population_status != "Extinct" | is.na(population_status)) & abundance == "Abundant"       ~ "common",
@@ -598,7 +598,7 @@ distribution %<>% mutate(occurrenceStatus = case_when(
 
 ```{r}
 distribution %>% 
-  group_by(abundance, population_status, occurrenceStatus) %>% 
+  group_by(abundance, population_status, dwc_occurrenceStatus) %>% 
   summarize(records = n())
 ```
 
