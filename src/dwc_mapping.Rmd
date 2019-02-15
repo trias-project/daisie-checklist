@@ -291,6 +291,11 @@ taxon %<>% rename("dwc_taxonRemarks" = "longref")
 
 ## Post-processing
 
+Save information on ecofunctional groups (`ecofunct_group`):
+
+```{r}
+ecofunctional_group <- taxon %>% select(idspecies, ecofunct_group, sourceid)
+```
 
 Save information about taxon group (`taxon_group`):
 
@@ -916,6 +921,73 @@ distribution %<>% mutate(dwc_eventDate = case_when(
 ))
 ```
 
+### occurrenceRemarks
+
+Will contain information in `region_of_first_record`.
+
+Although the content could need some extensive cleaning, we here clean the following:
+2. "?" --> NA
+3. "??" -> NA
+4. Remove `;` at the end of a string.
+
+Remove `;` at the end:
+
+```{r}
+distribution %<>% mutate(region_of_first_record = str_replace_all(region_of_first_record, ";$", ""))
+```
+
+Remove `?` and `??`
+
+```{r}
+distribution %<>% mutate(region_of_first_record = recode(region_of_first_record,
+   "?" = "",
+   "??" = ""))
+```
+
+Inspect content:
+
+```{r}
+distribution %>% 
+  select(region_of_first_record) %>% 
+  filter(str_detect(region_of_first_record, ";|\\?")) %>% 
+  group_by_all() %>% 
+  summarize(records = n())
+```
+
+Generate occurrenceRemarks:
+
+```{r}
+distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
+  is.na(region_of_first_record) | region_of_first_record == "" ~ "",
+  !is.na(region_of_first_record) ~ paste("region_of_first_record", region_of_first_record, sep = ": ")))
+```
+
+## Post-processing
+
+Only keep the Darwin Core columns:
+
+```{r}
+distribution %<>% select(starts_with("dwc_"))
+```
+
+Drop the `dwc_` prefix:
+
+```{r}
+colnames(distribution) <- str_replace(colnames(distribution), "dwc_", "")
+```
+
+Preview data:
+
+```{r}
+distribution %>% head()
+```
+
+Save to CSV:
+
+```{r}
+write_csv(distribution, "../data/processed/distribution.csv", na = "")
+```
+
 # Literature reference extension
 
 ## Tidy data
@@ -1138,5 +1210,54 @@ donor_area %<>% select(starts_with("dwc_"), sourceid)
 ```{r start_description_ext}
 description <- bind_rows(pathways, vectors, habitat, native_range, donor_area)
 ```
+
+
+
+
+
+
+
+### sources
+
+1. Simplify literature references with information needed:
+
+```{r}
+locality_references <- literature_references %>% select(sourceid, id_sp_region, field_name, shortref)
+```
+
+2. Remove rows for which `id_sp_region` and `shortref` is empty:
+
+```{r}
+locality_references <- 
+  locality_references %>% 
+    filter(!is.na(id_sp_region)) %>% 
+    filter(!is.na(shortref))
+    
+```
+
+3. Combine `field_name` and `shortref`:
+
+```{r}
+locality_references %<>% mutate(field_shortref = paste(field_name, shortref, sep =":")) 
+```
+
+4. Remove all unneccesary fields (preparation for spread):
+
+```{r}
+locality_references %<>% select(-sourceid, -shortref) 
+```
+
+5. Remove duplicated records:
+
+```{r}
+locality_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
+```
+
+6. Change from long to wide dataset:
+
+```{r}
+test <- locality_references %>% spread(field_name, field_shortref)
+```
+
 
 
