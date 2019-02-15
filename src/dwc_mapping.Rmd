@@ -990,16 +990,42 @@ write_csv(distribution, "../data/processed/distribution.csv", na = "")
 
 # Literature reference extension
 
-## Tidy data
-
-Clean data somewhat:
+Remove rows for which `shortref` is empty:
 
 ```{r}
-literature_references <- 
-  literature_references %>% 
-    remove_empty("rows") %>% 
-    clean_names()
+literature_references %<>% filter(!is.na(shortref))
 ```
+
+Remove duplicated fields:
+
+```{r}
+literature_references %<>% distinct(shortref, longref, .keep_all = TRUE)
+```
+
+3. Combine `field_name` and `shortref`:
+
+```{r}
+locality_references %<>% mutate(field_shortref = paste(field_name, shortref, sep =":")) 
+```
+
+4. Remove all unneccesary fields (preparation for spread):
+
+```{r}
+locality_references %<>% select(-sourceid, -shortref) 
+```
+
+5. Remove duplicated records:
+
+```{r}
+locality_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
+```
+
+6. Change from long to wide dataset:
+
+```{r}
+test <- locality_references %>% spread(field_name, field_shortref)
+```
+
 
 ## Term mapping
 
@@ -1007,7 +1033,7 @@ Inspect shortref
 
 ```{r}
 literature_references %>% 
-  group_by(so_shortref) %>% 
+  group_by(shortref) %>% 
   summarize(records = n())
 ```
 
@@ -1218,12 +1244,6 @@ description <- bind_rows(pathways, vectors, habitat, native_range, donor_area)
 
 
 ### sources
-
-1. Simplify literature references with information needed:
-
-```{r}
-locality_references <- literature_references %>% select(sourceid, id_sp_region, field_name, shortref)
-```
 
 2. Remove rows for which `id_sp_region` and `shortref` is empty:
 
