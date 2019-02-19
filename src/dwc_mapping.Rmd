@@ -322,7 +322,8 @@ ecofunctional_group <- taxon %>%
 Save information about taxon group (`taxon_group`):
 
 ```{r}
-taxon_group <- taxon %>% select(idspecies, taxon_group, sourceid) %>% distinct(idspecies, taxon_group, .keep_all = TRUE)
+taxon_group <- taxon %>% select(idspecies, taxon_group, sourceid) %>% 
+  distinct(idspecies, taxon_group, .keep_all = TRUE)
 ```
 
 Only keep the Darwin Core columns:
@@ -1390,6 +1391,10 @@ Keep only `sourceid`, `description`, `type` and `sourceid`:
 degree_of_establishment %<>% select(idspecies, description, type, sourceid)
 ```
 
+### 
+
+
+
 ## Union information:
 
 ```{r start_description_ext}
@@ -1462,41 +1467,6 @@ description %>% head()
 
 ```{r}
 write_csv(description, "../data/processed/description.csv", na = "")
-```
-
-
-2. Remove rows for which `id_sp_region` and `shortref` is empty:
-
-```{r}
-locality_references <- 
-  locality_references %>% 
-    filter(!is.na(id_sp_region)) %>% 
-    filter(!is.na(shortref))
-    
-```
-
-3. Combine `field_name` and `shortref`:
-
-```{r}
-locality_references %<>% mutate(field_shortref = paste(field_name, shortref, sep =":")) 
-```
-
-4. Remove all unneccesary fields (preparation for spread):
-
-```{r}
-locality_references %<>% select(-sourceid, -shortref) 
-```
-
-5. Remove duplicated records:
-
-```{r}
-locality_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
-```
-
-6. Change from long to wide dataset:
-
-```{r}
-test <- locality_references %>% spread(field_name, field_shortref)
 ```
 
 
