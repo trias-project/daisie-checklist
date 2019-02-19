@@ -53,6 +53,7 @@ vectors  <- read.csv("../data/raw/input_vectors.csv")
 habitat <- read.csv("../data/raw/input_habitat.csv")
 native_range <- read.csv("../data/raw/input_native_range.csv")
 donor_area <- read.csv("../data/raw/input_donor_area.csv")
+impact <- read.csv("../data/raw/input_impact.csv")
 ```
 
 # Taxon core
@@ -964,6 +965,13 @@ distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
 
 ## Post-processing
 
+Keep information on population_status:
+
+```{r}
+degree_of_establishment <- distribution %>% select(idspecies, id_sp_region, population_status)
+```
+
+
 Only keep the Darwin Core columns:
 
 ```{r}
@@ -988,55 +996,6 @@ Save to CSV:
 write_csv(distribution, "../data/processed/distribution.csv", na = "")
 ```
 
-# Literature reference extension
-
-Remove rows for which `shortref` is empty:
-
-```{r}
-literature_references %<>% filter(!is.na(shortref))
-```
-
-Remove duplicated fields:
-
-```{r}
-literature_references %<>% distinct(shortref, longref, .keep_all = TRUE)
-```
-
-3. Combine `field_name` and `shortref`:
-
-```{r}
-locality_references %<>% mutate(field_shortref = paste(field_name, shortref, sep =":")) 
-```
-
-4. Remove all unneccesary fields (preparation for spread):
-
-```{r}
-locality_references %<>% select(-sourceid, -shortref) 
-```
-
-5. Remove duplicated records:
-
-```{r}
-locality_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
-```
-
-6. Change from long to wide dataset:
-
-```{r}
-test <- locality_references %>% spread(field_name, field_shortref)
-```
-
-
-## Term mapping
-
-Inspect shortref
-
-```{r}
-literature_references %>% 
-  group_by(shortref) %>% 
-  summarize(records = n())
-```
-
 # Description extension
 
 ## Pathways
@@ -1055,30 +1014,22 @@ pathways %<>% left_join(
   by = "id_sp_region") 
 ```
 
-Map DwC terms:
-
-### taxonID
+Map `description`:
 
 ```{r}
-pathways %<>% mutate(dwc_taxonID = idspecies) 
+pathways %<>% mutate(description = paste(locationID, pathway, sep = " - ")) 
 ```
 
-### description
+Map `type`:
 
 ```{r}
-pathways %<>% mutate(dwc_description = paste(locationID, pathway, sep = " - ")) 
+pathways %<>% mutate(type = "pathway") 
 ```
 
-### type
+Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-pathways %<>% mutate(dwc_type = "pathway") 
-```
-
-Keep only dwc_columns and `sourceid` field:
-
-```{r}
-pathways %<>% select(starts_with("dwc_"), sourceid)
+pathways %<>% select(idspecies, description, type, sourceid)
 ```
 
 ## Vector information
@@ -1097,63 +1048,46 @@ vectors %<>% left_join(
   by = "id_sp_region") 
 ```
 
-Map DwC terms:
-
-### taxonID
+Map `description`:
 
 ```{r}
-vectors %<>% mutate(dwc_taxonID = idspecies) 
+vectors %<>% mutate(description = paste(locationID, vector2, sep = " - ")) 
 ```
 
-### description
+Map `type`: 
 
 ```{r}
-vectors %<>% mutate(dwc_description = paste(locationID, vector2, sep = " - ")) 
+vectors %<>% mutate(type = "vector") 
 ```
 
-### type
+Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-vectors %<>% mutate(dwc_type = "vector") 
-```
-
-Keep only dwc_columns and `sourceid` field:
-
-```{r}
-vectors %<>% select(starts_with("dwc_"), sourceid)
+vectors %<>% select(idspecies, description, type, sourceid)
 ```
 
 ## Habitat information
 
-Map DwC terms:
-
-### taxonID
-
-```{r}
-habitat %<>% mutate(dwc_taxonID = idspecies) 
-```
-
-### description
-
+Map `description`: 
 Unite the information in `ideunis`, `level` and `notes` together to generate one column with habitat information
 
 ```{r}
-habitat %<>% mutate(dwc_description = paste(ideunis, "level", level, "-", habitat))
+habitat %<>% mutate(description = paste(ideunis, "level", level, "-", habitat))
 ```
 
-### type
+Map `type`
 
 ```{r}
-habitat %<>% mutate(dwc_type = "eunis_habitat") 
+habitat %<>% mutate(type = "eunis_habitat") 
 ```
 
-Keep only dwc_columns and `sourceid` field:
+Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-habitat %<>% select(starts_with("dwc_"), sourceid)
+habitat %<>% select(idspecies, description, type, sourceid)
 ```
 
-## Native range information
+## Native range
 
 filter out information for which `region` is empty:
 
@@ -1167,28 +1101,22 @@ Information for native ranges are duplicated within a certain taxa. This is beca
 native_range %<>% distinct(idspecies,region, .keep_all = TRUE)
 ```
 
-### taxonID
+Map `description`:
 
 ```{r}
-native_range %<>% mutate(dwc_taxonID = idspecies) 
+native_range %<>% mutate(description = region) 
 ```
 
-### description
+Map `type`:
 
 ```{r}
-native_range %<>% mutate(dwc_description = region) 
+native_range %<>% mutate(type = "native_range") 
 ```
 
-### type
+Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-native_range %<>% mutate(dwc_type = "native_range") 
-```
-
-Keep only dwc_columns and `sourceid` field:
-
-```{r}
-native_range %<>% select(starts_with("dwc_"), sourceid)
+native_range %<>% select(idspecies, description, type, sourceid)
 ```
 
 ## Donor area
@@ -1207,42 +1135,242 @@ donor_area %<>% left_join(
   by = "id_sp_region") 
 ```
 
-### taxonID
+Map `description`
 
 ```{r}
-donor_area %<>% mutate(taxonID = idspecies) 
+donor_area %<>% mutate(description = paste(locationID, region, sep = " - ")) 
 ```
 
-### description
+Map `type` 
 
 ```{r}
-donor_area %<>% mutate(dwc_description = paste(locationID, region, sep = " - ")) 
+donor_area %<>% mutate(type = "donor_area") 
 ```
 
-### type
+Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-donor_area %<>% mutate(dwc_type = "donor_area") 
+donor_area %<>% select(idspecies, description, type, sourceid)
 ```
 
-Keep only dwc_columns and `sourceid` field:
+## Ecofunctional group
+
+Inspect ecofunctional group information
 
 ```{r}
-donor_area %<>% select(starts_with("dwc_"), sourceid)
+ecofunctional_group %>% group_by(ecofunct_group) %>% summarize(records = n())
+```
+
+Remove rows with no value for `ecofunct_group`
+
+```{r}
+ecofunctional_group %<>% filter(ecofunct_group != "")
+```
+
+Map `description`
+
+```{r}
+ecofunctional_group %<>% mutate(description = ecofunct_group) 
+```
+
+Map `type`
+
+```{r}
+ecofunctional_group %<>% mutate(type = "ecofunctional_group") 
+```
+
+Keep only `sourceid`, `description`, `type` and `sourceid`:
+
+```{r}
+ecofunctional_group %<>% select(idspecies, description, type, sourceid)
+```
+
+## Taxonomic group
+
+Inspect ecofunctional group information
+
+```{r}
+taxon_group %>% group_by(taxon_group) %>% summarize(records = n())
+```
+
+Map `description`
+
+```{r}
+taxon_group %<>% mutate(description = taxon_group) 
+```
+
+Map `type` 
+
+```{r}
+taxon_group %<>% mutate(type = "ecofunctional_group") 
+```
+
+Keep only `sourceid`, `description`, `type` and `sourceid`:
+
+```{r}
+taxon_group %<>% select(idspecies, description, type, sourceid)
+```
+
+## Impact on ecology
+
+Inspect content:
+
+```{r}
+impact %>% group_by(category_ecology) %>% summarize(records = n())
+```
+
+Add regional information to `donor_area`:
+
+```{r}
+impact %<>% left_join(
+  select(species_localities, id_sp_region, locationID),
+  by = "id_sp_region") 
+```
+
+Remove empty records:
+
+```{r}
+impact_ecology <- impact %<>% filter(category_ecology != "") 
+```
+
+Map `description`:
+
+```{r}
+impact_ecology %<>% mutate(description = paste(locationID, category_ecology, sep = " - ")) 
+```
+
+Map `type`:
+
+```{r}
+impact_ecology %<>% mutate(type = "impact_on_ecology")
+```
+
+Create field `sourceid` with NA:
+
+```{r}
+impact_ecology %<>% mutate(sourceid = NA)
+```
+
+Keep only `sourceid`, `description`, `type` and `sourceid`:
+
+```{r}
+impact_ecology %<>% select(idspecies, description, type, sourceid)
+```
+
+## Impact on use
+
+Inspect content:
+
+```{r}
+impact %>% group_by(category_uses) %>% summarize(records = n())
+```
+
+Remove empty records:
+
+```{r}
+impact_use <- impact %<>% filter(category_uses != "") 
+```
+
+Map description:
+
+```{r}
+impact_use %<>% mutate(description = paste(locationID, category_uses, sep = " - ")) 
+```
+
+Map type:
+
+```{r}
+impact_use %<>% mutate(type = "impact_on_uses")
+```
+
+Create field sourceid:
+
+```{r}
+impact_use %<>% mutate(sourceid = NA) 
+```
+
+Keep only `sourceid`, `description`, `type` and `sourceid`:
+
+```{r}
+impact_use %<>% select(idspecies, description, type, sourceid)
+```
+
+## degree of establishment
+
+```{r}
+degree_of_establishment %>% group_by(population_status) %>% summarize(records = n())
+```
+
+Remove empty records:
+
+```{r}
+degree_of_establishment %<>% filter(population_status != "") 
+```
+
+Add regional information to `degree_of_establishment`:
+
+```{r}
+degree_of_establishment %<>% left_join(
+  select(species_localities, id_sp_region, locationID),
+  by = "id_sp_region") 
+```
+
+Map `description`:
+
+```{r}
+degree_of_establishment %<>% mutate(description = paste(locationID, population_status, sep = " - ")) 
+```
+
+Map `type`:
+
+```{r}
+degree_of_establishment %<>% mutate(type = "degree_of_establishment")
+```
+
+Create field `sourceid`:
+
+```{r}
+degree_of_establishment %<>% mutate(sourceid = NA) 
+```
+
+Keep only `sourceid`, `description`, `type` and `sourceid`:
+
+```{r}
+degree_of_establishment %<>% select(idspecies, description, type, sourceid)
 ```
 
 ## Union information:
 
 ```{r start_description_ext}
-description <- bind_rows(pathways, vectors, habitat, native_range, donor_area)
+description <- bind_rows(
+  pathways, 
+  vectors, 
+  habitat, 
+  native_range, 
+  donor_area, 
+  ecofunctional_group, 
+  taxon_group, 
+  impact_ecology, 
+  impact_use, 
+  degree_of_establishment)
+```
+
+Map to DwC terms:
+
+### taxonID
+
+```{r}
+description %<>% mutate(dwc_taxonID = idspecies)
+```
+
+### description
+
+```{r}
+description %<>% 
 ```
 
 
-
-
-
-
-
+  
 ### sources
 
 2. Remove rows for which `id_sp_region` and `shortref` is empty:
