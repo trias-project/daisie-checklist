@@ -936,54 +936,43 @@ distribution %<>% mutate(dwc_eventDate = case_when(
 ))
 ```
 
-### occurrenceRemarks
 
-Will contain information in `region_of_first_record`.
-
-Although the content could need some extensive cleaning, we here clean the following:
-2. "?" --> NA
-3. "??" -> NA
-4. Remove `;` at the end of a string.
-
-Remove `;` at the end:
-Remove all unneccesary fields (preparation for spread):
-
-```{r}
-distribution %<>% mutate(region_of_first_record = str_replace_all(region_of_first_record, ";$", ""))
-distribution_references %<>% select(sourceid, id_sp_region, field_name, complete_ref) 
-```
-
-Remove `?` and `??`
-Remove duplicated records:
-
-```{r}
-distribution %<>% mutate(region_of_first_record = recode(region_of_first_record,
-   "?" = "",
-   "??" = ""))
-distribution_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
-```
-
-Inspect content:
-Change from long to wide dataset:
-
-```{r}
-distribution %>% 
-  select(region_of_first_record) %>% 
-  filter(str_detect(region_of_first_record, ";|\\?")) %>% 
-  group_by_all() %>% 
-  summarize(records = n())
-distribution_references %<>% spread(field_name, complete_ref)
-```
 
 Generate occurrenceRemarks:
-Use the fields `distribution`, `general_references`,`introduction dates` and `introduction_history` to map under `source`. The other references will be used in the description extension.
-
-Concatenate information in source:
 
 ```{r}
 distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
   is.na(region_of_first_record) | region_of_first_record == "" ~ "",
   !is.na(region_of_first_record) ~ paste("region_of_first_record", region_of_first_record, sep = ": ")))
+```
+
+## source
+
+Use data in `distribution_references`
+
+Remove all unneccesary fields (preparation for spread):
+
+```{r}
+distribution_references %<>% select(sourceid, id_sp_region, field_name, complete_ref) 
+```
+
+Remove duplicated records:
+
+```{r}
+distribution_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
+```
+
+Change from long to wide dataset:
+
+```{r}
+distribution_references %<>% spread(field_name, complete_ref)
+```
+
+Use the fields `distribution`, `general_references`,`introduction dates` and `introduction_history` to map under `source`. The other references will be used in the description extension.
+
+Concatenate information in source:
+
+```{r}
 distribution_references %<>% mutate(source_distribution = paste(distribution, `general references`, `introduction dates`, `introduction history`, sep = "|")) 
 ```
 
