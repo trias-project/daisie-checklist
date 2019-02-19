@@ -461,15 +461,13 @@ write_csv(vernacular_names, "../data/processed/vernacular_names.csv", na = "")
 
 # Distribution extension
 
-## Term mapping
-
-### taxonID
+## taxonID
 
 ```{r}
 distribution %<>% mutate(dwc_taxonID = idspecies) 
 ```
 
-### locationID
+## locationID
 
 In this field, we integrate information contained in `system_country`, `code_region`. When coastal information is provided, we combine this infomation with `system_coast` and `code_coast`.
 
@@ -483,7 +481,7 @@ distribution %<>% mutate(dwc_locationID = case_when(
 ))
 ```
 
-### locality
+## locality
 
 In this field, we integrate all verbatim information contained in `region_country` and `region_coast` 
 The format will be:
@@ -496,7 +494,7 @@ distribution %<>% mutate(dwc_locality = case_when(
   !is.na(region_coast) ~ paste(region_country, region_coast, sep = " - ")))
 ```
 
-Save this information in a separate vector, as this is needed for the mapping of the descirption extension.
+Save this information in a separate vector, as this is needed for the mapping of the description extension.
 
 ```{r}
 species_localities <- distribution %>% 
@@ -504,7 +502,7 @@ species_localities <- distribution %>%
   rename("locationID" = "dwc_locationID")
 ```
 
-### countryCode
+## countryCode
 
 ```{r}
 distribution %<>% mutate(countryCode = recode(region_country, 
@@ -512,7 +510,7 @@ distribution %<>% mutate(countryCode = recode(region_country,
 "Algeria"	                = "DZ",
 "Andorra"	                = "AD",
 "Austria"	                = "AT",
-"Azores"                    = "PT",
+"Azores"                  = "PT",
 "Baleares"	              = "ES",
 "Belarus"	                = "BY",
 "Belgium"	                = "BE",
@@ -590,7 +588,7 @@ distribution %<>% mutate(countryCode = recode(region_country,
 ))
 ```
 
-### occurrenceStatus
+## occurrenceStatus
 
 ```{r}
 distribution %>% 
@@ -620,7 +618,7 @@ distribution %>%
   summarize(records = n())
 ```
 
-### establishmentMeans
+## establishmentMeans
 
 ```{r}
 distribution %>% distinct(species_status)
@@ -636,9 +634,7 @@ distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
     "Alien_invasive" = "invasive")) 
 ```
 
-### eventDate
-
-#### Clean start_year
+## eventDate
 
 Inspect content of `start_year`, which contains the information for `eventDate`:
 
@@ -779,8 +775,6 @@ distribution %>%
   summarize(records = n())
 ```
 
-#### Clean end_year
-
 Inspect content of `end_year`, which contains the information for `eventDate`:
 
 ```{r}
@@ -909,8 +903,6 @@ distribution %>%
   group_by(end_year) %>% 
   summarize(records = n())
 ```
-
-#### map eventDate
 
 Inspect all combinations for `start_year` and `end_year`:
 
