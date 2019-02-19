@@ -977,9 +977,26 @@ distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
 Keep information on population_status:
 
 ```{r}
-degree_of_establishment <- distribution %>% select(idspecies, id_sp_region, population_status)
+degree_of_establishment <- distribution %>% 
+  select(idspecies, id_sp_region, population_status) %>% 
+  distinct(id_sp_region, .keep_all = TRUE)
 ```
 
+Keep all information on current_distribution:
+
+```{r}
+current_distribution <- distribution %>% 
+  select(idspecies, id_sp_region, current_distribution) %>% 
+  distinct(id_sp_region, .keep_all = TRUE)
+```
+
+Keep all information on first_observation:
+
+```{r}
+region_first_record <- distribution %>% 
+  select(idspecies, id_sp_region, region_of_first_record) %>% 
+  distinct(id_sp_region, .keep_all = TRUEe)
+```
 
 Only keep the Darwin Core columns:
 
