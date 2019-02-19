@@ -351,13 +351,6 @@ Save to CSV:
 write_csv(taxon, "../data/processed/taxon.csv", na = "")
 ```
 
-# Literature references extension
-
-```{r}
-literature_references %>% head()
-```
-
-
 # Vernacular names extension
 
 ```{r}
@@ -380,19 +373,13 @@ vernacular_names %<>% mutate(dwc_vernacularName = name)
 
 ### source
 
-Join `vernacular_names` with `shortref` information in `literature_references`:
+Join `vernacular_names` with `complete_ref` information in `literature_references`:
 
 ```{r}
 vernacular_names %<>% left_join(
-  select(literature_references, sourceid, shortref),
+  select(literature_references, sourceid, complete_ref),
   by = "sourceid"
 ) 
-```
-
-Rename and clean `sourceid`:
-
-```{r}
-vernacular_names %<>% mutate(dwc_source = str_replace_na(shortref, replacement =  "")) 
 ```
 
 ### language
