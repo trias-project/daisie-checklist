@@ -3,7 +3,6 @@ title: "Darwin Core mapping"
 subtitle: "For: Inventory of alien species in Europe (DAISIE)"
 author:
 - Lien Reyserhove
-- Peter Desmet
 - David Roy
 date: "`r Sys.Date()`"
 output:
@@ -47,7 +46,7 @@ vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
 distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
 literature_references <- read.csv("../data/raw/input_literature_references.csv", na.strings = "")
 
-# FOr the description extension:
+# For the description extension:
 pathways <- read.csv("../data/raw/input_pathways.csv")
 vectors  <- read.csv("../data/raw/input_vectors.csv")
 habitat <- read.csv("../data/raw/input_habitat.csv")
@@ -55,6 +54,37 @@ native_range <- read.csv("../data/raw/input_native_range.csv")
 donor_area <- read.csv("../data/raw/input_donor_area.csv")
 impact <- read.csv("../data/raw/input_impact.csv")
 ```
+
+# Pre-processing
+
+Extract references for later mapping of distribution information:
+
+```{r}
+distribution_references <- literature_references %>% filter(!is.na(id_sp_region))
+```
+
+Modify literature_references:
+
+```{r}
+literature_references %<>% distinct(sourceid, .keep_all = TRUE)
+```
+
+Remove records for which we have no `shortref`, `longref`, `url`:
+
+```{r}
+literature_references %<>% filter(!(is.na(shortref) & is.na(longref) & is.na(url))) 
+```
+
+Combine `shortref`, `longref` and `url`:
+
+```{r}
+literature_references %<>% mutate(complete_ref = case_when(
+  is.na(shortref) & is.na(longref) ~ paste(url),
+  !is.na(shortref) & is.na(longref) ~ paste(shortref),
+  !is.na(longref) ~ paste(longref)))
+```
+
+(Some of these references should definitely be cleaned)
 
 # Taxon core
 
@@ -271,23 +301,14 @@ taxon %<>% mutate(dwc_scientificNameAuthorship = case_when(
 
 ```{r}
 taxon %<>% left_join(
-  select(literature_references, sourceid, longref),
+  select(literature_references, sourceid, complete_ref),
   by = "sourceid")
 ```
 
+Rename `complete_ref`:
 
 ```{r}
-taxon %>% 
-  group_by(longref) %>% 
-  summarise(records = n())
-```
-
-These references could need some cleaning, but this is out of the scope here.
-
-Rename `longref`:
-
-```{r}
-taxon %<>% rename("dwc_taxonRemarks" = "longref") 
+taxon %<>% rename("dwc_taxonRemarks" = "complete_ref") 
 ```
 
 ## Post-processing
@@ -329,6 +350,13 @@ Save to CSV:
 ```{r}
 write_csv(taxon, "../data/processed/taxon.csv", na = "")
 ```
+
+# Literature references extension
+
+```{r}
+literature_references %>% head()
+```
+
 
 # Vernacular names extension
 
