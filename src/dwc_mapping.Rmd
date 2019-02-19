@@ -295,13 +295,15 @@ taxon %<>% rename("dwc_taxonRemarks" = "longref")
 Save information on ecofunctional groups (`ecofunct_group`):
 
 ```{r}
-ecofunctional_group <- taxon %>% select(idspecies, ecofunct_group, sourceid)
+ecofunctional_group <- taxon %>% 
+  select(idspecies, ecofunct_group, sourceid) %>% 
+  distinct(idspecies, ecofunct_group, .keep_all = TRUE)
 ```
 
 Save information about taxon group (`taxon_group`):
 
 ```{r}
-taxon_group <- taxon %>% select(idspecies, taxon_group, sourceid)
+taxon_group <- taxon %>% select(idspecies, taxon_group, sourceid) %>% distinct(idspecies, taxon_group, .keep_all = TRUE)
 ```
 
 Only keep the Darwin Core columns:
@@ -1366,12 +1368,53 @@ description %<>% mutate(dwc_taxonID = idspecies)
 ### description
 
 ```{r}
-description %<>% 
+description %<>% mutate(dwc_description = description)
 ```
 
+### type
 
-  
+```{r}
+description %<>% mutate(dwc_type = type) 
+```
+
 ### sources
+
+```{r}
+description %<>% mutate(dwc_sources = "") 
+```
+
+## Post-processing
+
+1. Only keep the Darwin Core columns.
+  
+```{r}
+description %<>% select(starts_with("dwc_"))
+```
+  
+2. Drop the `dwc_` prefix.
+  
+```{r}
+colnames(description) <- str_replace(colnames(description), "dwc_", "")
+```
+
+3. Sort on `taxonID`.
+
+```{r}
+description %<>% arrange(taxonID)
+```
+
+4. Preview data:
+
+```{r}
+description %>% head()
+```
+
+5. Save to [CSV]().
+
+```{r}
+write_csv(description, "../data/processed/description.csv", na = "")
+```
+
 
 2. Remove rows for which `id_sp_region` and `shortref` is empty:
 
