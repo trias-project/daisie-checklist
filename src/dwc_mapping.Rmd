@@ -1528,21 +1528,161 @@ Map `type`:
 degree_of_establishment %<>% mutate(type = "degree_of_establishment")
 ```
 
-Create field `sourceid`:
+Add source information from distribution_references:
 
 ```{r}
-degree_of_establishment %<>% mutate(sourceid = NA) 
+degree_of_establishment %<>% left_join(
+  select(filter(
+    distribution_references, !is.na(status)), 
+    id_sp_region, status),
+  by = "id_sp_region")
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+No duplicates for these references:
 
 ```{r}
-degree_of_establishment %<>% select(idspecies, description, type, sourceid)
+which(duplicated(degree_of_establishment$id_sp_region) == TRUE)
 ```
 
-### current distribution
+Map source information:
 
+```{r}
+degree_of_establishment %<>% mutate(source = case_when(
+  is.na(status) ~ "",
+  !is.na(status) ~ paste(status))) 
+```
 
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+degree_of_establishment %<>% select(idspecies, description, type, source)
+```
+
+## current distribution
+
+```{r}
+current_distribution %>% group_by(current_distribution) %>% summarize(records = n())
+```
+
+Remove empty records:
+
+```{r}
+current_distribution %<>% filter(current_distribution != "") 
+```
+
+Add regional information to `current_distribution`:
+
+```{r}
+current_distribution %<>% left_join(
+  select(species_localities, id_sp_region, locationID),
+  by = "id_sp_region") 
+```
+
+Map `description`:
+
+```{r}
+current_distribution %<>% mutate(description = paste(locationID, current_distribution, sep = " - ")) 
+```
+
+Map `type`:
+
+```{r}
+current_distribution %<>% mutate(type = "current_distribution")
+```
+
+Add source information from distribution_references:
+
+```{r}
+current_distribution %<>% left_join(
+  select(filter(
+    distribution_references, !is.na(current_distrib) | !is.na(current_distribution)), 
+    id_sp_region, current_distrib, current_distribution),
+  by = "id_sp_region")
+```
+
+No duplicates for these references:
+
+```{r}
+which(duplicated(current_distribution$id_sp_region) == TRUE)
+```
+
+Map source information:
+
+```{r}
+current_distribution %<>% mutate(source = case_when(
+  is.na(current_distrib) & is.na(current_distribution.y) ~ "",
+  !is.na(current_distrib) & is.na(current_distribution.y) ~ paste(current_distrib),
+  is.na(current_distrib) & !is.na(current_distribution.y) ~ paste(current_distribution.y),
+  !is.na(current_distrib) & !is.na(current_distribution.y) ~ paste(current_distrib, current_distribution.y, sep = "|"))) 
+```
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+current_distribution %<>% select(idspecies, description, type, source)
+```
+
+## Region of first observation
+
+```{r}
+region_first_record %>% group_by(region_of_first_record) %>% summarize(records = n())
+```
+
+Remove empty records:
+
+```{r}
+region_first_record %<>% filter(region_of_first_record != "") 
+```
+
+Add regional information to `region_first_record`:
+
+```{r}
+region_first_record %<>% left_join(
+  select(species_localities, id_sp_region, locationID),
+  by = "id_sp_region") 
+```
+
+Map `description`:
+
+```{r}
+region_first_record %<>% mutate(description = paste(locationID, region_of_first_record, sep = " - ")) 
+```
+
+Map `type`:
+
+```{r}
+region_first_record %<>% mutate(type = "region_of_first_record")
+```
+
+Add source information from distribution_references:
+
+```{r}
+region_first_record %<>% left_join(
+  select(filter(
+    distribution_references, !is.na(first_observation)), 
+    id_sp_region, first_observation),
+  by = "id_sp_region")
+```
+
+No duplicates for these references:
+
+```{r}
+which(duplicated(region_first_record$id_sp_region) == TRUE)
+```
+
+Map source information:
+
+```{r}
+region_first_record %<>% mutate(source = case_when(
+  is.na(first_observation) ~ "",
+  !is.na(first_observation) ~ paste(first_observation))) 
+```
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+region_first_record %<>% select(idspecies, description, type, source)
+```
 
 ## Union information:
 
@@ -1557,7 +1697,9 @@ description <- bind_rows(
   taxon_group, 
   impact_ecology, 
   impact_use, 
-  degree_of_establishment)
+  degree_of_establishment,
+  current_distribution,
+  region_first_record)
 ```
 
 Map to DwC terms:
@@ -1580,10 +1722,10 @@ description %<>% mutate(dwc_description = description)
 description %<>% mutate(dwc_type = type) 
 ```
 
-### sources
+### source
 
 ```{r}
-description %<>% mutate(dwc_sources = "") 
+description %<>% mutate(dwc_source = source) 
 ```
 
 ## Post-processing
