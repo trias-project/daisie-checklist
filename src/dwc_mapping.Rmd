@@ -969,12 +969,18 @@ Change from long to wide dataset:
 distribution_references %<>% spread(field_name, complete_ref)
 ```
 
+clean column names in `distribution_references`:
+
+```{r}
+distribution_references %<>% clean_names() 
+```
+
 Use the fields `distribution`, `general_references`,`introduction dates` and `introduction_history` to map under `source`. The other references will be used in the description extension.
 
 Concatenate information in source:
 
 ```{r}
-distribution_references %<>% mutate(source_distribution = paste(distribution, `general references`, `introduction dates`, `introduction history`, sep = "|")) 
+distribution_references %<>% mutate(source_distribution = paste(distribution, general_references, introduction_dates, introduction_history, sep = "|")) 
 ```
 
 Replace `|NA`:
@@ -1021,7 +1027,7 @@ Keep all information on first_observation:
 ```{r}
 region_first_record <- distribution %>% 
   select(idspecies, id_sp_region, region_of_first_record) %>% 
-  distinct(id_sp_region, .keep_all = TRUEe)
+  distinct(id_sp_region, .keep_all = TRUE)
 ```
 
 Only keep the Darwin Core columns:
@@ -1066,6 +1072,20 @@ pathways %<>% left_join(
   by = "id_sp_region") 
 ```
 
+Add references:
+
+```{r}
+pathways %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = "sourceid") 
+```
+
+Rename to `source`:
+
+```{r}
+pathways %<>% rename("source" = "complete_ref") 
+```
+
 Map `description`:
 
 ```{r}
@@ -1081,7 +1101,7 @@ pathways %<>% mutate(type = "pathway")
 Keep only `sourceid`, `description`, `type` and `sourceid`:
 
 ```{r}
-pathways %<>% select(idspecies, description, type, sourceid)
+pathways %<>% select(idspecies, description, type, source)
 ```
 
 ## Vector information
@@ -1100,6 +1120,20 @@ vectors %<>% left_join(
   by = "id_sp_region") 
 ```
 
+Add sources:
+
+```{r}
+vectors %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = "sourceid") 
+```
+
+Rename to source:
+
+```{r}
+vectors %<>% rename("source" = "complete_ref")
+```
+
 Map `description`:
 
 ```{r}
@@ -1112,10 +1146,10 @@ Map `type`:
 vectors %<>% mutate(type = "vector") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Keep only `sourceid`, `description`, `type` and `source`:
 
 ```{r}
-vectors %<>% select(idspecies, description, type, sourceid)
+vectors %<>% select(idspecies, description, type, source)
 ```
 
 ## Habitat information
@@ -1127,16 +1161,31 @@ Unite the information in `ideunis`, `level` and `notes` together to generate one
 habitat %<>% mutate(description = paste(ideunis, "level", level, "-", habitat))
 ```
 
+Add sources:
+
+```{r}
+habitat %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = c("sourceid")
+) 
+```
+
+Rename `complete_ref`:
+
+```{r}
+habitat %<>% rename("source" = "complete_ref")
+```
+
 Map `type`
 
 ```{r}
 habitat %<>% mutate(type = "eunis_habitat") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Keep only `idspecies`, `description`, `type` and `source`:
 
 ```{r}
-habitat %<>% select(idspecies, description, type, sourceid)
+habitat %<>% select(idspecies, description, type, source)
 ```
 
 ## Native range
@@ -1147,7 +1196,7 @@ filter out information for which `region` is empty:
 native_range %<>% filter(region != "") 
 ```
 
-Information for native ranges are duplicated within a certain taxa. This is because for most taxa, we have one record with `notes` populated, and one (or more) records for `lats_update`. We only need the taxon x native range information once, so we filter out the duplicates. For this, we make a new column where we combine
+Information for native ranges are duplicated within a certain taxa. This is because for most taxa, we have one record with `notes` populated, and one (or more) records for `last_update`. We only need the taxon x native range information once, so we filter out the duplicates. For this, we make a new column where we combine
 
 ```{r}
 native_range %<>% distinct(idspecies,region, .keep_all = TRUE)
@@ -1165,10 +1214,24 @@ Map `type`:
 native_range %<>% mutate(type = "native_range") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Add source:
 
 ```{r}
-native_range %<>% select(idspecies, description, type, sourceid)
+native_range %<>% left_join(
+  select(literature_references, sourceid, "complete_ref"),
+  by = "sourceid") 
+```
+
+Rename `source`:
+
+```{r}
+native_range %<>% rename("source" = "complete_ref") 
+```
+
+Keep only `idspecies`, `description`, `type` and `sourceid`:
+
+```{r}
+native_range %<>% select(idspecies, description, type, source)
 ```
 
 ## Donor area
@@ -1199,10 +1262,25 @@ Map `type`
 donor_area %<>% mutate(type = "donor_area") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Add source information:
 
 ```{r}
-donor_area %<>% select(idspecies, description, type, sourceid)
+donor_area %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = "sourceid") 
+```
+
+Rename `complete_ref`:
+
+```{r}
+donor_area %<>% rename("source" = "complete_ref")
+```
+
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+donor_area %<>% select(idspecies, description, type, source)
 ```
 
 ## Ecofunctional group
@@ -1231,10 +1309,25 @@ Map `type`
 ecofunctional_group %<>% mutate(type = "ecofunctional_group") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Add source information:
 
 ```{r}
-ecofunctional_group %<>% select(idspecies, description, type, sourceid)
+ecofunctional_group %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = "sourceid") 
+```
+
+Rename `complete_ref`:
+
+```{r}
+ecofunctional_group %<>% rename("source" = "complete_ref")
+```
+
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+ecofunctional_group %<>% select(idspecies, description, type, source)
 ```
 
 ## Taxonomic group
@@ -1257,10 +1350,24 @@ Map `type`
 taxon_group %<>% mutate(type = "ecofunctional_group") 
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+Add source information:
 
 ```{r}
-taxon_group %<>% select(idspecies, description, type, sourceid)
+taxon_group %<>% left_join(
+  select(literature_references, sourceid, complete_ref),
+  by = "sourceid") 
+```
+
+Rename `complete_ref`:
+
+```{r}
+taxon_group %<>% rename("source" = "complete_ref")
+```
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+taxon_group %<>% select(idspecies, description, type, source)
 ```
 
 ## Impact on ecology
@@ -1271,7 +1378,7 @@ Inspect content:
 impact %>% group_by(category_ecology) %>% summarize(records = n())
 ```
 
-Add regional information to `donor_area`:
+Add regional information to `impact`:
 
 ```{r}
 impact %<>% left_join(
@@ -1297,16 +1404,37 @@ Map `type`:
 impact_ecology %<>% mutate(type = "impact_on_ecology")
 ```
 
-Create field `sourceid` with NA:
+Add source information from distribution_references:
 
 ```{r}
-impact_ecology %<>% mutate(sourceid = NA)
+impact_ecology %<>% left_join(
+  select(filter(
+    distribution_references, !is.na(ecoimpact_id)|!is.na(ecological_impact)), 
+    id_sp_region, ecoimpact_id, ecological_impact),
+  by = "id_sp_region")
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+No duplicates for these references:
 
 ```{r}
-impact_ecology %<>% select(idspecies, description, type, sourceid)
+which(duplicated(impact_ecology$id_sp_region) == TRUE)
+```
+
+Map source information:
+
+```{r}
+impact_ecology %<>% mutate(source = case_when(
+  is.na(ecoimpact_id) & is.na(ecoimpact_id) ~ "",
+  !is.na(ecoimpact_id) & is.na(ecological_impact) ~ paste(ecoimpact_id),
+  is.na(ecoimpact_id) & !is.na(ecological_impact) ~ paste(ecological_impact),
+  !is.na(ecoimpact_id) & !is.na(ecological_impact) ~ paste(ecoimpact_id, ecological_impact, sep ="|")
+)) 
+```
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+impact_ecology %<>% select(idspecies, description, type, source)
 ```
 
 ## Impact on use
@@ -1335,16 +1463,37 @@ Map type:
 impact_use %<>% mutate(type = "impact_on_uses")
 ```
 
-Create field sourceid:
+Add source information from distribution_references:
 
 ```{r}
-impact_use %<>% mutate(sourceid = NA) 
+impact_use %<>% left_join(
+  select(filter(
+    distribution_references, !is.na(useimpact_id)|!is.na(impact_on_uses)), 
+    id_sp_region, useimpact_id, impact_on_uses),
+  by = "id_sp_region")
 ```
 
-Keep only `sourceid`, `description`, `type` and `sourceid`:
+No duplicates for these references:
 
 ```{r}
-impact_use %<>% select(idspecies, description, type, sourceid)
+which(duplicated(impact_use$id_sp_region) == TRUE)
+```
+
+Map source information:
+
+```{r}
+impact_use %<>% mutate(source = case_when(
+  is.na(useimpact_id) & is.na(impact_on_uses) ~ "",
+  !is.na(useimpact_id) & is.na(impact_on_uses) ~ paste(useimpact_id),
+  is.na(useimpact_id) & !is.na(impact_on_uses) ~ paste(impact_on_uses),
+  !is.na(useimpact_id) & !is.na(impact_on_uses) ~ paste(useimpact_id, impact_on_uses, sep ="|")
+)) 
+```
+
+Keep only `idspecies`, `description`, `type` and `source`:
+
+```{r}
+impact_use %<>% select(idspecies, description, type, source)
 ```
 
 ## degree of establishment
@@ -1391,7 +1540,7 @@ Keep only `sourceid`, `description`, `type` and `sourceid`:
 degree_of_establishment %<>% select(idspecies, description, type, sourceid)
 ```
 
-### 
+### current distribution
 
 
 
