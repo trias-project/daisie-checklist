@@ -57,13 +57,55 @@ impact <- read.csv("../data/raw/input_impact.csv")
 
 # Pre-processing
 
-Remove records for which we have no `shortref`, `longref`, `url`:
+Each of the Darwin Core extension file contains a field `source`. In the taxon core, sources are integrated in the field `taxonRemarks`. The basic information for these fields is integrated in `literature_references`. 
+
+Three fields contain information for `source`:
+- shortref
+- longref
+- url
+
+The information in `source` will be a combination between the information in `shortref` and `longref`
 
 ```{r}
-literature_references %<>% filter(!(is.na(shortref) & is.na(longref) & is.na(url))) 
+arrange(
+  bind_cols(
+        data.frame(matrix(c("","","","","", "x","", "x","","", "x", "x", "x","","", "x","", "x", "x", "x","", "x", "x", "x"),
+                       nrow = 8, byrow = TRUE, dimnames = list(c(1:8), c("longref", "shortref", "url")))),
+        data.frame(bind_rows(summarize(filter(literature_references, is.na(longref) & is.na(shortref) & is.na(url)), records = n()),
+                         summarize(filter(literature_references, is.na(longref) & is.na(shortref) & !is.na(url)), records = n()),
+                         summarize(filter(literature_references, is.na(longref) & !is.na(shortref) & is.na(url)), records = n()),
+                         summarize(filter(literature_references, is.na(longref) & !is.na(shortref) & !is.na(url)), records = n()),
+                         summarize(filter(literature_references, !is.na(longref) & is.na(shortref) & is.na(url)), records = n()),
+                         summarize(filter(literature_references, !is.na(longref) & is.na(shortref) & !is.na(url)), records = n()),
+                         summarize(filter(literature_references, !is.na(longref) & !is.na(shortref) & is.na(url)), records = n()),
+                         summarize(filter(literature_references, !is.na(longref) & !is.na(shortref) & !is.na(url)), records =n())))
+        ),
+  desc(records))
 ```
 
-Combine `shortref`, `longref` and `url`:
+Conclusion:
+ - In most cases, a longre and/or shortref is provided, without url
+ - In only 165 cases, a url is provided.
+ 
+ The information in `url` is, in most cases, wrong: it contains scientific names rather than a real url:
+
+```{r}
+literature_references %>%
+  filter(!is.na(url)) %>%
+  group_by(url) %>% 
+  summarize(records = n()) 
+```
+
+In some cases howevever, `url` refers to a real url
+
+```{r}
+literature_references %>%
+  filter(str_detect(url, "http")) %>% 
+  group_by(shortref, longref) %>% 
+  summarize(records = n())
+```
+
+We decided to integrate `url` only when no shortref or longref is provided.
 
 ```{r}
 literature_references %<>% mutate(complete_ref = case_when(
