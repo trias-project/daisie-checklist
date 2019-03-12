@@ -42,6 +42,20 @@ library(lubridate)
 
 ```{r}
 col_types <- cols(
+  id_species = col_character(),
+  genus = col_character(),
+  species = col_character(),
+  authority = col_character(),
+  subtaxon = col_character(),
+  subtaxon_rank = col_character(),
+  subtaxon_authority = col_character(),
+  taxon_group = col_character(),
+  phylum = col_character(),
+  class = col_character(),
+  ordo = col_character(),
+  family = col_character(),
+  ecofunct_group = col_character(),
+  sourceid = col_character(),
   longref = col_character(),
   shortref = col_character(),
   url = col_character()
@@ -50,7 +64,7 @@ col_types <- cols(
 
 
 ```{r}
-taxon <- read_csv("../data/raw/input_taxon.csv", na = "") 
+taxon <- read_csv("../data/raw/input_taxon.csv", col_types = col_types) 
 vernacular_names <- read_csv("../data/raw/input_vernacular_names.csv", na = "")
 distribution <- read_csv("../data/raw/input_distribution.csv", na = "")
 literature_references <- read_csv("../data/raw/input_literature_references.csv", col_types = col_types)
@@ -245,6 +259,17 @@ taxon %<>% mutate(dwc_taxonID = idspecies)
 The information in `scientificName` is contained in several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`:
 
 ```{r}
+taxon %<>% 
+  mutate(genus = if_else(is.na(genus),"", genus)) %>% 
+  mutate(species = if_else(is.na(species), "", species)) %>% 
+  mutate(authority = if_else(is.na(authority), "", authority)) %>% 
+  mutate(subtaxon = if_else(is.na(subtaxon), "", subtaxon)) %>% 
+  mutate(subtaxon_rank = if_else(is.na(subtaxon_rank), "", subtaxon_rank)) %>% 
+  mutate(subtaxon_authority = if_else(is.na(subtaxon_authority), "", subtaxon_authority))
+```
+
+
+```{r}
 taxon %<>% mutate(dwc_scientificName = paste(genus, species, authority, subtaxon, subtaxon_authority, sep = " "))
 ```
 
@@ -393,21 +418,26 @@ taxon %<>% mutate(dwc_scientificNameAuthorship = case_when(
 
 ### taxonRemarks
 
-`taxon` contains a reference to sources (`sourceid`) which can not be classified a bibliographic citations. For this reason, we map these sources here.
+`taxon` contains a reference to sources (`sourceid`). These sources can not be classified a bibliographic citations. For this reason, we map these sources under `taxonRemarks`.
 
 ```{r}
 taxon %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
+  select(literature_references, sourceid, source),
   by = "sourceid")
 ```
 
 Rename `complete_ref`:
 
 ```{r}
-taxon %<>% rename("dwc_taxonRemarks" = "complete_ref") 
+taxon %<>% rename("dwc_taxonRemarks" = "source") 
 ```
 
 ## Post-processing
+
+ `taxon` contains two more fields that have not been mapped yet
+ - `ecofunct_group`
+ - `taxon_group`
+ We integrate this information in the description extension. 
 
 Save information on ecofunctional groups (`ecofunct_group`):
 
@@ -834,7 +864,7 @@ full_date_indices <- str_detect(distribution$start_year,
                                 "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$start_year)
 parsed_dates <- parse_date_time(distribution$start_year[full_date_indices], orders = "dmy")
 parsed_dates_char <- strftime(parsed_dates, "%d-%m-%Y")
-distribution$sir_start_year[full_date_indices] <- parsed_dates_char
+distribution$start_year[full_date_indices] <- parsed_dates_char
 ```
 
 5. When textwise containing a single or multiple years, exrtact the first year in the text:
