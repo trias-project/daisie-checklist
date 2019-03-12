@@ -41,33 +41,83 @@ library(lubridate)
 # Read source data
 
 ```{r}
-taxon <- read.csv("../data/raw/input_taxon.csv") 
-vernacular_names <- read.csv("../data/raw/input_vernacular_names.csv")
-distribution <- read.csv("../data/raw/input_distribution.csv", na.strings = "")
-literature_references <- read.csv("../data/raw/input_literature_references.csv", na.strings = "")
+col_types <- cols(
+  longref = col_character(),
+  shortref = col_character(),
+  url = col_character()
+  )
+```
+
+
+```{r}
+taxon <- read_csv("../data/raw/input_taxon.csv", na = "") 
+vernacular_names <- read_csv("../data/raw/input_vernacular_names.csv", na = "")
+distribution <- read_csv("../data/raw/input_distribution.csv", na = "")
+literature_references <- read_csv("../data/raw/input_literature_references.csv", col_types = col_types)
 
 # For the description extension:
-pathways <- read.csv("../data/raw/input_pathways.csv")
-vectors  <- read.csv("../data/raw/input_vectors.csv")
-habitat <- read.csv("../data/raw/input_habitat.csv")
-native_range <- read.csv("../data/raw/input_native_range.csv")
-donor_area <- read.csv("../data/raw/input_donor_area.csv")
-impact <- read.csv("../data/raw/input_impact.csv")
+pathways <- read_csv("../data/raw/input_pathways.csv")
+vectors  <- read_csv("../data/raw/input_vectors.csv")
+habitat <- read_csv("../data/raw/input_habitat.csv")
+native_range <- read_csv("../data/raw/input_native_range.csv")
+donor_area <- read_csv("../data/raw/input_donor_area.csv")
+impact <- read_csv("../data/raw/input_impact.csv")
 ```
 
 # Pre-processing
 
-Each of the Darwin Core extension file contains a field `source`. In the taxon core, sources are integrated in the field `taxonRemarks`. The basic information for these fields is integrated in `literature_references`. 
+The file `literature_references` contains detailed information about the consulted sources for DAISIE. We use this information to assign a full reference to each record coupled to a `sourceid`. These full references are assigned to the fields `taxonRemarks` (in the taxon core) or `source` (for distribution, vernacular names and description extension). 
+ 
+The full reference integrates information from different fields in `literature_references`:
+- `shortref` (ab) and/or
+- `longref` and/or
+- `url`
 
-Three fields contain information for `source`:
-- shortref
-- longref
-- url
+1. Clean references somewhat:
 
-The information in `source` will be a combination between the information in `shortref` and `longref`
+Inspection of `longref` values:
 
 ```{r}
-arrange(
+literature_references %>% 
+  group_by(longref) %>% 
+  summarize(records = n()) %>%
+  arrange(longref)
+```
+
+Several `longref` values start with a number (e.g. `1`, `1, 28`) These are not really valuable for the dataset and can be removed:
+
+```{r}
+literature_references %<>% mutate(longref = str_replace(longref, "^[0-9]", NA_character_))
+```
+
+Inspection of `shortref` values:
+
+```{r}
+literature_references %>% 
+  group_by(shortref) %>% 
+  summarize(records = n()) %>%
+  arrange(shortref)
+```
+
+Inspection of `url` values:
+
+```{r}
+literature_references %>% 
+  group_by(url) %>% 
+  summarize(records = n()) %>%
+  arrange(url)
+```
+
+COMPLETE: The information in `url` is, in most cases, wrong: it contains scientific names rather than a real url. We remove these scientific names from this field:
+
+```{r}
+literature_references %<>%  mutate(url = if_else(str_detect(url, pattern = "^http"), url, NA_character_))
+```
+
+Amount of sources for which 
+
+```{r}
+overview_references <- arrange(
   bind_cols(
         data.frame(matrix(c("","","","","", "x","", "x","","", "x", "x", "x","","", "x","", "x", "x", "x","", "x", "x", "x"),
                        nrow = 8, byrow = TRUE, dimnames = list(c(1:8), c("longref", "shortref", "url")))),
@@ -83,38 +133,44 @@ arrange(
   desc(records))
 ```
 
-Conclusion:
- - In most cases, a longre and/or shortref is provided, without url
- - In only 165 cases, a url is provided.
- 
- The information in `url` is, in most cases, wrong: it contains scientific names rather than a real url:
-
 ```{r}
-literature_references %>%
-  filter(!is.na(url)) %>%
-  group_by(url) %>% 
-  summarize(records = n()) 
+kable(overview_references)
 ```
 
-In some cases howevever, `url` refers to a real url
+We translate this to the new field `source`
 
 ```{r}
-literature_references %>%
-  filter(str_detect(url, "http")) %>% 
-  group_by(shortref, longref) %>% 
-  summarize(records = n())
+overview_references %>% mutate(source = case_when(
+  longref == "x" & shortref == "x" & url == ""  ~ "longref",
+  longref == "x" & shortref == ""  & url == ""  ~ "longref",
+  longref == ""  & shortref == ""  & url == ""  ~ "",
+  longref == ""  & shortref == "x" & url == ""  ~ "shortref",
+  longref == "x" & shortref == "x" & url == "x" ~ "longref + url",
+  longref == ""  & shortref == ""  & url == "x" ~ "url",
+  longref == "x" & shortref == "" & url  == "x" ~ "longref + url",
+  longref == ""  & shortref == "x" & url == "x" ~ "shortref + url")) %>% 
+  kable()
 ```
-
-We decided to integrate `url` only when no shortref or longref is provided.
 
 ```{r}
-literature_references %<>% mutate(complete_ref = case_when(
-  is.na(shortref) & is.na(longref) ~ paste(url),
-  !is.na(shortref) & is.na(longref) ~ paste(shortref),
-  !is.na(longref) ~ paste(longref)))
+rm(overview_references)
 ```
 
-Extract references for later mapping of distribution information:
+Map values for `source`:
+
+```{r}
+literature_references %<>% mutate(source = case_when(
+  !is.na(longref) & !is.na(shortref) & is.na(url) ~ paste(longref),
+  !is.na(longref) & is.na(shortref)  & is.na(url) ~ paste(longref),
+  is.na(longref)  & is.na(shortref)  & is.na(url) ~ "",
+  is.na(longref)  & !is.na(shortref) & is.na(url) ~ paste(shortref),
+  !is.na(longref) & is.na(shortref)  & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),
+  !is.na(longref) & !is.na(shortref) & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),  
+  is.na(longref)  & is.na(shortref)  & !is.na(url) ~ paste(url),  
+  is.na(longref)  & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(",url,")"), sep = "")))  
+```
+
+In the distribution extension, we need the specific link bew `source` to a specific `id_sp_region` x `field_name` combination (see below). We extract this information here and save it as the dataframe `distribution_sources`:
 
 ```{r}
 distribution_references <- literature_references %>% filter(!is.na(id_sp_region))
@@ -299,19 +355,19 @@ taxon %>% distinct(rankmarker)
 
 ```{r}
 taxon %<>% mutate(dwc_taxonRank = recode(rankmarker,
-   "sp." = "species",
-   "infrasp." = "infraspecificname",
-   "cv." = "cultivar",
-    "<NA>" = "",
+   "sp."         = "species",
+   "infrasp."    = "infraspecificname",
+   "cv."         = "cultivar",
+    "<NA>"       = "",
    "infrasubsp." = "infrasubspecificname",
-   "var." = "variety",
-   "morph" = "morphovar",
-   "subvar." = "subvariety",
-   "subf." = "subform",
-   "subsp." = "subspecies",
-   "f." = "form",
-   "pv." = "pathovar"
-   ))
+   "var."        = "variety",
+   "morph"       = "morphovar",
+   "subvar."     = "subvariety",
+   "subf."       = "subform",
+   "subsp."      = "subspecies",
+   "f."          = "form",
+   "pv."         = "pathovar"
+))
 ```
 
 summarize mapping:
@@ -378,6 +434,12 @@ Drop the `dwc_` prefix:
 
 ```{r}
 colnames(taxon) <- str_replace(colnames(taxon), "dwc_", "")
+```
+
+Sort on taxonID
+
+```{r}
+taxon %<>% arrange(taxonID)
 ```
 
 Preview data:
