@@ -56,6 +56,8 @@ col_types <- cols(
   family = col_character(),
   ecofunct_group = col_character(),
   sourceid = col_character(),
+  name = col_character(),
+  language = col_character(),
   longref = col_character(),
   shortref = col_character(),
   url = col_character()
@@ -65,7 +67,7 @@ col_types <- cols(
 
 ```{r}
 taxon <- read_csv("../data/raw/input_taxon.csv", col_types = col_types) 
-vernacular_names <- read_csv("../data/raw/input_vernacular_names.csv", na = "")
+vernacular_names <- read_csv("../data/raw/input_vernacular_names.csv", col_types = col_types)
 distribution <- read_csv("../data/raw/input_distribution.csv", na = "")
 literature_references <- read_csv("../data/raw/input_literature_references.csv", col_types = col_types)
 
@@ -492,6 +494,8 @@ vernacular_names %>% head(n = 5)
 
 ## Term mapping
 
+Map the data to [Vernacular Names](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml).
+
 ### taxonID
 
 ```{r}
@@ -506,11 +510,11 @@ vernacular_names %<>% mutate(dwc_vernacularName = name)
 
 ### source
 
-Join `vernacular_names` with `complete_ref` information in `literature_references`:
+Join `vernacular_names` with `source` information in `literature_references`:
 
 ```{r}
 vernacular_names %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
+  select(literature_references, sourceid, source),
   by = "sourceid"
 ) 
 ```
@@ -518,9 +522,8 @@ vernacular_names %<>% left_join(
 Rename `complete_ref`:
 
 ```{r}
-vernacular_names %<>% rename("dwc_source" = "complete_ref") 
+vernacular_names %<>% rename("dwc_source" = "source") 
 ```
-
 
 ### language
 
@@ -591,6 +594,12 @@ Preview data:
 
 ```{r}
 vernacular_names %>% head()
+```
+
+Sort on `taxonID`:
+
+```{r}
+vernacular_names %<>% arrange(taxonID) 
 ```
 
 Save to CSV:
