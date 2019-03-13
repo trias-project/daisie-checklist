@@ -36,6 +36,7 @@ library(readxl)         # To read Excel files
 library(digest)         # To generate hashes
 library(rgbif)          # To use GBIF services
 library(lubridate)
+library(knitr)
 ```
 
 # Read source data
@@ -60,7 +61,22 @@ col_types <- cols(
   language = col_character(),
   longref = col_character(),
   shortref = col_character(),
-  url = col_character()
+  url = col_character(),
+  id_sp_region = col_character(),
+  code_region = col_character(), 
+  region_country = col_character(),
+  system_country = col_character(),
+  code_coast = col_character(), 
+  region_coast = col_character(),
+  system_coast = col_character(),
+  abundance = col_character(), 
+  population_status = col_character(), 
+  region_of_first_record = col_character(), 
+  current_distribution = col_character(),
+  start_year = col_character(),
+  end_year = col_character(),
+  species_status = col_character(),
+  vector = col_character()
   )
 ```
 
@@ -68,7 +84,7 @@ col_types <- cols(
 ```{r}
 taxon <- read_csv("../data/raw/input_taxon.csv", col_types = col_types) 
 vernacular_names <- read_csv("../data/raw/input_vernacular_names.csv", col_types = col_types)
-distribution <- read_csv("../data/raw/input_distribution.csv", na = "")
+distribution <- read_csv("../data/raw/input_distribution.csv", col_types = col_types)
 literature_references <- read_csv("../data/raw/input_literature_references.csv", col_types = col_types)
 
 # For the description extension:
@@ -610,6 +626,8 @@ write_csv(vernacular_names, "../data/processed/vernacular_names.csv", na = "")
 
 # Distribution extension
 
+Map the data to [Species Distribution](http://rs.gbif.org/extension/gbif/1.0/distribution.xml).
+
 ## taxonID
 
 ```{r}
@@ -618,29 +636,50 @@ distribution %<>% mutate(dwc_taxonID = idspecies)
 
 ## locationID
 
-In this field, we integrate information contained in `system_country`, `code_region`. When coastal information is provided, we combine this infomation with `system_coast` and `code_coast`.
+Information about locations is contained in six fields in total. This information is used to map `locationID` and `locality`. 
+
+Two fields refer to verbatim location information (mapped to `locality`):
+- `region_country`
+- `region_coast`
+
+Two fields refer to a location codes (mapped to `locationID`:
+- `code_region`  (for location linked to coountries)
+- `code_coast` (forl location linked to coastal areas)
+
+These codes originate from different sources (mapped to `locationID`), contained respectively in:
+- `system_country`
+- `system_coast` 
+
+
+```{r}
+distribution %>% 
+  group_by(region_country, code_region, system_country, region_coast, code_coast, system_coast) %>% 
+  summarize(records = n())
+```
+
+Note that coastal information is not alway s provided (`NA`). For these records, we will not integrate coastal information into `locationID` and `locality`.
+
+This is how we will map information about locations:
+
+region_country | region_coast | locationID | locality
+--- | --- | --- | ---
+country | NA | system_country: code_region | region_country
+country | coast | system_country: code_region|system_coast: code_coast | region_country|region_coast
 
 ```{r}
 distribution %<>% mutate(dwc_locationID = case_when(
-  is.na(region_coast) ~ paste(system_country, code_region, sep = ":"),
+  is.na(region_coast) ~ paste(system_country, code_region, sep = ": "),
   TRUE ~ paste(
-    paste(system_country, code_region, sep = ":"),
-    paste(system_coast, code_coast, sep = ":"),
-    sep = " - ")
-))
+              paste(system_country, code_region, sep = ":"),
+              paste(system_coast, code_coast, sep = ":"),
+              sep = "|")))
 ```
 
-## locality
-
-In this field, we integrate all verbatim information contained in `region_country` and `region_coast` 
-The format will be:
-
-> country - coast
 
 ```{r}
 distribution %<>% mutate(dwc_locality = case_when(
   is.na(region_coast) ~ paste(region_country),
-  !is.na(region_coast) ~ paste(region_country, region_coast, sep = " - ")))
+  !is.na(region_coast) ~ paste(region_country, region_coast, sep = "|")))
 ```
 
 Save this information in a separate vector, as this is needed for the mapping of the description extension.
