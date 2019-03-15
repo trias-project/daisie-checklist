@@ -202,10 +202,14 @@ literature_references %<>% mutate(source = case_when(
   is.na(longref)  & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(",url,")"), sep = "")))  
 ```
 
-In the distribution extension, we need the specific link bew `source` to a specific `id_sp_region` x `field_name` combination (see below). We extract this information here and save it as the dataframe `distribution_sources`:
+In both the taxon core, vernacular name extension and description extension, the information in `source` from `literature_references` is directly linked to `sourceid` in the respective dataset.
+
+In the case of the distribution extension, a source (in `literature_references`) is attributed to a specific `field_name` (in `literature_references `, refering to a column name in the `input_distriution`) x `id_sp_region` (in both `literature_references` and `input_distribution`, i.e. the id of a taxon in a particular region) combination. We save this information in a separate dataframe `distribution_sources` here:
 
 ```{r}
-distribution_references <- literature_references %>% filter(!is.na(id_sp_region))
+distribution_sources <- literature_references %>% 
+                            filter(!is.na(id_sp_region)) %>% 
+                            select(id_sp_region, field_name, sourceid, source)
 ```
 
 Keep unique sources only:
@@ -626,6 +630,62 @@ write_csv(vernacular_names, "../data/processed/vernacular_names.csv", na = "")
 
 # Distribution extension
 
+## Pre-processing
+
+Inspect column names in `distribution`:
+
+```{r}
+distribution %>% colnames()
+```
+
+Not all variables can be mapped to DwC terms in the distribution extension. We save the information in a separate dataframes and map the information in the description extension:
+
+```{r}
+degree_of_establishment <- distribution %>% 
+  select(idspecies, id_sp_region, population_status) %>% 
+  distinct(id_sp_region, .keep_all = TRUE)
+```
+
+Keep all information on current_distribution:
+
+```{r}
+current_distribution <- distribution %>% 
+  select(idspecies, id_sp_region, current_distribution) %>% 
+  distinct(id_sp_region, .keep_all = TRUE)
+```
+
+Keep all information on first_observation:
+
+```{r}
+region_first_record <- distribution %>% 
+  select(idspecies, id_sp_region, region_of_first_record) %>% 
+  distinct(id_sp_region, .keep_all = TRUE)
+```
+
+
+Keep information on population_status:
+
+species_status | population_status | establishmentMeans | degreeOfEstablishment
+--- | ---
+Alien | Established | introduced | established 
+Alien | Extinct | introduced | extinct 
+Alien | Not established | introduced | failed
+Alien | Unknown or NA | introduced | 
+Alien_invasive | Established | introduced | invasive
+Alien_invasive | Extinct | introduced | extinct
+Alien_invasive | Not established | | 
+Alien_invasive | Unknown or NA | introduced | invasive
+Casual | | Casual | vagrant |
+Cryptogenic | Established | uncertain | established
+Cryptogenic | Extinct | uncertain | extinct
+Cryptogenic | NOt Established | uncertain | failed
+Cryptogenic | Unknown or NA | uncertain | established |
+Naturalized | NA | introduced | established
+NA | Established | | established
+NA | Extinct | | extinct
+NA | Not established | failed
+NA | NA/unknown | NA | NA
+
 Map the data to [Species Distribution](http://rs.gbif.org/extension/gbif/1.0/distribution.xml).
 
 ## taxonID
@@ -657,7 +717,7 @@ distribution %>%
   summarize(records = n())
 ```
 
-Note that coastal information is not alway s provided (`NA`). For these records, we will not integrate coastal information into `locationID` and `locality`.
+Note that coastal information is not always provided (`NA`). For these records, we will not integrate information into `locationID` and `locality` from coastal areas.
 
 This is how we will map information about locations:
 
@@ -665,6 +725,8 @@ region_country | region_coast | locationID | locality
 --- | --- | --- | ---
 country | NA | system_country: code_region | region_country
 country | coast | system_country: code_region|system_coast: code_coast | region_country|region_coast
+
+Map `locationID`:
 
 ```{r}
 distribution %<>% mutate(dwc_locationID = case_when(
@@ -675,17 +737,26 @@ distribution %<>% mutate(dwc_locationID = case_when(
               sep = "|")))
 ```
 
+Map `locality`:
 
 ```{r}
 distribution %<>% mutate(dwc_locality = case_when(
-  is.na(region_coast) ~ paste(region_country),
+  is.na(region_coast)  ~ paste(region_country),
   !is.na(region_coast) ~ paste(region_country, region_coast, sep = "|")))
 ```
 
-Save this information in a separate vector, as this is needed for the mapping of the description extension.
+Some information in the description extension (e.g. for `impact on use` or `impact on ecolgy`) is a property of a species in a particular _region_, rather than a property of a species as a whole. This is indicated by linking the description infomration with the ID `id_sp_region`. 
+To emphasize that this description record is linked to a species in a particular region, we want to add the `locationID` to the description information:
+
+idspecies | sp_in_region | description | description_with_locationID$
+--- | --- | --- | ---
+A | A_1 | impact_on_use_A1 |impact_on_use_A1 (locationID)
+A | A_2 | impact_on_use_A2 | impact_on_use_A2 (locationID)
+
+We thus generate a dataframe here, linking `id_sp_region` with `locationID`:
 
 ```{r}
-species_localities <- distribution %>% 
+sp_in_region_locationID <- distribution %>% 
   select(idspecies, id_sp_region, dwc_locationID) %>% 
   rename("locationID" = "dwc_locationID")
 ```
@@ -778,12 +849,38 @@ distribution %<>% mutate(countryCode = recode(region_country,
 
 ## occurrenceStatus
 
+Information for `occurrenceStatus` is contained in two fields: `abundance` and `population_status`.
+Inspect these values:
+
 ```{r}
 distribution %>% 
   group_by(abundance, population_status) %>% 
   summarize(records = n())
 ```
 
+In most cases , we can translate `abundance` to the GBIF [controlled vocabulary](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) of `occurrenceStatus`:
+
+abundance | occurrenceStatus 
+--- | ---
+common | common
+abundant | common
+rare | rare
+local | present
+single record | present
+sporadic | irregular
+unknown | doubtful
+
+However, for 30 taxa, `population_status` contains the field `extinct`, which is valuable information for `occurrenceStatus`:
+
+|population_status |abundance         | records|
+|:-----------------|:-----------------|-------:|
+|Extinct           |Absent or extinct |       9|
+|Extinct           |Local             |       6|
+|Extinct           |Rare              |      11|
+|Extinct           |Single record     |       4|
+|Extinct           |Unknown           |       8|
+
+After discussing this through (see [this issue](https://github.com/trias-project/daisie-checklist/issues/4) on GitHub), we decided set `occurrencesStatus` as `extinct`, irrespective of the content of `abundance`.
 
 ```{r}
 distribution %<>% mutate(dwc_occurrenceStatus = case_when(
@@ -800,6 +897,8 @@ distribution %<>% mutate(dwc_occurrenceStatus = case_when(
   population_status == "Extinct"                                    ~ "extinct"))
 ```
 
+Show mapping:
+
 ```{r}
 distribution %>% 
   group_by(abundance, population_status, dwc_occurrenceStatus) %>% 
@@ -808,18 +907,24 @@ distribution %>%
 
 ## establishmentMeans
 
+Information for `establishmentMeans` is contained in `species_status`:
+
 ```{r}
-distribution %>% distinct(species_status)
+distribution %>% 
+  group_by(species_status) %>% 
+  summarize(records = n())
 ```
+
+For mapping `soecies_status` to `establishmentMeans`, see [issue 15](https://github.com/trias-project/daisie-checklist/issues/15) on GitHub:
 
 ```{r}
 distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
     "Alien" = "introduced",
     "Cryptogenic" = "uncertain",
     "<NA>" = "",
-    "Naturalized" = "naturalised",
-    "casual" = "naturalised",
-    "Alien_invasive" = "invasive")) 
+    "Naturalized" = "introduced",
+    "casual" = "vagrant",
+    "Alien_invasive" = "introduced")) 
 ```
 
 ## eventDate
@@ -945,7 +1050,6 @@ distribution %<>%
   mutate(start_year = replace(start_year, start_year == "20. century", "1900")) %>%
   mutate(start_year = replace(start_year, start_year == "90`s ", "1990"))
 ```
-
 
 recheck cleanup action:
 
@@ -1119,8 +1223,6 @@ distribution %<>% mutate(dwc_eventDate = case_when(
 ))
 ```
 
-
-
 Generate occurrenceRemarks:
 
 ```{r}
@@ -1131,86 +1233,97 @@ distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
 
 ## source
 
-Use data in `distribution_references`
+In the distribution extension, `source` information is extracted from `distribution_sources`. We link this information to `distribution` by using a combination between `id_sp_region` and `field_name`, with the content of `field_name` referring to the specific column names in `input_distribution`
 
-Remove all unneccesary fields (preparation for spread):
+Thus, we need to match this dataset
+
+id_sp_region | field_name | source
+--- | --- | ---
+1 | field_A | source1
+1 | field_B | source2 
+2 | field_A | source3
+2 | field_B | source4
+3 | field_A | source5
+3 | field_B | source6
+
+with this dataset
+
+id_sp_region | field_A | field_B
+--- | --- | ---
+1 | a | x 
+2 | b | y
+3 | c | z
+
+For this, we need to transform `distribution_sources` from a long to a wide dataset: 
 
 ```{r}
-distribution_references %<>% select(sourceid, id_sp_region, field_name, complete_ref) 
+distribution_sources %<>% spread(field_name, source)
 ```
 
-Remove duplicated records:
+clean column names in `distribution_sources`:
 
 ```{r}
-distribution_references %<>% distinct(id_sp_region, field_name, .keep_all = TRUE)
+distribution_sources %<>% clean_names() 
 ```
 
-Change from long to wide dataset:
+View the field names:
 
 ```{r}
-distribution_references %<>% spread(field_name, complete_ref)
+distribution_sources %>% 
+  select(-id_sp_region, -sourceid) %>% 
+  colnames()
 ```
 
-clean column names in `distribution_references`:
+Some remarks:
+- These field names do match with the field names in `distribution`,
+- Some field names are linked to variables in `distribution`
+  - `distribution`,
+  - `general_references`,
+  - `introduction dates`,
+  - `introduction_history`
+- Some field names are linked to variables to be included in `description`
+  - `current_distrib`,
+  - `current_distribution`,
+  - `ecoimpact_id`,
+  - `ecological impact`,
+  - `first_observation`
+  - `impact on uses`,
+  - `status`
+  - `useimpact_id`
+- Some field_names are very similar, such as `current_distrib` and `current_distribution`. 
+
+We here map source information for `distribution`. All sources are concatenated with ´|´ as a separator. We then remove all `NA` values:
 
 ```{r}
-distribution_references %<>% clean_names() 
-```
-
-Use the fields `distribution`, `general_references`,`introduction dates` and `introduction_history` to map under `source`. The other references will be used in the description extension.
-
-Concatenate information in source:
-
-```{r}
-distribution_references %<>% mutate(source_distribution = paste(distribution, general_references, introduction_dates, introduction_history, sep = "|")) 
+distribution_sources %<>% mutate(source = paste(
+  distribution, 
+  general_references, 
+  introduction_dates, 
+  introduction_history, 
+  sep = "|")) 
 ```
 
 Replace `|NA`:
 
 ```{r}
-distribution_references %<>% mutate(source_distribution = str_replace_all(source_distribution, "([|]NA)|(^NA[|])|(NA)", ""))
+distribution_sources %<>% mutate(source = str_replace_all(source, "([|]NA)|(^NA[|])|(NA)", ""))
 ```
 
 Add source information to `distribution`:
 
 ```{r}
 distribution %<>% left_join(
-  select(distribution_references, id_sp_region, "source_distribution"),
+  select(distribution_sources, id_sp_region, source),
   by = "id_sp_region")
 ```
 
 Rename source field:
 
 ```{r}
-distribution %<>% rename("dwc_source" = "source_distribution")
+distribution %<>% rename("dwc_source" = "source")
 ```
-
 
 ## Post-processing
-
-Keep information on population_status:
-
-```{r}
-degree_of_establishment <- distribution %>% 
-  select(idspecies, id_sp_region, population_status) %>% 
-  distinct(id_sp_region, .keep_all = TRUE)
-```
-
-Keep all information on current_distribution:
-
-```{r}
-current_distribution <- distribution %>% 
-  select(idspecies, id_sp_region, current_distribution) %>% 
-  distinct(id_sp_region, .keep_all = TRUE)
-```
-
-Keep all information on first_observation:
-
-```{r}
-region_first_record <- distribution %>% 
-  select(idspecies, id_sp_region, region_of_first_record) %>% 
-  distinct(id_sp_region, .keep_all = TRUE)
-```
 
 Only keep the Darwin Core columns:
 
