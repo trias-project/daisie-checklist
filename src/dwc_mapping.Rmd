@@ -35,49 +35,14 @@ library(janitor)        # To clean input data
 library(readxl)         # To read Excel files
 library(digest)         # To generate hashes
 library(rgbif)          # To use GBIF services
-library(lubridate)
-library(knitr)
+library(lubridate)      # To process dates and times
 ```
 
 # Read source data
 
 ```{r}
 col_types <- cols(
-  id_species = col_character(),
-  genus = col_character(),
-  species = col_character(),
-  authority = col_character(),
-  subtaxon = col_character(),
-  subtaxon_rank = col_character(),
-  subtaxon_authority = col_character(),
-  taxon_group = col_character(),
-  phylum = col_character(),
-  class = col_character(),
-  ordo = col_character(),
-  family = col_character(),
-  ecofunct_group = col_character(),
-  sourceid = col_character(),
-  name = col_character(),
-  language = col_character(),
-  longref = col_character(),
-  shortref = col_character(),
-  url = col_character(),
-  id_sp_region = col_character(),
-  code_region = col_character(), 
-  region_country = col_character(),
-  system_country = col_character(),
-  code_coast = col_character(), 
-  region_coast = col_character(),
-  system_coast = col_character(),
-  abundance = col_character(), 
-  population_status = col_character(), 
-  region_of_first_record = col_character(), 
-  current_distribution = col_character(),
-  start_year = col_character(),
-  end_year = col_character(),
-  species_status = col_character(),
-  vector = col_character()
-  )
+  .default = col_character())
 ```
 
 
@@ -88,25 +53,43 @@ distribution <- read_csv("../data/raw/input_distribution.csv", col_types = col_t
 literature_references <- read_csv("../data/raw/input_literature_references.csv", col_types = col_types)
 
 # For the description extension:
-pathways <- read_csv("../data/raw/input_pathways.csv")
-vectors  <- read_csv("../data/raw/input_vectors.csv")
-habitat <- read_csv("../data/raw/input_habitat.csv")
-native_range <- read_csv("../data/raw/input_native_range.csv")
-donor_area <- read_csv("../data/raw/input_donor_area.csv")
-impact <- read_csv("../data/raw/input_impact.csv")
+pathways <- read_csv("../data/raw/input_pathways.csv", col_types = col_types)
+vectors  <- read_csv("../data/raw/input_vectors.csv", col_types = col_types)
+habitat <- read_csv("../data/raw/input_habitat.csv", col_types = col_types)
+native_range <- read_csv("../data/raw/input_native_range.csv", col_types = col_types)
+donor_area <- read_csv("../data/raw/input_donor_area.csv", col_types = col_types)
+impact <- read_csv("../data/raw/input_impact.csv", col_types = col_types)
 ```
 
 # Pre-processing
 
-The file `literature_references` contains detailed information about the consulted sources for DAISIE. We use this information to assign a full reference to each record coupled to a `sourceid`. These full references are assigned to the fields `taxonRemarks` (in the taxon core) or `source` (for distribution, vernacular names and description extension). 
- 
-The full reference integrates information from different fields in `literature_references`:
-- `shortref` (ab) and/or
+The file `literature_references` containes a detailed overview of all consulted sources used to compile DAISIE.
+
+```{r}
+literature_references %>% head(n=10)
+```
+
+Each source is composed of:
+- a citation (`shortref`) and/or
+- full references (`longref`) and/or
+- `url`
+Each source is identified by its `sourceid`
+
+In many cases, sources are duplicated, i.e. the same source is attributed to a combination between:
+- `id_sp_region` (an identifier for a species in a specific region) and/or
+- `idspecies` (an identifier for a species) and/or
+- `notes` (a specific trait of the species)
+This is a consequence of the structure of `distribution` and will be discussed later.
+
+Each input file (except `distribution`) includes the field `sourceid`. In the Darwin Core mapping process, we want to add the full reference to each record in the generated files, which implicates that we have to join the information in `literature_references` with the input file using `sourceid`. 
+To accomplish this, we need to:
+
+1. Compile the full reference from
+- `shortref` and/or
 - `longref` and/or
 - `url`
-
-1. Clean references somewhat:
-
+2. Assign the full reference to `taxonRemarks` (in the taxon core) or `source` (for distribution, vernacular names and description extension) using the link with its ↨`sourceid`.
+ 
 Inspection of `longref` values:
 
 ```{r}
@@ -116,13 +99,19 @@ literature_references %>%
   arrange(longref)
 ```
 
-Several `longref` values start with a number (e.g. `1`, `1, 28`) These are not really valuable for the dataset and can be removed:
+Cleaning the conent of this field is outside scope op this mapping). However, several `longref` values start with a number (e.g. `1`, `1, 28`). These are really not valuable for the dataset and can easily be removed:
 
 ```{r}
 literature_references %<>% mutate(longref = str_replace(longref, "^[0-9]", NA_character_))
 ```
 
-Inspection of `shortref` values:
+Check whether these values have been removed (should be `TRUE`)
+
+```{r}
+unique(literature_references %>%  str_detect("^[0-9]")) == FALSE
+```
+
+Inspection of content for `shortref`:
 
 ```{r}
 literature_references %>% 
@@ -130,6 +119,8 @@ literature_references %>%
   summarize(records = n()) %>%
   arrange(shortref)
 ```
+
+Cleaning of this fiels is outside of the scope of this mapping.
 
 Inspection of `url` values:
 
@@ -140,36 +131,86 @@ literature_references %>%
   arrange(url)
 ```
 
-COMPLETE: The information in `url` is, in most cases, wrong: it contains scientific names rather than a real url. We remove these scientific names from this field:
+The information contained in `url` is, in most cases, wrong: it contains scientific names rather than a real url. We remove these scientific names from this field:
 
 ```{r}
 literature_references %<>%  mutate(url = if_else(str_detect(url, pattern = "^http"), url, NA_character_))
 ```
 
-Amount of sources for which 
+Check whether scientific names have been removed:
+
+```{r}
+literature_references %>% 
+  group_by(url) %>% 
+  summarize(records = n()) %>%
+  arrange(url)
+```
+
+To compile the full references out of `shortref` and/or `longref` and/or `url`, we need to know which (and how many) combinations of these fields occur in `literature_references: 
 
 ```{r}
 overview_references <- arrange(
   bind_cols(
-        data.frame(matrix(c("","","","","", "x","", "x","","", "x", "x", "x","","", "x","", "x", "x", "x","", "x", "x", "x"),
-                       nrow = 8, byrow = TRUE, dimnames = list(c(1:8), c("longref", "shortref", "url")))),
-        data.frame(bind_rows(summarize(filter(literature_references, is.na(longref) & is.na(shortref) & is.na(url)), records = n()),
-                         summarize(filter(literature_references, is.na(longref) & is.na(shortref) & !is.na(url)), records = n()),
-                         summarize(filter(literature_references, is.na(longref) & !is.na(shortref) & is.na(url)), records = n()),
-                         summarize(filter(literature_references, is.na(longref) & !is.na(shortref) & !is.na(url)), records = n()),
-                         summarize(filter(literature_references, !is.na(longref) & is.na(shortref) & is.na(url)), records = n()),
-                         summarize(filter(literature_references, !is.na(longref) & is.na(shortref) & !is.na(url)), records = n()),
-                         summarize(filter(literature_references, !is.na(longref) & !is.na(shortref) & is.na(url)), records = n()),
-                         summarize(filter(literature_references, !is.na(longref) & !is.na(shortref) & !is.na(url)), records =n())))
+        data.frame(matrix(c("","","",
+                            "","", "x",
+                            "", "x","",
+                            "", "x", "x", 
+                            "x","","",
+                            "x","", "x",
+                            "x","x","",
+                            "x", "x", "x"),
+                       nrow = 8, byrow = TRUE, 
+                       dimnames = list(c(1:8), c("longref", "shortref", "url")))),
+        data.frame(bind_rows(
+          summarize(filter(literature_references, 
+                           is.na(longref) & 
+                           is.na(shortref) & 
+                           is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                            is.na(longref) &
+                            is.na(shortref) &
+                           !is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references, 
+                           is.na(longref) &
+                             !is.na(shortref) &
+                             is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                           is.na(longref) &
+                             !is.na(shortref) &
+                             !is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                           !is.na(longref) &
+                             is.na(shortref) &
+                             is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                           !is.na(longref) &
+                             is.na(shortref) &
+                             !is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                           !is.na(longref) &
+                             !is.na(shortref) &
+                             is.na(url)),
+                    records = n()),
+          summarize(filter(literature_references,
+                           !is.na(longref) &
+                             !is.na(shortref) &
+                             !is.na(url)),
+                    records =n())))
         ),
   desc(records))
 ```
 
 ```{r}
-kable(overview_references)
+overview_references
 ```
 
-We translate this to the new field `source`
+We here create a new field `source`, which is a combination of `longref` and/or `shortref` and/or `url`, depending on whether a value is provided:
 
 ```{r}
 overview_references %>% mutate(source = case_when(
@@ -180,15 +221,12 @@ overview_references %>% mutate(source = case_when(
   longref == "x" & shortref == "x" & url == "x" ~ "longref + url",
   longref == ""  & shortref == ""  & url == "x" ~ "url",
   longref == "x" & shortref == "" & url  == "x" ~ "longref + url",
-  longref == ""  & shortref == "x" & url == "x" ~ "shortref + url")) %>% 
-  kable()
+  longref == ""  & shortref == "x" & url == "x" ~ "shortref + url"))
 ```
 
 ```{r}
 rm(overview_references)
 ```
-
-Map values for `source`:
 
 ```{r}
 literature_references %<>% mutate(source = case_when(
@@ -202,17 +240,21 @@ literature_references %<>% mutate(source = case_when(
   is.na(longref)  & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(",url,")"), sep = "")))  
 ```
 
-In both the taxon core, vernacular name extension and description extension, the information in `source` from `literature_references` is directly linked to `sourceid` in the respective dataset.
+By joining `source` in `literature_references` with `sourceid` in one of the input files (except `distribution`), we can add the full reference information to the records.
 
-In the case of the distribution extension, a source (in `literature_references`) is attributed to a specific `field_name` (in `literature_references `, refering to a column name in the `input_distriution`) x `id_sp_region` (in both `literature_references` and `input_distribution`, i.e. the id of a taxon in a particular region) combination. We save this information in a separate dataframe `distribution_sources` here:
+In the case of the distribution extension, a specific value for `source` can only be linked to a record using a combination between:
+- `id_sp_region`
+- `field_name`
+We save this information in a separate dataframe `distribution_sources` here and use it later to generate the full reference for the distribution extension:
 
 ```{r}
-distribution_sources <- literature_references %>% 
-                            filter(!is.na(id_sp_region)) %>% 
-                            select(id_sp_region, field_name, sourceid, source)
+distribution_sources <- 
+  literature_references %>% 
+    filter(!is.na(id_sp_region)) %>% 
+    select(id_sp_region, field_name, sourceid, source)
 ```
 
-Keep unique sources only:
+Remove duplicated sources in `literature_references` (duplicated are only needed for the mapping of the distribution extension:
 
 ```{r}
 literature_references %<>% distinct(sourceid, .keep_all = TRUE)
@@ -278,7 +320,9 @@ taxon %<>% mutate(dwc_taxonID = idspecies)
 
 ### scientificName
 
-The information in `scientificName` is contained in several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`:
+The information in `scientificName` will be a compilation of several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`.
+
+ Replace all `NA` by emtpy values:
 
 ```{r}
 taxon %<>% 
@@ -307,28 +351,176 @@ parsed_names <- taxon %>%
 Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed. Note: these are not necessarily incorrect.
 
 ```{r}
-nomenclatural_issues <- parsed_names %>%
+parsed_names %>%
   select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
-  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE"))
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
+  head(n=10)
 ```
 
 Amount of scientific names with nomenclatural issues:
 
 ```{r}
-nrow(nomenclatural_issues)
+parsed_names %>%
+  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
+  nrow()
 ```
 
 Inspect how many taxa are categorized under the different types:
 
 ```{r}
-nomenclatural_issues %>% 
+parsed_names %>%
+  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
   group_by(type) %>% 
   summarize(records = n())
 ```
 
-Some taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
+Cleaning of the scientific names is outside the scope of this mapping process. However, we can perform some rough cleaning to eliminate the `INFORMAL` taxa, by removing `sp.:
+
+```{r}
+taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName,"sp."))
+```
+
+Re-parse after this cleaning step, to check whether the number of informal taxa decreased :
+
+```{r}
+parsed_names <- taxon %>%
+  distinct(dwc_scientificName) %>%
+  pull() %>% # Create vector from dataframe
+  parsenames() # An rgbif function
+```
+
+```{r}
+parsed_names %>%
+  select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
+  group_by(type) %>% 
+  summarize(records = n())
+```
+
+Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
 
 ### kingdom
+
+No kingdom information is provided. This is not an obligatory field but strongly recommended. It can easily be derived from information in `phylum`:
+
+```{r}
+taxon %>% 
+  group_by(phylum) %>% 
+  summarise(records = n())
+```
+
+However, 389 taxa have no phylum information provided. For these records, we try to derive phylum and kingdom information from `class`:
+
+```{r}
+taxon %>% 
+  filter(is.na(phylum)) %>% 
+  group_by(class) %>% 
+  summarize(records = n())
+```
+
+Fist, we complete phylum information:
+
+```{r}
+taxon %<>% mutate(phylum_complete = case_when(
+  class == "acari" |
+    class == "chilopoda" |
+    class == "crustacea" |
+    class == "diplopoda" |
+    class == "pauropoda" |
+    class == "aranea" |
+    class == "insecta" |
+    class == "symphila" ~ "Arthropoda",
+  class == "annelida" ~ "Annelida",
+  class == "mollusca" ~ "Mollusca",
+  class == "nematoda" ~ "Nematoda",
+  class == "platyhelminthes" ~ "Platyhelminthes",
+  TRUE ~ phylum))
+```
+
+(NB: some of these classes are not correct, e.g. `Nematoda` is a phylum, not a class. Cleaning this information is not within the scope of this mapping).
+
+Summarize `phylum_complete`:
+
+```{r}
+taxon %>% 
+  group_by(phylum_complete) %>% 
+  summarise(records = n())
+```
+
+(NB: not all information is correct, e.g. `Bacteria` is a kingdom, not a phylum)
+
+Based on this information, map `kingdom`:
+
+```{r}
+taxon %<>% mutate(dwc_kingdom = case_when(
+phylum_complete == "Acanthocephala" |
+  phylum_complete == "Annelida" |
+  phylum_complete == "Arthropoda" |
+  phylum_complete == "Bryozoa" |
+  phylum_complete == "Chaetognatha" |
+  phylum_complete == "Choradata" |
+  phylum_complete == "Chordata" |
+  phylum_complete == "Cnidaria" |
+  phylum_complete == "Ctenophora" |
+  phylum_complete == "Entoprocta" |
+  phylum_complete == "Echinodermata" |
+  phylum_complete == "Mollusca" |
+  phylum_complete == "Myxozoa" |
+  phylum_complete == "Nematoda" |
+  phylum_complete == "Nemertea" |
+  phylum_complete == "Phoronida" |
+  phylum_complete == "Platyhelminthes" |
+  phylum_complete == "Porifera" |
+  phylum_complete == "Rotifera" |
+  phylum_complete == "Sipunculida" ~ "Animalia",
+
+phylum_complete == "Ascomycota" |
+  phylum_complete == "Basidiomycota" |
+  phylum_complete == "Chytridiomycota" |
+  phylum_complete == "Fungi" |
+  phylum_complete == "Oomycota" ~ "Fungi",
+
+phylum_complete == "Bacteria" |
+  phylum_complete == "Bacteroidetes" |
+  phylum_complete == "Cyanobacteria" |
+  phylum_complete == "Firmicutes" |
+  phylum_complete == "Proteobacteria" ~ "Bacteria",
+
+phylum_complete == "Anthocerotophyta" |
+  phylum_complete == "Bryophyta" |
+  phylum_complete == "Chlorophyta" |
+  phylum_complete == "Cycadophyta" |
+  phylum_complete == "Equisetophyta" |
+  phylum_complete == "Ginkgoophyta" |
+  phylum_complete == "Gnetophyta" |
+  phylum_complete == "Magnoliophyta" |
+  phylum_complete == "Marchantiophyta" |
+  phylum_complete == "Monocotyledonae" |
+  phylum_complete == "Pinophyta" |
+  phylum_complete == "Polypodiophyta" |
+  phylum_complete == "Rhodophyta" ~ "Plantae",
+
+phylum_complete == "Cercozoa" |
+  phylum_complete == "Ciliophora" |
+  phylum_complete == "Cryptophyta" |
+  phylum_complete == "Dinozoa" |
+  phylum_complete == "Foraminifera" |
+  phylum_complete == "Haptophyta" |
+  phylum_complete == "Heterokontophyta" ~ "Chromista",
+
+TRUE ~ ""
+))
+```
+
+Summarize:
+
+```{r}
+taxon %>% 
+  group_by(dwc_kingdom, phylum_complete) %>% 
+  summarize(records = n())
+```
 
 ### phylum
 
@@ -374,7 +566,7 @@ taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon)
 
 ### taxonRank
 
-Information for `taxonRank` is provided in the field `subtaxon_rank`. However, this is only for the subtaxon level. The information is also provided by the GBIF nameparser function. We extract this information from the `parsed_names` and add it to `taxon`:
+Information for `taxonRank` is provided in the field `subtaxon_rank`, but is only for varieties, aggregates, hybrids, subspecies or forms. We can also obtain taxonRank information from `parsed_names` and add it to `taxon`:
 
 ```{r}
 taxon %<>% left_join(
@@ -391,14 +583,27 @@ taxon %>%
   arrange(desc(records)) 
 ```
 
-We decided to use the information contained in `rankmarker` because GBIF rankmarker will provide cleaner information than `subtaxon_rank`, even if there might be some loss of information.
-
-Show unique values for `rankmarker`:
+We decided to use the information contained in `rankmarker` because GBIF rankmarker will provide cleaner information than `subtaxon_rank`, even if there might be some loss of information. However, rankmarker also contains `NA`. We inspect `dwc_scientificName` and `subtaxon_rank` for these values:
 
 ```{r}
-taxon %>% distinct(rankmarker)
+taxon %>% 
+  filter(is.na(rankmarker)) %>% 
+  group_by(dwc_scientificName, subtaxon_rank) %>% 
+  summarize(records = n()) %>% 
+  arrange(subtaxon_rank)
 ```
 
+Concrete actions to undertake:
+- scientific names without `subtaxon_rank`:
+    - Acaena anserinifolia x inermis: species
+    - Geoplana (=Australoplana) sanguinea: species
+    - Rest: genera
+- scientific names with `subtaxon_rank` = `agg.`: genus
+- scientific names with `subtaxon_rank` = `hyb`: species
+- scientific name = `Oidium Pseudoidium`: wrong scientific name, refers to genus `Oidium` or `Pseudoidium` 
+
+
+# COMPLETE REVIEW FROM HERE
 
 ```{r}
 taxon %<>% mutate(dwc_taxonRank = recode(rankmarker,
@@ -1351,323 +1556,145 @@ write_csv(distribution, "../data/processed/distribution.csv", na = "")
 
 # Description extension
 
-## Pathways
+Information for the description extension is contained in the following datasets:
+
+Datasets without regional information:
+- habitat
+
+Datasets with regional information:
+- pathways
+- vector
+
+For each of these datasets, the following steps are required to transform them to the recquired format for the description extension:
+
+1. Remove all empty values
+2. Keep distinct vaules only
+3. Join the dataset with the literature_reference extension 
+4. Map `description`
+5. Map `type`
+6. Select relevant columns
+
+As these steps are repeated for each of the description datasets, we write a function here:
 
 ```{r}
-pathways %>% 
-  group_by(pathway) %>% 
-  summarize(records = n())
+to_description <- function(data_frame, column_name, type){
+    data_frame %>% 
+    
+    # Remove empty values
+    filter(
+      (!!as.symbol(column_name)) != "") %>% 
+
+    # keep distinct values only
+    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
+    
+    # Join with reference information
+    left_join(
+      select(literature_references, sourceid, source),
+      by = c("sourceid"))    %>% 
+    
+    # Map description
+    mutate(description = (!!as.symbol(column_name))) %>% 
+
+    # Map `type`:
+    mutate(type = type) %>% 
+  
+    # Keep only `idspecies`, `description`, `type` and `source`:
+    select(idspecies, description, type, source)
+} 
 ```
 
-Add regional information:
+For species with locality information, we need to adapt this function:
 
 ```{r}
-pathways %<>% left_join(
-  select(species_localities, id_sp_region, locationID),
-  by = "id_sp_region") 
+to_description_with_locality <- function(data_frame, column_name, type){
+    data_frame %>% 
+    
+    # Remove empty values
+    filter(
+      (!!as.symbol(column_name)) != "") %>% 
+
+    # keep distinct values only
+    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
+    
+    # Join with reference information
+    left_join(
+      select(literature_references, sourceid, source),
+      by = c("sourceid"))    %>% 
+    
+    # Join with locality information
+    left_join(
+      select(sp_in_region_locationID, id_sp_region, locationID),
+      by = c("id_sp_region"))    %>% 
+    
+    # Map description
+    mutate(description = paste(locationID, (!!as.symbol(column_name)), sep = " - ")) %>% 
+
+    # Map `type`:
+    mutate(type = type) %>% 
+  
+    # Keep only `idspecies`, `description`, `type` and `source`:
+    select(idspecies, description, type, source)
+} 
 ```
 
-Add references:
+### Pathway
 
 ```{r}
-pathways %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = "sourceid") 
+to_description_with_locality(data_frame = pathways, column_name = "pathway", type = "patwhay")
 ```
 
-Rename to `source`:
+
+## Vectors
 
 ```{r}
-pathways %<>% rename("source" = "complete_ref") 
+to_description_with_locality(vectors, "vector2", "vector")
 ```
 
-Map `description`:
-
-```{r}
-pathways %<>% mutate(description = paste(locationID, pathway, sep = " - ")) 
-```
-
-Map `type`:
-
-```{r}
-pathways %<>% mutate(type = "pathway") 
-```
-
-Keep only `sourceid`, `description`, `type` and `sourceid`:
-
-```{r}
-pathways %<>% select(idspecies, description, type, source)
-```
-
-## Vector information
-
-```{r}
-vectors %>% 
-  group_by(vector2) %>% 
-  summarize(records = n())
-```
-
-Add regional information:
-
-```{r}
-vectors %<>% left_join(
-  select(species_localities, id_sp_region, locationID),
-  by = "id_sp_region") 
-```
-
-Add sources:
-
-```{r}
-vectors %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = "sourceid") 
-```
-
-Rename to source:
-
-```{r}
-vectors %<>% rename("source" = "complete_ref")
-```
-
-Map `description`:
-
-```{r}
-vectors %<>% mutate(description = paste(locationID, vector2, sep = " - ")) 
-```
-
-Map `type`: 
-
-```{r}
-vectors %<>% mutate(type = "vector") 
-```
-
-Keep only `sourceid`, `description`, `type` and `source`:
-
-```{r}
-vectors %<>% select(idspecies, description, type, source)
-```
 
 ## Habitat information
 
-Map `description`: 
-Unite the information in `ideunis`, `level` and `notes` together to generate one column with habitat information
-
 ```{r}
-habitat %<>% mutate(description = paste(ideunis, "level", level, "-", habitat))
+habitat %<>% mutate(eunis_habitat = paste(ideunis, "level", level, "-", habitat))
 ```
 
-Add sources:
-
 ```{r}
-habitat %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = c("sourceid")
-) 
-```
-
-Rename `complete_ref`:
-
-```{r}
-habitat %<>% rename("source" = "complete_ref")
-```
-
-Map `type`
-
-```{r}
-habitat %<>% mutate(type = "eunis_habitat") 
-```
-
-Keep only `idspecies`, `description`, `type` and `source`:
-
-```{r}
-habitat %<>% select(idspecies, description, type, source)
+to_description(data_frame = habitat, column_name = "eunis_habitat", type = "eunis_habitat")
 ```
 
 ## Native range
 
-filter out information for which `region` is empty:
-
 ```{r}
-native_range %<>% filter(region != "") 
-```
-
-Information for native ranges are duplicated within a certain taxa. This is because for most taxa, we have one record with `notes` populated, and one (or more) records for `last_update`. We only need the taxon x native range information once, so we filter out the duplicates. For this, we make a new column where we combine
-
-```{r}
-native_range %<>% distinct(idspecies,region, .keep_all = TRUE)
-```
-
-Map `description`:
-
-```{r}
-native_range %<>% mutate(description = region) 
-```
-
-Map `type`:
-
-```{r}
-native_range %<>% mutate(type = "native_range") 
-```
-
-Add source:
-
-```{r}
-native_range %<>% left_join(
-  select(literature_references, sourceid, "complete_ref"),
-  by = "sourceid") 
-```
-
-Rename `source`:
-
-```{r}
-native_range %<>% rename("source" = "complete_ref") 
-```
-
-Keep only `idspecies`, `description`, `type` and `sourceid`:
-
-```{r}
-native_range %<>% select(idspecies, description, type, source)
+to_description(data_frame = native_range, column_name = "region", type = "native_range")
 ```
 
 ## Donor area
 
-Remove empty records for `donor_area`:
-
 ```{r}
-donor_area %<>% filter(region != "") 
-```
-
-Add regional information to `donor_area`:
-
-```{r}
-donor_area %<>% left_join(
-  select(species_localities, id_sp_region, locationID),
-  by = "id_sp_region") 
-```
-
-Map `description`
-
-```{r}
-donor_area %<>% mutate(description = paste(locationID, region, sep = " - ")) 
-```
-
-Map `type` 
-
-```{r}
-donor_area %<>% mutate(type = "donor_area") 
-```
-
-Add source information:
-
-```{r}
-donor_area %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = "sourceid") 
-```
-
-Rename `complete_ref`:
-
-```{r}
-donor_area %<>% rename("source" = "complete_ref")
-```
-
-
-Keep only `idspecies`, `description`, `type` and `source`:
-
-```{r}
-donor_area %<>% select(idspecies, description, type, source)
+to_description_with_locality(data_frame = donor_area, column_name = "region", type = "donor_area")
 ```
 
 ## Ecofunctional group
 
-Inspect ecofunctional group information
+ecofucntional_group ecofunct_group
 
 ```{r}
-ecofunctional_group %>% group_by(ecofunct_group) %>% summarize(records = n())
+to_description(data_frame = ecofunctional_group, 
+               column_name = "ecofunct_group",
+               type = "ecofunctional_group")
 ```
 
-Remove rows with no value for `ecofunct_group`
-
-```{r}
-ecofunctional_group %<>% filter(ecofunct_group != "")
-```
-
-Map `description`
-
-```{r}
-ecofunctional_group %<>% mutate(description = ecofunct_group) 
-```
-
-Map `type`
-
-```{r}
-ecofunctional_group %<>% mutate(type = "ecofunctional_group") 
-```
-
-Add source information:
-
-```{r}
-ecofunctional_group %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = "sourceid") 
-```
-
-Rename `complete_ref`:
-
-```{r}
-ecofunctional_group %<>% rename("source" = "complete_ref")
-```
-
-
-Keep only `idspecies`, `description`, `type` and `source`:
-
-```{r}
-ecofunctional_group %<>% select(idspecies, description, type, source)
-```
 
 ## Taxonomic group
 
-Inspect ecofunctional group information
+taxon_group, taxon_group
 
 ```{r}
-taxon_group %>% group_by(taxon_group) %>% summarize(records = n())
-```
-
-Map `description`
-
-```{r}
-taxon_group %<>% mutate(description = taxon_group) 
-```
-
-Map `type` 
-
-```{r}
-taxon_group %<>% mutate(type = "ecofunctional_group") 
-```
-
-Add source information:
-
-```{r}
-taxon_group %<>% left_join(
-  select(literature_references, sourceid, complete_ref),
-  by = "sourceid") 
-```
-
-Rename `complete_ref`:
-
-```{r}
-taxon_group %<>% rename("source" = "complete_ref")
-```
-
-Keep only `idspecies`, `description`, `type` and `source`:
-
-```{r}
-taxon_group %<>% select(idspecies, description, type, source)
+to_description(data_frame = taxon_group,
+               column_name = "taxon_group",
+               type = "taxon_group")
 ```
 
 ## Impact on ecology
-
-Inspect content:
 
 ```{r}
 impact %>% group_by(category_ecology) %>% summarize(records = n())
