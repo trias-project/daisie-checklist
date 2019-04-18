@@ -591,22 +591,45 @@ taxon %>%
 
 Concrete actions to undertake:
 - scientific names without `subtaxon_rank`:
-    - Acaena anserinifolia x inermis: species
-    - Geoplana (=Australoplana) sanguinea: species
+    - `Acaena anserinifolia x inermis`: species
+    - `Dahlia coccinea x pinnata`: species
+    - `Geoplana (=Australoplana) sanguinea`: species
+    - `Hyalomma Scupense "Delpy, 1946"`: species
+    - `Rosa Hollandica'`: species
     - Rest: genera
 - scientific names with `subtaxon_rank` = `agg.`: genus
 - scientific names with `subtaxon_rank` = `hyb`: species
 - scientific name = `Oidium Pseudoidium`: wrong scientific name, refers to genus `Oidium` or `Pseudoidium` 
 
 ```{r}
+species_names <- c("Acaena anserinifolia x inermis", 
+                   "Dahlia coccinea x pinnata",
+                   "Geoplana (=Australoplana) sanguinea",
+                   'Hyalomma Scupense "Delpy, 1946"',
+                   "Rosa Hollandica'")
+```
+
+
+```{r}
 taxon %<>% mutate(dwc_taxonRank = case_when(
-  rankmarker ==  "sp."         ~ "species",
-  rankmarker ==  "infrasp."    ~ "infraspecificname",
-  rankmarker ==  "morph"       ~ "morphovar",
-  is.na(rankmarker) &
-    (subtaxon_rank == "Acaena anserinifolia x inermis" |
-     subtaxon_rank == "Geoplana (=Australoplana) sanguinea" ) ~ "species"
-))
+  rankmarker == "sp."         ~ "species",
+  rankmarker == "infrasp."    ~ "infraspecificname",
+  rankmarker == "cv."         ~ "cultivar",
+  rankmarker == "infrasubsp." ~ "infrasubspecificname",
+  rankmarker == "var."        ~ "variety",
+  rankmarker == "subvar."     ~ "subvariety",
+  rankmarker == "subf."       ~ "subform",
+  rankmarker == "subsp."      ~ "subspecies",
+  rankmarker == "f."          ~ "form", 
+  rankmarker ==  "morph"      ~ "morphovar",
+  rankmarker == "pv."         ~ "pathovar",
+  rankmarker == "subtrib."    ~ "subtribe",
+  is.na(rankmarker) & is.na(subtaxon_rank) & !(dwc_scientificName %in% species_names) ~ "genus",
+  is.na(rankmarker) & is.na(subtaxon_rank) & dwc_scientificName %in% species_names ~ "species",
+  is.na(rankmarker) & subtaxon_rank == "agg." ~ "genus",
+  is.na(rankmarker) & subtaxon_rank == "hyb." ~ "species",
+  is.na(rankmarker) & subtaxon_rank == "subsp." ~ "subspecies",
+  TRUE ~ rankmarker))
 ```
 
 summarize mapping:
