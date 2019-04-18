@@ -663,12 +663,6 @@ taxon %<>% left_join(
   by = "sourceid")
 ```
 
-Rename `complete_ref`:
-
-```{r}
-taxon %<>% rename("dwc_taxonRemarks" = "source") 
-```
-
 ## Post-processing
 
  `taxon` contains two more fields that have not been mapped yet
@@ -752,12 +746,6 @@ vernacular_names %<>% left_join(
   select(literature_references, sourceid, source),
   by = "sourceid"
 ) 
-```
-
-Rename `complete_ref`:
-
-```{r}
-vernacular_names %<>% rename("dwc_source" = "source") 
 ```
 
 ### language
