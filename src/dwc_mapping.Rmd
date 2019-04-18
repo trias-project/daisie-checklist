@@ -329,9 +329,9 @@ taxon %<>% mutate(dwc_scientificName = paste(genus, species, authority, subtaxon
 Remove all `NA`:
 
 ```{r}
-test <- taxon %>% 
+taxon %<>% 
   mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "NA", "")) %>% 
-  mutate(dwc_scientificName = str_remove(dwc_scientificName, "\\s{2,}")) %>% 
+  mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "(\\s){2,}", " ")) %>% 
   mutate(dwc_scientificName = trimws(dwc_scientificName))
 ```
 
