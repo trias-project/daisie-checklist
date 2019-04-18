@@ -603,20 +603,13 @@ Concrete actions to undertake:
 - scientific name = `Oidium Pseudoidium`: wrong scientific name, refers to genus `Oidium` or `Pseudoidium` 
 
 ```{r}
-taxon %>% 
-  group_by(rankmarker, subtaxon_rank) %>% 
-  summarize(records = n()) %>% 
-  arrange(desc(records)) 
-```
-
-```{r}
 taxon %<>% mutate(dwc_taxonRank = case_when(
   rankmarker ==  "sp."         ~ "species",
   rankmarker ==  "infrasp."    ~ "infraspecificname",
   rankmarker ==  "morph"       ~ "morphovar",
   is.na(rankmarker) &
     (subtaxon_rank == "Acaena anserinifolia x inermis" |
-     subtaxon_rank == "Geoplana (=Australoplana) sanguinea" )
+     subtaxon_rank == "Geoplana (=Australoplana) sanguinea" ) ~ "species"
 ))
 ```
 
@@ -624,7 +617,7 @@ summarize mapping:
 
 ```{r}
 taxon %>% 
-  group_by(rankmarker, dwc_taxonRank) %>% 
+  group_by(rankmarker, subtaxon_rank, dwc_taxonRank) %>% 
   summarize(records = n()) %>% 
   arrange(desc(records)) 
 ```
