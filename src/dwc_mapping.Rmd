@@ -841,7 +841,12 @@ Inspect column names in `distribution`:
 distribution %>% colnames()
 ```
 
-Not all variables can be mapped to DwC terms in the distribution extension. We save the information in a separate dataframes and map the information in the description extension:
+The following variables have no equivalent Darwin Core term in the distribution extension:
+- `population_status`
+- `current_distribution`
+- `region_of_first_record`
+
+. We save the information in a separate dataframes and map the information in the description extension:
 
 ```{r}
 degree_of_establishment <- distribution %>% 
@@ -905,11 +910,11 @@ Two fields refer to verbatim location information (mapped to `locality`):
 - `region_country`
 - `region_coast`
 
-Two fields refer to a location codes (mapped to `locationID`:
+Two fields refer to a location codes (mapped to `locationID`):
 - `code_region`  (for location linked to coountries)
 - `code_coast` (forl location linked to coastal areas)
 
-These codes originate from different sources (mapped to `locationID`), contained respectively in:
+These codes originate from different sources (mapped to `locationID`):
 - `system_country`
 - `system_coast` 
 
@@ -922,7 +927,7 @@ distribution %>%
 
 Note that coastal information is not always provided (`NA`). For these records, we will not integrate information into `locationID` and `locality` from coastal areas.
 
-This is how we will map information about locations:
+This is how we will map `locationID` and `locality`:
 
 region_country | region_coast | locationID | locality
 --- | --- | --- | ---
@@ -948,20 +953,19 @@ distribution %<>% mutate(dwc_locality = case_when(
   !is.na(region_coast) ~ paste(region_country, region_coast, sep = "|")))
 ```
 
-Some information in the description extension (e.g. for `impact on use` or `impact on ecolgy`) is a property of a species in a particular _region_, rather than a property of a species as a whole. This is indicated by linking the description infomration with the ID `id_sp_region`. 
-To emphasize that this description record is linked to a species in a particular region, we want to add the `locationID` to the description information:
+Some information in the description extension (e.g. for `impact on use` or `impact on ecolgy`) is a property of a taxon in a particular _region_ (identified by `id_sp_region`), rather than a property of a species as a whole. 
+To emphasize that this description record is linked to a taxon in a particular region, we will add the `locationID` to the descriptor:
 
-idspecies | sp_in_region | description | description_with_locationID$
+idspecies | sp_in_region | description | description_with_locationID
 --- | --- | --- | ---
 A | A_1 | impact_on_use_A1 |impact_on_use_A1 (locationID)
 A | A_2 | impact_on_use_A2 | impact_on_use_A2 (locationID)
 
-We thus generate a dataframe here, linking `id_sp_region` with `locationID`:
+We here save the link between `id_sp_region` and `locationID`in a separate dataframe, to use it later in the mapping of the description extension:
 
 ```{r}
 sp_in_region_locationID <- distribution %>% 
-  select(idspecies, id_sp_region, dwc_locationID) %>% 
-  rename("locationID" = "dwc_locationID")
+  select(idspecies, id_sp_region, dwc_locationID)
 ```
 
 ## countryCode
