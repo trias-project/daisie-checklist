@@ -1440,7 +1440,10 @@ distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
 
 ## source
 
-In the distribution extension, `source` information is extracted from `distribution_sources`. We link this information to `distribution` by using a combination between `id_sp_region` and `field_name`, with the content of `field_name` referring to the specific column names in `input_distribution`
+In the distribution extension, there's no sourceID available
+
+
+`source` information is extracted from `distribution_sources`. We link this information to `distribution` by using a combination between `id_sp_region` and `field_name`, with the content of `field_name` referring to the specific column names in `input_distribution`
 
 Thus, we need to match this dataset
 
