@@ -202,6 +202,15 @@ remove_taxa <-
     select(dwc_scientificName, idspecies)
 ```
 
+8. Link those with the replacement values for `idspecies`
+
+```{r}
+# identify replacement idspecies:
+replacement_idspecies <- c("52831","900975","52847","52858","52877","52878","52889")
+
+remove_taxa %<>% mutate(replacement_idspecies = replacement_idspecies)
+```
+
 8. Remove duplicated taxa from taxon core:
 
 ```{r}
@@ -213,7 +222,6 @@ taxon %<>% filter(!(idspecies %in% remove_idspecies))
 ```{r}
 write_csv(remove_taxa, "../data/interim/remove_taxa.csv")
 ```
-
 
 ## kingdom
 
