@@ -153,6 +153,23 @@ literature_references <- read_delim(
   col_types = col_types)
 ```
 
+15. Read `distribution_sources` (interim)
+
+```{r}
+distribution_sources <- read_delim(
+  file = "../data/interim/distribution_sources.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+15. Read `remove_taxa` (interim)
+
+```{r}
+remove_taxa <- read_delim(
+  file = "../data/interim/remove_taxa.csv", 
+  delim = ",",
+  col_types = col_types)
+```
 
 # Create transformation functions
 
@@ -504,19 +521,50 @@ description <-
             descriptors_for_taxon_in_region_without_source)
 ```
 
-2. Sort on `taxonid`
+2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+
+```{r}
+taxonID_to_replace <- 
+  description %>% 
+    filter(taxonID %in% remove_taxa$idspecies) %>% 
+    select(taxonID) %>% 
+    unique()
+taxonID_to_replace
+```
+
+2. Show replacement values:
+
+```{r}
+remove_taxa %>% 
+  filter(idspecies %in% taxonID_to_replace$taxonID) %>% 
+  select(replacement_idspecies)
+```
+
+2. Replace these values with the correct taxonID
+
+```{r}
+description %<>% 
+  mutate(idspecies = 
+           recode(idspecies,"52845" = "52831")
+)
+```
+
+
+
+
+3. Sort on `taxonid`
 
 ```{r}
 description %<>% arrange(taxonID)
 ```
 
-3. Preview data:
+4. Preview data:
 
 ```{r}
 head(description, n=10)
 ```
 
-4. Export as .csv
+5. Export as .csv
 
 ```{r}
 write_csv(description, "../data/processed/description.csv", na = "")
