@@ -1,0 +1,524 @@
+---
+title: "Darwin Core mapping script for Description Extension"
+subtitle: "For: Inventory of alien species in Europe (DAISIE)"
+author:
+- Lien Reyserhove
+- David Roy
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+#  pdf_document:
+#    df_print: kable
+#    number_sections: yes
+#    toc: yes
+#    toc_depth: 3
+---
+
+This file describes the steps required to map the data to [Darwin Core Description](https://tools.gbif.org/dwca-validator/extension.do?id=gbif:Description)
+
+# Setup 
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+Load libraries:
+
+```{r}
+library(tidyverse)      # To do data science
+library(magrittr)       # To use %<>% pipes
+library(janitor)        # To clean input data
+library(readxl)         # To read Excel files
+library(rgbif)          # To use GBIF services
+```
+
+# Read data
+
+1. Define data types
+
+```{r}
+col_types <- cols(.default = col_character())
+```
+
+2. Read habitat data (raw data)
+
+```{r}
+habitat <- read_delim(
+  file = "../data/raw/input_habitat.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+3. Read native range (raw data)
+
+```{r}
+native_range <- read_delim(
+  file = "../data/raw/input_native_range.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+4. Read `ecofunctional_group` (interim)
+
+```{r}
+ecofunctional_group <- read_delim(
+  file = "../data/interim/ecofunctional_group.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+5. Read `pathways` (raw)
+
+```{r}
+pathways <- read_delim(
+  file = "../data/raw/input_pathways.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+6. Read vector (raw)
+
+```{r}
+vectors  <- read_delim(
+  file = "../data/raw/input_vectors.csv", 
+  delim = ",", 
+  col_types = col_types)
+```
+
+7. Read donor area (raw)
+
+```{r}
+donor_area <- read_delim(
+  file = "../data/raw/input_donor_area.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+8. Read impact (raw)
+
+```{r}
+impact <- read_delim(
+  file = "../data/raw/input_impact.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+10. Read current distribution (interim)
+
+```{r}
+current_distribution <- read_delim(
+  file = "../data/interim/current_distribution.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+11. Read population status (interim)
+
+```{r}
+population_status <- read_delim(
+  file = "../data/interim/population_status.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+12. Read region of first record (interim)
+
+```{r}
+region_of_first_record <- read_delim(
+  file = "../data/interim/region_of_first_record.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+13. Read `sp_in_region_with_location` (interim)
+
+```{r}
+sp_in_region_with_location <- read_delim(
+  file = "../data/interim/sp_in_region_with_location.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+14. Read `interim_literature_references` (interim)
+
+```{r}
+literature_references <- read_delim(
+  file = "../data/interim/interim_literature_references.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+
+# Create transformation functions
+
+The description extension will be a combination of the following descriptors:
+
+Descriptors linked to a taxon (no regional information):
+- habitat
+- native range
+- ecofunctional group
+
+Descriptors linked to a taxon in a specific region:
+- pathways
+- vector
+- donor area
+- impact
+- vector
+- current distribution
+- population status
+- region of first record
+
+Each descriptor is imported as a separate dataset. We need to imply the same transformation steps to each dataset:
+
+1. Remove all empty values (if applicable)
+2. Keep distinct vaules only (if applicable)
+3. Join with locality information (only for species in region information)
+4. Map `description`
+5. Map `type`
+6. Select relevant columns
+
+As these steps are repeated for each of the description datasets, we write a function here.
+
+```{r}
+map_to_description <- function(data_frame, column_name, descriptor){
+    data_frame %>% 
+    
+    # Remove empty values
+    filter(
+      (!!as.symbol(column_name)) != "" | 
+        !is.na(!!as.symbol(column_name))) %>% 
+
+    # keep distinct values only
+    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
+    
+    # Map description
+    mutate(description = (!!as.symbol(column_name))) %>% 
+
+    # Map type:
+    mutate(type = descriptor) %>% 
+  
+    # Keep only `idspecies`, `description` and `type`:
+    select(idspecies, description, type, sourceid)
+} 
+```
+
+For species with locality information, we need to adapt this function:
+
+```{r}
+map_to_description_with_locality <- function(data_frame, column_name, descriptor){
+    data_frame %>% 
+    
+    # Remove empty values
+    filter(
+      (!!as.symbol(column_name)) != "" | 
+        !is.na(!!as.symbol(column_name))) %>% 
+
+    # keep distinct values only
+    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
+    
+    # Join with locality information
+    left_join(
+      select(sp_in_region_with_location, id_sp_region, dwc_locationID),
+      by = c("id_sp_region"))    %>% 
+    
+    # Map description
+    mutate(description = paste(dwc_locationID, (!!as.symbol(column_name)), sep = " - ")) %>% 
+
+    # Map `type`:
+    mutate(type = descriptor) %>% 
+  
+    # Keep only `idspecies`, `id_sp_region`,`description`, `type` and `source`:
+    select(idspecies, id_sp_region, description, type, sourceid)
+} 
+```
+
+# Descriptors linked to taxon
+
+## Habitat
+
+Generate `eunis_habitat`
+
+```{r}
+habitat %<>% mutate(eunis_habitat = paste(ideunis, "level", level, "-", habitat))
+```
+
+Apply transformation function:
+
+```{r}
+habitat <- 
+  map_to_description(
+    data_frame = habitat, 
+    column_name = "eunis_habitat", 
+    descriptor = "eunis habitat")
+```
+
+## Native range
+
+```{r}
+native_range <- 
+  map_to_description(
+    data_frame = native_range, 
+    column_name = "region", 
+    descriptor = "native range"
+    )
+```
+
+## Ecofunctional group
+
+```{r}
+ecofunctional_group <- 
+  map_to_description(
+    data_frame = ecofunctional_group,
+    column_name = "ecofunct_group",
+    descriptor = "ecofunctional group"
+    )
+```
+
+## Combine descriptors
+
+1. Combine `habitat`, `native_range` and `ecofunctional_group`
+
+```{r}
+descriptors_for_taxon <-
+  bind_rows(habitat, native_range, ecofunctional_group)
+```
+
+2. Link with `sourceid` from `literature_references`
+
+```{r}
+descriptors_for_taxon %<>% 
+  left_join(
+    select(literature_references, sourceid, source),
+    by = "sourceid")
+```
+
+3. Keep column names for description extension only and rename
+
+```{r}
+descriptors_for_taxon <- 
+  descriptors_for_taxon %>% 
+    select(idspecies, description, type, source) %>% 
+    rename("taxonID" = "idspecies")
+```
+
+# Descriptors linked to taxon in a region (with sourceid in raw file)
+
+## Pathways
+
+```{r}
+pathways <- 
+  map_to_description_with_locality(
+    data_frame = pathways, 
+    column_name = "pathway", 
+    descriptor = "pathway")
+```
+
+## Vector
+
+```{r}
+vectors <-
+  map_to_description_with_locality(
+    data_frame = vectors, 
+    column_name = "vector2", 
+    descriptor = "vector")
+```
+
+## Donor area
+
+```{r}
+donor_area <- 
+  map_to_description_with_locality(
+    data_frame = donor_area, 
+    column_name = "region", 
+    descriptor = "donor_area")
+```
+
+## Region of first record
+
+```{r}
+region_of_first_record <-
+  map_to_description_with_locality(
+    data_frame = region_of_first_record,
+    column_name = "region_of_first_record",
+    descriptor = "region of first record"
+)
+```
+
+## Combine descriptors
+
+1. Combine `pathways`, `vectors` and `donor_area` and `region_of_first_record`
+
+```{r}
+descriptors_for_taxon_in_region_with_source <-
+  bind_rows(pathways, vectors, donor_area, region_of_first_record)
+```
+
+2. Link with `sourceid` from `literature_references`
+
+```{r}
+descriptors_for_taxon_in_region_with_source %<>% 
+  left_join(
+    select(literature_references, sourceid, source),
+    by = "sourceid")
+```
+
+3. Keep column names for description extension only and rename
+
+```{r}
+descriptors_for_taxon_in_region_with_source <- 
+  descriptors_for_taxon_in_region_with_source %>% 
+    select(idspecies, description, type, source) %>% 
+    rename("taxonID" = "idspecies")
+```
+
+
+# Descriptors linked to taxon in a region (without sourceid in raw file)
+
+## Current distribution
+
+```{r}
+current_distribution <-
+  map_to_description_with_locality(
+    data_frame = current_distribution,
+    column_name = "current_distribution",
+    descriptor = "current distribution"
+)
+```
+
+Add source information from `distribution_sources` (in `current_distrib` and `current_distribution`):
+
+```{r}
+current_distribution %<>% 
+  left_join(
+    select(
+      filter(distribution_sources, field_name == "current_distrib" | field_name == "current_distribution"),
+      id_sp_region, source),
+    by = "id_sp_region")
+```
+
+## Population status
+
+```{r}
+population_status <- 
+  map_to_description_with_locality(
+    data_frame = population_status,
+    column_name = "population_status",
+    descriptor = "degree of establishment"
+  )
+```
+
+Add source information from `distribution_sources` (in `status`):
+
+```{r}
+population_status %<>% 
+  left_join(
+    select(filter(distribution_sources, field_name == "status"), id_sp_region, source),
+  by = "id_sp_region")
+```
+
+## Impact
+
+### Impact on use
+
+1. Add empty column for `sourceid` (otherwise the function `map_to_description_with_locality` will not work)
+
+```{r}
+impact %<>% mutate(sourceid = "") 
+```
+
+2. Map to description 
+
+```{r}
+impact_on_use <-
+  map_to_description_with_locality(
+    data_frame = impact,
+    column_name = "category_uses",
+    descriptor = "impact on use")
+```
+
+3. Add source information from distribution_references:
+
+```{r}
+impact_on_use %<>% 
+  left_join(
+    select(
+      filter(distribution_sources, field_name == "useimpact_id"| field_name == "impact on uses"), 
+      id_sp_region, source),
+    by = "id_sp_region")
+```
+
+### Impact on ecology
+
+1. Map to description 
+
+```{r}
+impact_on_ecology <-
+  map_to_description_with_locality(
+    data_frame = impact,
+    column_name = "category_ecology",
+    descriptor = "impact on ecology")
+```
+
+2. Add source information from `distribution_sources`:
+
+```{r}
+impact_on_ecology %<>% 
+  left_join(
+    select(
+      filter(distribution_sources, field_name == "ecoimpact_id"| field_name == "ecological_impact"), 
+      id_sp_region, source),
+    by = "id_sp_region")
+```
+
+## Combine descriptors
+
+1. Combine `current_distribution`, `population_status` and `impact_on_use` and `impact_on_ecology`
+
+```{r}
+descriptors_for_taxon_in_region_without_source <-
+  bind_rows(current_distribution, population_status, impact_on_use, impact_on_ecology)
+```
+
+2. Keep column names for description extension only and rename
+
+```{r}
+descriptors_for_taxon_in_region_without_source <- 
+  descriptors_for_taxon_in_region_without_source %>% 
+    select(idspecies, description, type, source) %>% 
+    rename("taxonID" = "idspecies")
+```
+
+# Combine all descriptors and export distribution extension
+
+1. Combine `descriptors_for_taxon`, `descriptors_for_taxon_with_source` and `descriptors_for_taxon_without_source`
+
+```{r}
+description <- 
+  bind_rows(descriptors_for_taxon,
+            descriptors_for_taxon_in_region_with_source,
+            descriptors_for_taxon_in_region_without_source)
+```
+
+2. Sort on `taxonid`
+
+```{r}
+description %<>% arrange(taxonID)
+```
+
+3. Preview data:
+
+```{r}
+head(description, n=10)
+```
+
+4. Export as .csv
+
+```{r}
+write_csv(description, "../data/processed/description.csv", na = "")
+```
+
