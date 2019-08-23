@@ -189,19 +189,30 @@ taxon %>%
   select(dwc_scientificName, idspecies, ordo, family, genus) 
 ```
 
-7. Specify the values of `idspecies` to be removed from the taxon core
+7. Specify the scientificnames and associated values of `idspecies` to be removed from the taxon core
 
 ```{r}
+# Define idspecies to select on:
 remove_idspecies <- c("900966","52845","900977","900984","900995","900997","901002")
+
+# Filter on these values:
+remove_taxa <- 
+  taxon %>% 
+    filter(idspecies %in% remove_idspecies) %>% 
+    select(dwc_scientificName, idspecies)
 ```
 
 8. Remove duplicated taxa from taxon core:
 
 ```{r}
-taxon %>% 
-  filter(!(idspecies %in% remove_idspecies)
+taxon %<>% filter(!(idspecies %in% remove_idspecies))
 ```
 
+9. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
+
+```{r}
+write_csv(remove_taxa, "../data/interim/remove_taxa.csv")
+```
 
 
 ## kingdom
