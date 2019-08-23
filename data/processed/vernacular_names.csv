@@ -15,7 +15,7 @@ taxonID,vernacularName,source,language
 10030,Onagre,,fr
 10030,pirosszárú ligetszépe,,hu
 10030,punavarrene kuningakepp,,et
-10030,pupalka,,cs
+10030,pupalka ,,cs
 10030,Raudonstiebė nakviša,,lt
 10030,Rotstängel-Nachtkerze,,de
 10030,s,,lv
@@ -80,7 +80,7 @@ taxonID,vernacularName,source,language
 10101,Evonimo del Giappone,,it
 10101,Fusain du Japon,,fr
 10106,Large-leaved Spindle,,en
-10109,pundursegliņš,,lv
+10109,pundursegliņš ,,lv
 1011,Erba coltella delle risaie,,it
 10115,planta-do-rato-mickey,,es
 10128,Acalifa della Virginia,,it
@@ -156,7 +156,7 @@ taxonID,vernacularName,source,language
 10250,Mediterranean Spurge,,en
 10257,Coral Spurge,,en
 10260,ciprešu dievkr,,lv
-10260,ciprešu dievkrēsliņš,,lv
+10260,ciprešu dievkrēsliņš ,,lv
 10260,Cypress Spurge,,en
 10260,küpress-piimalill,,et
 10260,Siauralapė karpažolė,,lt
@@ -169,7 +169,7 @@ taxonID,vernacularName,source,language
 10273,Euphorbe Ésule,,fr
 10274,Dwarf Spurge,,en
 10274,Kleine Wolfsmilch,,de
-10274,mazais dievkrēsliņš,,lv
+10274,mazais dievkrēsliņš ,,lv
 10274,pryšec drobný,,cs
 10274,väke piimalill,,et
 10280,mlie,,cs
@@ -192,8 +192,8 @@ taxonID,vernacularName,source,language
 10296,pryšec sko,,cs
 10296,Spring-Wolfsmilch,,de
 10296,tartago,,pt
-10305,„jégvirág,,hu
-10305,Euforbia,,it
+10305, „jégvirág,,hu
+10305,Euforbia ,,it
 10305,eufórbia-marginada,,pt
 10305,Euphorbe,,fr
 10305,pryšec vroubený,,cs
@@ -241,7 +241,7 @@ taxonID,vernacularName,source,language
 10375,Phylanthus agol-alim,,he
 10375,פילנתוס עגול עלי,,he
 10378,quebra-pedra,,es
-10379,חלבלוב קעור,,he
+10379,  חלבלוב קעור,,he
 10379,Halavlouv,,he
 10379,Halavlouv ka'our,,he
 10379,חלבלוב,,he
@@ -352,8 +352,8 @@ taxonID,vernacularName,source,language
 10462,Round-leaved St John's-wort,,en
 10472,Millepertuis,,fr
 10473,Turkish Tutsan,,en
-10475,Berlīnes papele,,lv
-10475,Topola berlińska,,pl
+10475,Berlīnes papele ,,lv
+10475,Topola berlińska ,,pl
 10481,álamo-híbrido,,pt
 10481,Bastard-Schwarz-Pappel,,de
 10481,choupo-híbrico,,pt
@@ -415,7 +415,7 @@ taxonID,vernacularName,source,language
 105424,Chrysanthemum rust mite,"Petanović and Stanković.1999. Catalog of the Eriophyoidea (Acari:Prostigmata) of Serbia and Montenegro.Acta. Ent. Serb. Spec.issue pp. 143; Glavendekić, M., Lj. Mihajlović, R. Petanović R (2005): Introduction and Spread of Invasive Mites and Insects in Se",en
 105426,English ivy bud mite,"Glavendekić, M., Lj. Mihajlović, R. Petanović R (2005): Introduction and Spread of Invasive Mites and Insects in Serbia and Montenegro. International Symposium ""Introduction and Spread of Invasive Species"", Berlin, 9-11 June, 2005. Articles and abstracts",en
 105429,Maple bladder-gall mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
-105468,Brown Marmorated Stink Bug,"Wermelinger, B., Wyniger, D. & Forster, B. (2008) First records of an invasive bug in Europe: Halyomorpha halys Stål (Heteroptera: Pentatomidae), a new pest on woody ornamentals and fruit trees? Mitteilungen der Schweizer Entomologischen Gesellschaft, 81,",en
+105468,Brown Marmorated Stink Bug ,"Wermelinger, B., Wyniger, D. & Forster, B. (2008) First records of an invasive bug in Europe: Halyomorpha halys Stål (Heteroptera: Pentatomidae), a new pest on woody ornamentals and fruit trees? Mitteilungen der Schweizer Entomologischen Gesellschaft, 81,",en
 10547,Grauwe abeel,,nl
 10547,Grey Poplar,,en
 10547,pelēcīg,,lv
@@ -426,7 +426,7 @@ taxonID,vernacularName,source,language
 10559,Didžioji tuopa,,lt
 10559,Peuplier de Virginie,,fr
 10559,Peuplier noir d'Amérique,,fr
-10559,Pioppo,,it
+10559,Pioppo ,,it
 10568,laurlapu papele,,lv
 10570,Juodoji tuopa,,lt
 10570,meln,,lv
@@ -434,7 +434,7 @@ taxonID,vernacularName,source,language
 10577,álamo-negro,,pt
 10577,choupo-de-itália,,pt
 10577,choupo-negro,,pt
-10580,olasz nyár,,hu
+10580, olasz nyár,,hu
 10580,chopo negro,,es
 10580,jegenyenyár,,hu
 10580,Pyramiden-Pappel,,de
@@ -551,7 +551,7 @@ taxonID,vernacularName,source,language
 10904,Oxalide chétive,,fr
 10904,Oxalis chétive,,fr
 10904,šťavel cibulkatý,,cs
-10909,Acetosella,,it
+10909,Acetosella ,,it
 10909,azedinha-de-sapo,,pt
 10909,erva-azeda-de-folhas-grandes,,pt
 1091,aprólevelű átokhínár,,hu
@@ -799,10 +799,10 @@ taxonID,vernacularName,source,language
 11384,hrachor bezlistý,,cs
 11384,hrachor pa,,cs
 11384,Ranken-Platterbse,,de
-11384,vītņu dedestiņa,,lv
+11384,vītņu dedestiņa ,,lv
 11390,hrachor cizrnový,,cs
 11390,Kicher-Platterbse,,de
-11394,hrachor,,cs
+11394,hrachor ,,cs
 11394,hrachor popínavý,,cs
 11402,Two-flowered Everlasting-pea,,en
 11406,Norfolk Everlasting-pea,,en
@@ -912,7 +912,7 @@ taxonID,vernacularName,source,language
 11568,keskenylevelű csillagfürt,,hu
 11568,lupina úzkolistá,,cs
 11568,Narrow-leaved Lupin,,en
-11568,šaurlapu lupīna,,lv
+11568,šaurlapu lupīna ,,lv
 11571,Tree Lupin,,en
 11574,Lupin de Cosentini,,fr
 11577,Turmous sfaradi,,he
@@ -1011,12 +1011,12 @@ taxonID,vernacularName,source,language
 11729,meliloto-branco,,es
 11729,Weißer Steinklee,,de
 11729,White Melilot,,en
-11739,augstais amoliņš,,lv
+11739,augstais amoliņš ,,lv
 11739,Didysis barkūnas,,lt
 11739,Tall Melilot,,en
 1174,érdes szárcsagyökér,,hu
 11749,Meliloto dentato,,it
-11749,zobainais amoliņš,,lv
+11749,zobainais amoliņš ,,lv
 11751,india mesikas,,et
 11751,indiai somkóró,,hu
 11751,Kleinblütiger Steinklee,,de
@@ -1045,7 +1045,7 @@ taxonID,vernacularName,source,language
 11791,Nostrzyk wołżański,,pl
 11791,Pavolginis barkūnas,,lt
 11791,vene mesikas,,et
-11791,Volgas amoliņš,,lv
+11791,Volgas amoliņš ,,lv
 11800,Esparcette à dents égales,,fr
 11800,Sainfoin à dents égales,,fr
 11800,Sainfoin de Crète,,fr
@@ -1086,7 +1086,7 @@ taxonID,vernacularName,source,language
 11847,pta,,cs
 11847,Yellow Serradella,,en
 11850,Kleiner Vogelfuß,,de
-11853,szerradella,,hu
+11853, szerradella,,hu
 11853,Echter Vogelfuß,,de
 11853,Großer Vogelfuß,,de
 11853,Ornithope cultivé,,fr
@@ -1099,8 +1099,8 @@ taxonID,vernacularName,source,language
 11853,Serradella,,de
 11853,Serradelle,,fr
 11853,vetési csibeláb,,hu
-11861,pūkain,,lv
-11863,tűzbab,,hu
+11861, pūkain,,lv
+11863, tűzbab,,hu
 11863,Bombay fasulyesi,,tr
 11863,fazol šarlatový,,cs
 11863,Feuer-Bohn,,de
@@ -1235,7 +1235,7 @@ taxonID,vernacularName,source,language
 12009,árbol de las pagodas,,es
 12009,közönséges japánakác,,hu
 12009,Perlenschnurbaum,,de
-12009,Sofora,,it
+12009,Sofora ,,it
 12009,sófora,,es
 12009,sófora del Japón,,es
 12009,sófora-do-japão,,pt
@@ -1253,10 +1253,10 @@ taxonID,vernacularName,source,language
 12026,Tiltan alexandroni,,he
 12026,Trèfle d'Alexandrie,,fr
 12026,trevo-de-alexandria,,pt
-12026,תלתן,,he
-12030,šķautņainais,,lv
+12026,תלתן ,,he
+12030,šķautņainais ,,lv
 12034,Narrow Clover,,en
-12034,šaurlapu lupīna,,lv
+12034,šaurlapu lupīna ,,lv
 12039,Trèfle,,fr
 12044,Large Trefoil,,en
 12050,Nodding Clover,,en
@@ -1267,7 +1267,7 @@ taxonID,vernacularName,source,language
 12071,Rose Clover,,en
 12073,Alsike Clover,,en
 12073,Bastard-Klee,,de
-12073,bastarda,,lv
+12073,bastarda ,,lv
 12073,Basterdklaver,,nl
 12073,jetel zvrhlý,,cs
 12073,Schöner Schweden-Klee,,de
@@ -1282,7 +1282,7 @@ taxonID,vernacularName,source,language
 12098,kahkjaspunane ristik,,et
 12098,Molineri-Inkarnat-Klee,,de
 12098,Purpurinis dobilas,,lt
-12098,trebol,,es
+12098,trebol ,,es
 12103,Crimson Clover,,en
 12103,Trèfle du Rousillon,,fr
 12103,Trèfle incarnat,,fr
@@ -1292,7 +1292,7 @@ taxonID,vernacularName,source,language
 12111,Bur Clover,,en
 12111,herefaj,,hu
 12111,Kletten-Klee,,de
-12114,lupīnas,,lv
+12114,lupīnas ,,lv
 12120,Veränderlicher Klee,,de
 12123,Schwärzlicher Klee,,de
 12133,Hungarian Clover,,en
@@ -1322,13 +1322,13 @@ taxonID,vernacularName,source,language
 12162,Persischer Klee,,de
 12162,trevo-da-pérsia,,pt
 12162,trevo-de-folhas-reviradas,,pt
-12170,sīkziedu,,lv
+12170,sīkziedu ,,lv
 12173,Rauer Klee,,de
 12178,Trèfle,,fr
 12181,Sparriger Klee,,de
 12184,Starry Clover,,en
 12187,Gestreifter Klee,,de
-12187,svītrainais,,lv
+12187,svītrainais ,,lv
 12193,jetel podzemní,,cs
 12197,Woolly Clover,,en
 12202,Pūslėtasis dobilas,,lt
@@ -1388,13 +1388,13 @@ taxonID,vernacularName,source,language
 12294,Vesce articulée,,fr
 12294,Vesce d'Auvergne,,fr
 12294,Vienažiedis vikis,,lt
-12294,vika,,cs
-12294,vikev,,cs
+12294,vika ,,cs
+12294,vikev ,,cs
 1231,Tiger-Lilie,,de
 12310,Bakia argemanit,,he
 12310,Bengalen-Wicke,,de
 12310,Purple Vetch,,en
-12310,בקיה,,he
+12310,בקיה ,,he
 12313,Bithynien-Wicke,,de
 12313,vikev maloasijská,,cs
 12318,rips-hiirehernes,,et
@@ -1409,7 +1409,7 @@ taxonID,vernacularName,source,language
 12327,Linsen-Wicke,,de
 12327,orobo,,pt
 12327,vika šošovicová,,cs
-12327,vikev,,cs
+12327,vikev ,,cs
 12327,żosfa,,mt
 12335,bob obecný,,cs
 12335,bob oby,,cs
@@ -1438,8 +1438,8 @@ taxonID,vernacularName,source,language
 12374,vika žltá,,cs
 12374,vikev žlutá,,cs
 12384,Grünblütige Wicke,,de
-12384,vika,,cs
-12384,vikev,,cs
+12384,vika ,,cs
+12384,vikev ,,cs
 12387,Vesce à une fleur,,fr
 12387,Vesce éperonnée,,fr
 12388,Maus-Wicke,,de
@@ -1454,12 +1454,12 @@ taxonID,vernacularName,source,language
 12398,Ungarische Wicke,,de
 12398,Wyka pannońska,,pl
 12403,vikev panonská pravá,,cs
-12407,vikev panonská,,cs
+12407,vikev panonská ,,cs
 1241,Pyrenean Lily,,en
 12415,vékonyszárú bükköny,,hu
 12418,Fremd-Wicke,,de
 12418,idegen bükköny,,hu
-12420,zirņveida vīķis,,lv
+12420,zirņveida vīķis ,,lv
 12422,Futter-Wicke,,de
 12422,Saat-Wicke,,de
 12422,Sėjamasis vikis,,lt
@@ -1683,7 +1683,7 @@ taxonID,vernacularName,source,language
 12887,Mûrier à papier,,fr
 12887,Mûrier d'Espagne,,fr
 12887,Papiermaulbeerbaum,,de
-12891,Ficus bengali,,he
+12891,Ficus bengali ,,he
 12891,פיקוס בנגלי,,he
 12892,Ficus ha'shderot,,he
 12892,פיקוס השדרות,,he
@@ -1881,7 +1881,7 @@ taxonID,vernacularName,source,language
 13276,Moupin Cotoneaster,,en
 13279,Mucronate Cotoneaster,,en
 13281,dúsvirágú madárbirs,,hu
-13281,udzziedu klintene,,lv
+13281,udzziedu klintene ,,lv
 13281,Vielblütige Steinmispel,,de
 13284,Dwarf Cotoneaster,,en
 1329,Christoph-Lauch,,de
@@ -1965,7 +1965,7 @@ taxonID,vernacularName,source,language
 13445,Cognassier,,fr
 13445,Echte Quitte,,de
 13445,gamboeiro,,pt
-13445,kdouloň obecná,,cs
+13445,kdouloň obecná ,,cs
 13445,marmeleiro,,pt
 13445,marmeleiro,,es
 13445,Quince,,en
@@ -2000,13 +2000,13 @@ taxonID,vernacularName,source,language
 13466,Yenidunya,,tr
 13471,exochorda velkokvetá,,cs
 13474,tužebník kam,,cs
-13478,tužebník,,cs
+13478,tužebník ,,cs
 13488,Ananas-Erdbeere,,de
 13488,Daržinė braškė,,lt
 13488,Fraisier,,fr
 13488,Garden Strawberry,,en
 13488,Kultur-Erdbeere,,de
-13512,jahodka,,cs
+13512,jahodka ,,cs
 13515,Aukštoji žemuogė,,lt
 13515,Frawli maltija,,mt
 13515,Hautbois Strawberry,,en
@@ -2031,8 +2031,8 @@ taxonID,vernacularName,source,language
 13560,Kerria,,fr
 13560,Kerria,,it
 13560,Kerrie,,fr
-13563,purpura,,lv
-13569,og,,lv
+13563,purpura ,,lv
+13569, og,,lv
 13570,aed-õunapuu,,et
 13570,Apple,,en
 13570,jabloň domáca,,cs
@@ -2052,8 +2052,8 @@ taxonID,vernacularName,source,language
 1358,Schwarz-Lauch,,de
 1358,Schwarzer Lauch,,de
 13595,Pommier Paradis,,fr
-13596,Mandžūrijas,,lv
-13596,Sahalīnas,,lv
+13596,Mandžūrijas ,,lv
+13596,Sahalīnas ,,lv
 13598,Tuffieħ salvağğ,,mt
 13599,Zyboldo obelis,,lt
 13605,Echte Mispel,,de
@@ -2147,13 +2147,13 @@ taxonID,vernacularName,source,language
 13776,verikokia,,el
 1378,Gråambrosia,,no
 1378,Hästambrosia,,sv
-1378,Hesteambrosia,,no
+1378,Hesteambrosia ,,no
 1378,Krybende Ambrosie,,da
 1378,Malörtsambrosia,,sv
-1378,Sormituoksukki,,fi
+1378,Sormituoksukki ,,fi
 1378,Stor nysört,,fi
 1378,Sträv ambrosia,,sv
-1378,Trefliget Ambrosie,,da
+1378,Trefliget Ambrosie ,,da
 13780,magus kirsipuu,,et
 13780,Paprastoji trešnė,,lt
 13780,saldais ķirsis,,lv
@@ -2167,7 +2167,7 @@ taxonID,vernacularName,source,language
 13784,mirobolano,,pt
 13784,Myrobolan,,fr
 13784,Prunier-cerise,,fr
-13784,slivka,,cs
+13784,slivka ,,cs
 13784,slivoň myrobalán,,cs
 13784,Śliwa wiśniowa,,pl
 13784,Vyšninė slyva,,lt
@@ -2204,7 +2204,7 @@ taxonID,vernacularName,source,language
 13830,Prunier,,fr
 13830,Prunier cultivé,,fr
 13830,Prunier domestique,,fr
-13830,Śliwa domowa typowa,,pl
+13830,Śliwa domowa typowa ,,pl
 13840,Prunier à greffer,,fr
 13840,Prunier Crèque,,fr
 13840,Prunier d'Italie,,fr
@@ -2401,8 +2401,8 @@ taxonID,vernacularName,source,language
 14129,Rosier multiflore,,fr
 14129,Róża wielkokwiatowa,,pl
 14129,Vielblütige Rose,,de
-14146,noraglapu roze,,lv
-14146,noraglapu roze cv.,,lv
+14146,noraglapu roze ,,lv
+14146,noraglapu roze cv. ,,lv
 14146,Smilkialapis erškėtis,,lt
 14154,japán rózsa,,hu
 14154,Japanese rose,,en
@@ -2511,9 +2511,9 @@ taxonID,vernacularName,source,language
 1433,Färgkulla,,sv
 1433,Farve-Gåseurt,,da
 1433,Glat Burre,,da
-1433,Gul gåseblom,,no
+1433,Gul gåseblom ,,no
 1433,Isotakiainen,,fi
-1433,Keltasauramo,,fi
+1433,Keltasauramo ,,fi
 1433,Liden Burre,,da
 1433,Liten kardborre,,sv
 1433,Pikkutakiainen,,fi
@@ -2635,13 +2635,13 @@ taxonID,vernacularName,source,language
 1456,Abrodd,,no
 1456,Åbrodd,,sv
 1456,Have-Malurt,,da
-1456,Klubbekorg,,no
+1456,Klubbekorg ,,no
 1456,Klubbfibbla,,sv
 1456,Koiruoho,,fi
-1456,Kultakaunokki,,fi
+1456,Kultakaunokki ,,fi
 1456,Malört,,sv
 1456,Malurt,,no
-1456,Svineøje,,da
+1456,Svineøje ,,da
 1456,Vägarnika,,sv
 14562,Kleine Brennnessel,,de
 14562,kopřiva žahavka,,cs
@@ -2677,7 +2677,7 @@ taxonID,vernacularName,source,language
 14584,Rot-Ruester,,de
 14584,stepes goba,,lv
 14584,stepju goba,,lv
-14584,stepju gobas forma,,lv
+14584,stepju gobas forma ,,lv
 14588,Turkestan-Ulme,,de
 14606,szibériai szil,,hu
 14606,zem,,lv
@@ -2716,7 +2716,7 @@ taxonID,vernacularName,source,language
 14637,läikiv hõbepuu,,et
 14637,Oliwnik srebrzysty,,pl
 14637,Silber-Ölweide,,de
-14637,sudraba eleagns,,lv
+14637,sudraba eleagns ,,lv
 14641,Broad-leaved Oleaster,,en
 14641,Oléastre,,fr
 14643,Oléastre,,fr
@@ -2725,7 +2725,7 @@ taxonID,vernacularName,source,language
 14645,Spreading Oleaster,,en
 14650,Dygliuotasis šaltalankis,,lt
 14650,mõru vesipipar,,et
-14650,pabērzu smiltsērkšķis,,lv
+14650,pabērzu smiltsērkšķis ,,lv
 14650,rakytník řešetlákovitý,,cs
 14650,rakytník rešetliakový,,cs
 14656,cânhamo-indiano,,pt
@@ -2810,7 +2810,7 @@ taxonID,vernacularName,source,language
 14757,Squirting Cucumber,,en
 14757,tykvice stříkavá,,cs
 14757,uborkás magrugó,,hu
-14766,adatainais dzeloņgurķis,,lv
+14766,adatainais dzeloņgurķis ,,lv
 14766,adatainais dzeloņgurķītis,,lv
 14766,Dygliavaisis virkštenis,,lt
 14766,Echinocistis lobata,,it
@@ -2889,7 +2889,7 @@ taxonID,vernacularName,source,language
 14881,carvalho-vermelho-americano,,pt
 14881,Chêne rouge d'Amérique,,fr
 14881,Dąb czerwony,,pl
-14881,dub,,cs
+14881,dub ,,cs
 14881,Quercia rossa,,it
 14881,Raudonasis ąžuolas,,lt
 14881,Red Oak,,en
@@ -2942,7 +2942,7 @@ taxonID,vernacularName,source,language
 14975,nogueira-preta,,pt
 14975,Noyer d'Amérique,,fr
 14975,Noyer noir,,fr
-14975,ořešák,,cs
+14975,ořešák ,,cs
 14975,Schwarz-Walnuss,,de
 14978,Echte Walnuss,,de
 14978,nogueira-comum,,pt
@@ -2993,7 +2993,7 @@ taxonID,vernacularName,source,language
 15032,alcaparra,,pt
 15032,alcaparreira,,pt
 15034,kleómefaj,,hu
-15041,Kleopátra tűje,,hu
+15041, Kleopátra tűje,,hu
 15041,kerti kleóme,,hu
 15044,Cleome comune,,it
 15044,Dornige Spinnenpflanze,,de
@@ -3009,7 +3009,7 @@ taxonID,vernacularName,source,language
 15057,Small Alison,,en
 15057,tupp-kilbirohi,,et
 15057,Uldbladet Kongelys,,da
-15057,Vår-Brunrod,,da
+15057,Vår-Brunrod ,,da
 15057,Vårbrunrot,,no
 15057,Vårflenört,,sv
 1506,Blue Corn-lily,,en
@@ -3039,7 +3039,7 @@ taxonID,vernacularName,source,language
 15109,Flerfarvet Ærenpris,,da
 15109,Hjartekongslys,,no
 15109,Hjertebladet Kongelys,,da
-15109,Kandelaber-Kongelys,,da
+15109,Kandelaber-Kongelys ,,da
 15109,Läkekungsljus,,sv
 15109,Mörkt kungsljus,,sv
 15109,Mørk Kongelys,,da
@@ -3115,7 +3115,7 @@ taxonID,vernacularName,source,language
 15163,m,,lv
 15163,Mat Ærenpris,,da
 15163,Merrettich,,de
-15163,Muukalaistädyke,,fi
+15163,Muukalaistädyke ,,fi
 15163,Mørkveronika,,no
 15163,Pilgrimsveronika,,sv
 15163,Raifort,,fr
@@ -3182,13 +3182,13 @@ taxonID,vernacularName,source,language
 15224,Frühlings-Barbarakraut,,de
 15224,tavaszi borbálafű,,hu
 15232,Almindelig Bukketorn,,da
-15232,Belladonna,,fi
-15232,Belladonna,,sv
+15232,Belladonna ,,fi
+15232,Belladonna ,,sv
 15232,Belladonnaurt,,no
 15232,Bocktörne,,sv
 15232,Bolmört,,sv
 15232,Bukketorn,,no
-15232,Bulmeurt,,da
+15232,Bulmeurt ,,da
 15232,Galnebær,,da
 15232,Hullukaali,,fi
 15232,Hulluruoho,,fi
@@ -3196,7 +3196,7 @@ taxonID,vernacularName,source,language
 15232,Piggeple,,no
 15232,Pigæble,,da
 15232,Spikklubba,,sv
-15232,Villrot,,no
+15232,Villrot ,,no
 15236,Bägarnattskatta,,sv
 15236,Bredbladigt bocktörne,,sv
 15236,Dårört,,sv
@@ -3218,7 +3218,7 @@ taxonID,vernacularName,source,language
 15239,Grenig väggört,,sv
 15239,Grijskruid,,nl
 15239,Gul nattskatta,,sv
-15239,Håret Natskygge,,da
+15239,Håret Natskygge ,,da
 15239,Hoary Alison,,en
 15239,Isolehtinen lehmus,,fi
 15239,Keltakoiso,,fi
@@ -3242,7 +3242,7 @@ taxonID,vernacularName,source,language
 15265,süstlehine kapsasrohi,,et
 15268,brukev prodloužená pravá,,cs
 15271,Brännässla,,sv
-15271,Brenninetla,,is
+15271,Brenninetla ,,is
 15271,brukev prodloužená celolistá,,cs
 15271,Etternässla,,sv
 15271,Flädervänderrot,,sv
@@ -3250,12 +3250,12 @@ taxonID,vernacularName,source,language
 15271,harasztos káposzta alfaja,,hu
 15271,Kapusta chrzanolistna,,pl
 15271,Lehtovirmajuuri,,fi
-15271,Liden Nælde,,da
+15271,Liden Nælde ,,da
 15271,Nokkonen,,fi
 15271,Pipört,,sv
-15271,Rautanokkonen,,fi
+15271,Rautanokkonen ,,fi
 15271,Sérbýlisnetla,,is
-15271,Smånesle,,no
+15271,Smånesle ,,no
 15271,Stor nælde,,da
 15271,Stornesle,,no
 15286,Ager-Stedmorsblomst,,da
@@ -3274,7 +3274,7 @@ taxonID,vernacularName,source,language
 15286,Lodnefiol,,no
 15286,Luktviol,,sv
 15286,Marsfiol,,no
-15286,Marts-Viol,,da
+15286,Marts-Viol ,,da
 15286,Moutarde brune,,fr
 15286,Moutarde de Sarepta,,fr
 15286,Pelto-orvokki,,fi
@@ -3289,7 +3289,7 @@ taxonID,vernacularName,source,language
 15286,szareptai mustár,,hu
 15286,Tandbægret Vårsalat,,da
 15286,Tandbægret Vårsalat,,no
-15286,Tuoksuorvokki,,fi
+15286,Tuoksuorvokki ,,fi
 15305,Colza,,fr
 15305,colza,,pt
 15305,Cruv ha'napus,,he
@@ -3322,10 +3322,10 @@ taxonID,vernacularName,source,language
 15317,kapusta repková kvaková,,cs
 15317,Nevew,,mt
 15317,Swede,,en
-15330,brukev,,cs
+15330,brukev ,,cs
 15330,Hvid amarant,,da
 15330,Juodasis bastutis,,lt
-15330,kapusta,,cs
+15330,kapusta ,,cs
 15330,Kapusta czarna,,pl
 15330,Krypamarant,,sv
 15330,Mållamarant,,sv
@@ -3403,7 +3403,7 @@ taxonID,vernacularName,source,language
 15412,Smalamarant,,sv
 15412,Turkish wartycabbage,,en
 15412,Warty-cabbage,,en
-15422,pomořanka,,cs
+15422,pomořanka ,,cs
 15424,pomořanka baltická,,cs
 15430,Kalkraket,,nl
 15430,Wendich,,de
@@ -3494,7 +3494,7 @@ taxonID,vernacularName,source,language
 1558,Silvery Crocus,,en
 15582,drojeņu sirdsķērsa,,lv
 15582,fransk limurt,,da
-15582,Franskglim,,sv
+15582,Franskglim ,,sv
 15582,harilik võõrkress,,et
 15582,Hoary Cress,,en
 15582,Jättespärgel,,sv
@@ -3626,7 +3626,7 @@ taxonID,vernacularName,source,language
 15734,Mauer-Doppelrauke,,de
 15734,Mauer-Doppelsame,,de
 15734,Mūrinis šatreinis,,lt
-15734,mūru divsēkle,,lv
+15734,mūru divsēkle ,,lv
 15734,mūru dvisēkle,,lv
 15734,müür-liivsinep,,et
 15734,Roquette des murailles,,fr
@@ -3643,7 +3643,7 @@ taxonID,vernacularName,source,language
 15745,Gräslök,,sv
 15745,křez tenkolistý,,cs
 15745,Perennial Wall-rocket,,en
-15745,šaurlapu divsēkle,,lv
+15745,šaurlapu divsēkle ,,lv
 15745,šaurlapu dvisēkle,,lv
 15745,Schmalblaettriger Doppelsame,,de
 15745,Schmalblättriger Doppelsame,,de
@@ -3874,7 +3874,7 @@ taxonID,vernacularName,source,language
 15991,Sibirisk ædelgran,,da
 15991,Woad,,en
 15996,Pastel,,fr
-15998,boryt barvířský,,cs
+15998,boryt barvířský ,,cs
 15998,boryt barvířský pravý,,cs
 15998,pastel,,pt
 15998,Pastel des teinturiers,,fr
@@ -3906,7 +3906,7 @@ taxonID,vernacularName,source,language
 16040,Alpe bjerg-fyr,,da
 16040,Alptall,,sv
 16040,Altaigran,,sv
-16040,blīvķekara cietķērsa,,lv
+16040,blīvķekara cietķērsa ,,lv
 16040,blīvziedu cietķērsa,,lv
 16040,Dichtbloemige kruidkers,,nl
 16040,Dichtbluetige Kresse,,de
@@ -4057,7 +4057,7 @@ taxonID,vernacularName,source,language
 16127,Taggbräken,,sv
 16127,Uddbräken,,sv
 16127,Zweijaehrige Mondviole,,de
-16136,júdáspénz,,hu
+16136, júdáspénz,,hu
 16136,cetim-branco,,pt
 16136,dinheiro-do-papa,,pt
 16136,kerti holdviola,,hu
@@ -4069,7 +4069,7 @@ taxonID,vernacularName,source,language
 16145,aafrika malkolmia,,et
 16145,afrikai szegecsfű,,hu
 16145,Afrikanische Meerviole,,de
-16145,Āfrikas vakarenīte,,lv
+16145,Āfrikas vakarenīte ,,lv
 16145,Malcolmie d'Afrique,,fr
 16145,malkolmia africká,,cs
 16145,ve,,cs
@@ -4093,10 +4093,10 @@ taxonID,vernacularName,source,language
 16187,Garten-Levkoje,,de
 16187,Hoary Stock,,en
 16187,kerti viola,,hu
-16187,lefkoja,,lv
+16187,lefkoja ,,lv
 16187,Levkoje,,de
 16187,Mantur afor,,he
-16187,מנתור,,he
+16187,מנתור ,,he
 16208,goiveiro-encarnado,,pt
 16214,Langkronblättrige Levkoje,,de
 16214,Night-scented Stock,,en
@@ -4111,10 +4111,10 @@ taxonID,vernacularName,source,language
 16236,myšojed prerastenolistý,,cs
 16236,Permautalapis raumenius,,lt
 16236,povázka prorostlá,,cs
-16236,skaujlapu miagra,,lv
+16236,skaujlapu miagra ,,lv
 16240,Ball Mustard,,en
 16240,Druebregne,,da
-16240,Dværg-gåsefod,,da
+16240,Dværg-gåsefod ,,da
 16240,Finkensame,,de
 16240,Pärlbräken,,sv
 16240,Plantanmålla,,sv
@@ -4123,7 +4123,7 @@ taxonID,vernacularName,source,language
 16240,řepinka latnatá,,cs
 16240,repinka metlinatá,,cs
 16240,Vild agurk,,da
-16246,štítenka,,cs
+16246,štítenka ,,cs
 16256,Acker-Hederich,,de
 16256,ředkev ohnice,,cs
 16259,Mediterranean Radish,,en
@@ -4169,7 +4169,7 @@ taxonID,vernacularName,source,language
 16310,Mjuk lungört,,sv
 16310,rep,,cs
 16310,řepovník svraskalý východní,,cs
-16317,Sommercypres,,da
+16317, Sommercypres ,,da
 16317,Axmålla,,sv
 16317,Have-mælde,,da
 16317,Kvastmålla,,sv
@@ -4188,13 +4188,13 @@ taxonID,vernacularName,source,language
 16339,Austrijas paķērsa,,lv
 16339,Crescione austriaco,,it
 16339,Cresson d'Autriche,,fr
-16339,Dagglök,,sv
-16339,Ginnalalönn,,sv
+16339,Dagglök ,,sv
+16339,Ginnalalönn ,,sv
 16339,Guld-løg,,da
 16339,Guldlök,,sv
 16339,Ildløn,,da
 16339,Oostenrijkse kers,,nl
-16339,Panaminis,,lt
+16339,Panaminis ,,lt
 16339,Roripe d'Autriche,,fr
 16339,Russisk løn,,da
 16339,Rysk lönn,,sv
@@ -4214,7 +4214,7 @@ taxonID,vernacularName,source,language
 16361,Rundlök,,sv
 16361,Rævehale-amarant,,da
 16361,Segerlök,,sv
-16361,Top-amarant,,da
+16361,Top-amarant ,,da
 16361,trädgårdsgräslök,,sv
 16364,balt,,lv
 16364,Baltoji garsty,,lt
@@ -4222,14 +4222,14 @@ taxonID,vernacularName,source,language
 16364,Gorczyca jasna,,pl
 16364,grön snödroppe,,sv
 16364,Hederich,,de
-16364,Hjortetaktræ,,da
+16364,Hjortetaktræ ,,da
 16364,hoř,,cs
 16364,Kongekommen,,da
 16364,Miniatyrpåsklilja,,sv
 16364,Rönnsumak,,sv
 16364,Slöjsilja,,sv
-16364,sommarsnöklocka,,sv
-16364,Sommer-hvidblomme,,da
+16364,sommarsnöklocka ,,sv
+16364,Sommer-hvidblomme ,,da
 16364,valge sinep,,et
 16364,Weißer Senf,,de
 16364,Weisser Senf,,de
@@ -4244,18 +4244,18 @@ taxonID,vernacularName,source,language
 16389,Charlock,,en
 16389,Dild,,da
 16389,Dill,,sv
-16389,Dobbeltkoriander,,da
-16389,Dubbelkoriander,,sv
-16389,Fodangel,,da
-16389,Harört,,sv
+16389,Dobbeltkoriander ,,da
+16389,Dubbelkoriander ,,sv
+16389,Fodangel ,,da
+16389,Harört ,,sv
 16389,hor,,cs
 16389,Koriander,,da
 16389,Koriander,,sv
-16389,Piggkörvel,,sv
+16389,Piggkörvel ,,sv
 16389,Rundbladet hareøre,,da
 16389,Strålkoriander,,sv
-16389,Tandpetarsilja,,sv
-16389,Tandstikkerurt,,da
+16389,Tandpetarsilja ,,sv
+16389,Tandstikkerurt ,,da
 16402,Anis,,sv
 16402,augst,,lv
 16402,Aukštoji pikulė,,lt
@@ -4285,12 +4285,12 @@ taxonID,vernacularName,source,language
 16438,Vélar,,fr
 16440,Ampelskära,,sv
 16440,Dragon,,sv
-16440,Esdragon,,da
+16440,Esdragon ,,da
 16440,Glanz-Rauke,,de
 16440,hulavník cudzí,,cs
 16440,hulevník drobnokvětý,,cs
 16440,London-rocket,,en
-16440,Luktaster,,sv
+16440,Luktaster ,,sv
 16440,Nyengelsk asters,,da
 16440,Vit skogsaster,,sv
 16440,zsomborfaj,,hu
@@ -4303,10 +4303,10 @@ taxonID,vernacularName,source,language
 16449,karvane unilook,,et
 16449,Lēzeļa žodzene,,lv
 16449,Loesels Rauke,,de
-16449,luddsafflor,,sv
+16449,luddsafflor ,,sv
 16449,Sisymbre de Loesel,,fr
 16449,Šiurkš,,lt
-16449,Sommaraster,,sv
+16449,Sommaraster ,,sv
 16449,Sommerasters,,da
 16449,Spiesraket,,nl
 16449,Stjerne-knopurt,,da
@@ -4314,8 +4314,8 @@ taxonID,vernacularName,source,language
 16449,Stulisz loesela,,pl
 16449,Tistelklint,,sv
 16449,Vélar de Loesel,,fr
-16456,Spindelvævs-knopurt,,da
-16456,Spretklint,,sv
+16456,Spindelvævs-knopurt ,,da
+16456,Spretklint ,,sv
 16456,Stjärnklint,,sv
 16456,Tornet knopurt,,da
 16458,Almindelig solsikke,,da
@@ -4324,18 +4324,18 @@ taxonID,vernacularName,source,language
 16458,Hedge Mustard,,en
 16458,hulavník lekársky,,cs
 16458,hulevník lékařský,,cs
-16458,Negerfrö,,sv
+16458,Negerfrö ,,sv
 16458,Nigerfrø,,da
 16458,Rosenskära,,sv
 16458,Solros,,sv
 16458,Stolt kavaler,,da
 16458,Tigeröga,,sv
 16458,Weg-Rauke,,de
-16466,Prairie solros,,sv
+16466, Prairie solros ,,sv
 16466,austrumu žodzene,,lv
-16466,Dagöga,,sv
+16466,Dagöga ,,sv
 16466,Eastern Rocket,,en
-16466,Hamnsolros,,sv
+16466,Hamnsolros ,,sv
 16466,hulavník východný,,cs
 16466,ida-unilook,,et
 16466,jordärtskocka,,sv
@@ -4349,7 +4349,7 @@ taxonID,vernacularName,source,language
 16484,Melsvoji pikulė,,lt
 16491,Vélar ronciné,,fr
 16499,Asiatisk klibbstjärna,,sv
-16499,Have-salat,,da
+16499,Have-salat ,,da
 16499,hulevník nejtužší,,cs
 16499,Iva,,sv
 16499,Klibbstjärna,,sv
@@ -4358,13 +4358,13 @@ taxonID,vernacularName,source,language
 16505,Niedrige Rauke,,de
 16508,hulavník povolžský,,cs
 16508,hulevník povolžský,,cs
-16508,Mariatistel,,sv
+16508,Mariatistel ,,sv
 16508,Marietidsel,,da
-16508,Opret fløjlsblomst,,da
+16508,Opret fløjlsblomst ,,da
 16508,Pavolginė pikulė,,lt
 16508,Russian Mustard,,en
-16508,Sammetsblomma,,sv
-16508,stinktagetes,,sv
+16508,Sammetsblomma ,,sv
+16508,stinktagetes ,,sv
 16508,stor sammetsblomster,,sv
 16508,Stulisz nadwołżański,,pl
 16508,Udspærret fløjlsblomst,,da
@@ -4372,41 +4372,41 @@ taxonID,vernacularName,source,language
 16508,Wolga-Rauke,,de
 16523,Garlic Penny-cress,,en
 16523,Lauch-Hellerkraut,,de
-16525,Næbdodder,,da
+16525, Næbdodder ,,da
 16525,Acker-Hellerkraut,,de
-16525,Blå snökört,,sv
+16525,Blå snökört ,,sv
 16525,Field Penny-cress,,en
-16525,Hjertebladet karse,,da
+16525,Hjertebladet karse ,,da
 16525,Hjulkrassing,,sv
 16525,Hönsrättika,,sv
-16525,litet sammetsblomster,,sv
+16525,litet sammetsblomster ,,sv
 16525,Näbbdådra,,sv
 16525,penízek rolní,,cs
 16525,Purpur-slangehoved,,da
-16525,Skræppe brodfrø,,da
+16525,Skræppe brodfrø ,,da
 16525,Smalfliget fløjlsblomst,,da
-16529,Orientalisk stäppsenap,,sv
+16529, Orientalisk stäppsenap,,sv
 16529,Fransglim,,sv
-16529,Orientalsk knopskulpe,,da
+16529,Orientalsk knopskulpe ,,da
 16529,Spenat,,sv
 16529,Spinat,,da
 16535,alpi litteehein,,et
-16535,Melsvoji,,lt
-16535,zilganais naudulis,,lv
+16535,Melsvoji ,,lt
+16535,zilganais naudulis ,,lv
 16553,Amerikansk grovsnärja,,sv
 16553,Fingerhirse,,da
 16553,Gåshirs,,sv
-16553,Gulstænglet silke,,da
-16553,Hør-rajgræs,,da
+16553,Gulstænglet silke ,,da
+16553,Hør-rajgræs ,,da
 16553,Kolokvint,,sv
-16553,linrepe,,sv
+16553,linrepe ,,sv
 16557,penízek Kovatsův,,cs
 16564,Caucasian Penny-cress,,en
-16568,Håldådra,,sv
-16568,Huldodder,,da
+16568,Håldådra ,,sv
+16568,Huldodder ,,da
 16568,kaelus-litterhein,,et
 16568,rädisa,,sv
-16568,Šlaitinė,,lt
+16568,Šlaitinė ,,lt
 16568,Spansk knopskulpe,,da
 16568,Spansk stäppsenap,,sv
 16574,bequera,,es
@@ -4475,7 +4475,7 @@ taxonID,vernacularName,source,language
 16633,sófora del Japón,,es
 16633,soja americana,,es
 16633,Teofrasta abutilone,,lv
-16633,Teofrasta virvene,,lv
+16633,Teofrasta virvene ,,lv
 16633,Velvetleaf,,en
 16633,yute de la China,,es
 16633,Zaślaz pospolity,,pl
@@ -4485,7 +4485,7 @@ taxonID,vernacularName,source,language
 16656,Ketmie des marais,,fr
 16656,Ketmie rose des marais,,fr
 1666,Freesia,,en
-16660,parast,,lv
+16660, parast,,lv
 16660,Aukštoji piliarožė,,lt
 16660,Bastun ta' San Gużepp,,mt
 16660,dentromolocha,,el
@@ -4517,7 +4517,7 @@ taxonID,vernacularName,source,language
 16682,Ketmie d'Afrique,,fr
 16682,kolmetine hibisk,,et
 16682,Stundeneibisch,,de
-16682,trejdaivu hibisks,,lv
+16682,trejdaivu hibisks ,,lv
 16682,Triskiautė kinrožė,,lt
 1669,Freesia,,fr
 16693,ibiš taurský,,cs
@@ -4538,7 +4538,7 @@ taxonID,vernacularName,source,language
 16712,Anoda metzuyetzet,,he
 16712,Anode,,fr
 16712,Skiauterėtasis rintenis,,lt
-16719,szőlőmályva,,hu
+16719, szőlőmályva,,hu
 16719,Kitaibel-mályva,,hu
 16719,Kitaibelie,,de
 16728,Ma'og ha'siach,,he
@@ -4662,13 +4662,13 @@ taxonID,vernacularName,source,language
 16939,sumagre,,es
 16941,Sumac glabre,,fr
 16941,Vinaigrier,,fr
-16942,amerikai ecetfa,,hu
+16942, amerikai ecetfa,,hu
 16942,Essigbaum,,de
 16942,harilik sumahh,,et
 16942,Hirschkolben-Sumach,,de
 16942,Kolben-Sumach,,de
 16942,parastais etiķkoks,,lv
-16942,škumpa orobincová,,cs
+16942,škumpa orobincová ,,cs
 16942,Sommacco maggiore,,it
 16942,Stag's-horn Sumach,,en
 16942,Staghorn sumac,,en
@@ -4695,7 +4695,7 @@ taxonID,vernacularName,source,language
 16954,pimenteira-bastarda,,pt
 16954,pimenteira-do-brasil,,pt
 16954,pimenteira-rosa,,pt
-16954,פלפלון דמוי,,he
+16954,פלפלון דמוי ,,he
 16962,Arbre à la gale,,fr
 16962,Lierre toxique,,fr
 16962,mérges szömörce,,hu
@@ -4749,7 +4749,7 @@ taxonID,vernacularName,source,language
 17008,Mandarinier,,fr
 17010,Oranger,,fr
 17017,Rue à feuilles de Lin,,fr
-17021,vadcitrom,,hu
+17021, vadcitrom,,hu
 17021,tövisescitrom,,hu
 17024,Gewöhnliche Kleeulme,,de
 17024,hármaslevelű alásfa,,hu
@@ -4854,10 +4854,10 @@ taxonID,vernacularName,source,language
 17109,Gewone esdoorn,,nl
 17109,Gravmyrt,,no
 17109,hacer,,pt
-17109,Kalmojuuri,,fi
-17109,Kalmus,,da
+17109,Kalmojuuri ,,fi
+17109,Kalmus ,,da
 17109,Kalmus,,sv
-17109,Kalmusrot,,no
+17109,Kalmusrot ,,no
 17109,Kalnu klava,,lv
 17109,Kalnu klava 'Purpurascens',,lv
 17109,Liden Singrøn,,da
@@ -4893,7 +4893,7 @@ taxonID,vernacularName,source,language
 17137,sárgaszarvfa,,hu
 17142,Aucuba,,fr
 17142,Aucuba du Japon,,fr
-17142,baltais grimonis,,lv
+17142,baltais grimonis ,,lv
 17142,baltais grimonis cv.,,lv
 17142,japán babérsom,,hu
 17142,Spotted-laurel,,en
@@ -4908,7 +4908,7 @@ taxonID,vernacularName,source,language
 17166,Kornelkirsche,,de
 17166,Tierlibaum,,de
 17173,atvasainais grimonis,,lv
-17173,atvasainais grimonis cv.,,lv
+17173,atvasainais grimonis cv. ,,lv
 17173,Corniolo serico,,it
 17173,Cornouiller,,fr
 17173,Cornouiller soyeux,,fr
@@ -4947,7 +4947,7 @@ taxonID,vernacularName,source,language
 17222,Flaum-Pfeifenstrauch,,de
 17226,Arbousier de Chypre,,fr
 17226,Arbousier grec,,fr
-17227,Große Lavendelheide,,de
+17227,Große Lavendelheide ,,de
 17229,Pirole tachetée,,fr
 17230,Chimaphile en ombelle,,fr
 17230,Pirole en ombelle,,fr
@@ -4983,7 +4983,7 @@ taxonID,vernacularName,source,language
 17298,American Cranberry,,en
 17298,Großfrüchtige Moosbeere,,de
 17298,Grote veenbes,,nl
-17298,lielaugļu dzērvenes,,lv
+17298,lielaugļu dzērvenes ,,lv
 173,Aspidie en faux,,fr
 173,Fougère-houx,,fr
 173,House Holly-fern,,en
@@ -5026,7 +5026,7 @@ taxonID,vernacularName,source,language
 17353,Matild-nebáncsvirág,,hu
 17353,netýkavka Balfourova,,cs
 1736,Beaked Iris,,en
-17360,kerti nebáncsvirág,,hu
+17360, kerti nebáncsvirág,,hu
 17360,Balsamina,,it
 17360,Balsamine,,fr
 17360,Balsamine,,de
@@ -5079,7 +5079,7 @@ taxonID,vernacularName,source,language
 17376,Balsamina minore,,it
 17376,Balsamine à petites fleurs,,fr
 17376,Bärapel,,sv
-17376,Idänkellukka,,fi
+17376,Idänkellukka ,,fi
 17376,Impatiente à petites fleurs,,fr
 17376,Impaziente a fiori piccoli,,it
 17376,Japaninkellukka,,fi
@@ -5098,7 +5098,7 @@ taxonID,vernacularName,source,language
 17376,Tarhaomenapuu,,fi
 17376,väikeseõiene lemmalts,,et
 17378,netýkavka drsná,,cs
-17382,vízifukszia,,hu
+17382, vízifukszia,,hu
 17382,Balsamine,,fr
 17382,törpe nebáncsvirág,,hu
 17388,Collomia,,fr
@@ -5146,7 +5146,7 @@ taxonID,vernacularName,source,language
 17445,Mouron de Monnellus,,fr
 17451,pochybek prodloužený,,cs
 17454,Großer Mannsschild,,de
-17454,milzu vairodzene,,lv
+17454,milzu vairodzene ,,lv
 17454,pochybek největší,,cs
 17455,Rades vairodzene,,lv
 17456,Eastern Sowbread,,en
@@ -5242,7 +5242,7 @@ taxonID,vernacularName,source,language
 17655,Willow Gentian,,en
 17659,Trumpet Gentian,,en
 17661,hořec žlutý,,cs
-17668,görögtekercs,,hu
+17668, görögtekercs,,hu
 17668,Bourreau-des-arbres,,fr
 17668,görög fatekercs,,hu
 17668,Griechische Baumschlinge,,de
@@ -5250,17 +5250,17 @@ taxonID,vernacularName,source,language
 17671,Zwarte engbloem,,nl
 17675,Oljandru,,mt
 17681,Idänpernaruoho,,fi
-17681,Jäykkäpernaruoho,,fi
-17681,Orientalsk Vejsennep,,da
+17681,Jäykkäpernaruoho ,,fi
+17681,Orientalsk Vejsennep ,,da
 17681,Orientsenap,,sv
-17681,Orientsennep,,no
+17681,Orientsennep ,,no
 17681,Rank Vejsennep,,da
 17681,Rohtopernaruoho,,fi
 17681,Stivsennep,,no
 17681,Styvsenap,,sv
 17681,Ussurisenap,,sv
 17681,Vägsenap,,sv
-17681,Vegsennep,,no
+17681,Vegsennep ,,no
 17684,Arugia macsifa,,he
 17684,fysianthos,,el
 17684,Kapok,,fr
@@ -5452,13 +5452,13 @@ taxonID,vernacularName,source,language
 17868,Juhannusruusu,,fi
 17868,Klit-Rose,,da
 17868,Kobber-Rose,,da
-17868,Kurttulehtiruusu,,fi
-17868,Mangeblomstret Rose,,da
+17868,Kurttulehtiruusu ,,fi
+17868,Mangeblomstret Rose ,,da
 17868,pilát lékařský,,cs
 17868,Pimpinellros,,sv
 17868,Punalehtiruusu,,fi
 17868,Rynkeros,,no
-17868,Rynket Rose,,da
+17868,Rynket Rose ,,da
 17868,Småklatrerose,,no
 17868,Trollnype,,no
 17868,Vresros,,sv
@@ -5476,12 +5476,12 @@ taxonID,vernacularName,source,language
 17886,Schlangenäuglein,,de
 17886,Spansk Hyben-Rose,,da
 17886,Tornedalsros,,sv
-17889,Armeniskt björnbär,,sv
+17889,Armeniskt björnbär ,,sv
 17889,Borage,,en
 17889,borák lékařský,,cs
 17889,Boretsch,,de
 17889,Borretsch,,de
-17889,Borstbjörnbär,,sv
+17889,Borstbjörnbär ,,sv
 17889,brutnák lékařský,,cs
 17889,Echter Borretsch,,de
 17889,Gurkenkraut,,de
@@ -5508,7 +5508,7 @@ taxonID,vernacularName,source,language
 17906,"Bibernelle, Vingefrøet Bibernelle",,da
 17906,Field Gromwell,,en
 17906,Gaffelmure,,no
-17906,Kaksiliuskahanhikki,,fi
+17906,Kaksiliuskahanhikki ,,fi
 17906,kamienkovec rolný,,cs
 17906,Pihlaja-angervo,,fi
 17906,Pikkuluppio,,fi
@@ -5523,8 +5523,8 @@ taxonID,vernacularName,source,language
 17926,maz,,lv
 17926,voskovka menší,,cs
 17933,bársonyos ebnyelvűfű,,hu
-17933,Bergumsbjörnbär,,sv
-17933,Flikbjörnbär,,sv
+17933,Bergumsbjörnbär ,,sv
+17933,Flikbjörnbär ,,sv
 17933,Storbjörnbär,,sv
 17936,csíkoltszirmú ebnyelvűfű,,hu
 17941,Almindelig Brombær,,da
@@ -5545,9 +5545,9 @@ taxonID,vernacularName,source,language
 17955,Blodtopp,,sv
 17955,Gråpimpinell,,sv
 17955,hadinec obecný,,cs
-17955,Læge-Kvæsurt,,da
+17955,Læge-Kvæsurt ,,da
 17955,Prunkhallon,,sv
-17955,Punaluppio,,fi
+17955,Punaluppio ,,fi
 17955,Vipérine commune,,fr
 17957,Eliotropio purpureo,,it
 17957,Héliotrope,,fr
@@ -5629,12 +5629,12 @@ taxonID,vernacularName,source,language
 18066,Balsampoppel,,no
 18066,Balsampoppel,,sv
 18066,Gråpoppel,,sv
-18066,Hopeapoppeli,,fi
+18066,Hopeapoppeli ,,fi
 18066,Hvidpil,,da
 18066,Kvitpil,,no
 18066,Palsamipoppeli,,fi
 18066,Silverpoppel,,sv
-18066,Sølv-Poppel,,da
+18066,Sølv-Poppel ,,da
 18066,Sølvpoppel,,no
 18066,Valkopaju,,fi
 18066,Vitpil,,sv
@@ -5720,7 +5720,7 @@ taxonID,vernacularName,source,language
 18121,Gjøglarblom,,no
 18121,Gyckelblomma,,sv
 18121,Kal gyckelblomma,,sv
-18121,Kam-mjelle,,no
+18121,Kam-mjelle ,,no
 18121,Kantet Kohvede,,da
 18121,Kelta-apinankukka,,fi
 18121,Korskovall,,sv
@@ -5745,7 +5745,7 @@ taxonID,vernacularName,source,language
 18133,Ängsskallra,,sv
 18133,Guldflenört,,sv
 18133,Gulhö,,sv
-18133,Kultasyyläjuuri,,fi
+18133,Kultasyyläjuuri ,,fi
 18133,Liden Skjaller,,da
 18133,Miodunka czerwona,,pl
 18133,Pikkulaukku,,fi
@@ -5763,7 +5763,7 @@ taxonID,vernacularName,source,language
 18156,Ginstsporre,,sv
 18156,Härmäkannusruoho,,fi
 18156,Juovakannusruoho,,fi
-18156,Peltomaitikka,,fi
+18156,Peltomaitikka ,,fi
 18156,Pukvete,,sv
 18156,Rundsporre,,sv
 18156,Russetorskmunn,,no
@@ -5785,8 +5785,8 @@ taxonID,vernacularName,source,language
 18167,Finnögontröst,,sv
 18167,Grå ögontröst,,sv
 18167,Gråaugnetrøst,,no
-18167,Gul Fingerbøl,,da
-18167,Gul Revebjølle,,no
+18167,Gul Fingerbøl ,,da
+18167,Gul Revebjølle ,,no
 18167,kare varemerohi,,et
 18167,Kort Øjentrøst,,da
 18167,kostival drsný,,cs
@@ -5806,7 +5806,7 @@ taxonID,vernacularName,source,language
 18183,Keihäsnielukukka,,fi
 18183,Ketosilmäruoho,,fi
 18183,Kjertelaugnetrøst,,no
-18183,Späd ögontröst,,sv
+18183,Späd ögontröst ,,sv
 18183,Spids Øjentrøst,,da
 18183,Spjutsporre,,sv
 18183,Spydbladet Torskemund,,da
@@ -5871,10 +5871,10 @@ taxonID,vernacularName,source,language
 18310,must karunõges,,et
 18310,Schwarznessel,,de
 18310,Stinkandorn,,de
-18316,měrnice,,cs
+18316,měrnice ,,cs
 18316,ziemeļu zīlaine,,lv
-18321,balota,,cs
-18321,měrnice,,cs
+18321,balota ,,cs
+18321,měrnice ,,cs
 18327,Cimiciotta greca,,it
 18328,marulka velkokvětá,,cs
 1833,Red Corn-lily,,en
@@ -5993,7 +5993,7 @@ taxonID,vernacularName,source,language
 18580,ürt-penimünt,,et
 18583,Balm,,en
 18583,Citroenmelisse,,nl
-18583,citronmētra,,lv
+18583,citronmētra ,,lv
 18583,erva-cidreira,,es
 18583,medovka lekárska,,cs
 18583,meduňka lékařská,,cs
@@ -6009,7 +6009,7 @@ taxonID,vernacularName,source,language
 18611,mata jemná,,cs
 1862,badil úzkolistý,,cs
 1862,Bermudienne à feuilles étroites,,fr
-1862,Giglietto,,it
+1862,Giglietto ,,it
 18628,Bastard-Rossminze,,de
 18628,Mięta kosmata,,pl
 18628,Mięta okrągłolistna,,pl
@@ -6216,7 +6216,7 @@ taxonID,vernacularName,source,language
 19012,vasaras s,,lv
 19020,Acker-Ziest,,de
 19020,Field Woundwort,,en
-19028,nyuszifül,,hu
+19028, nyuszifül,,hu
 19028,Byzantinischer Ziest,,de
 19028,Épiaire de Byzance,,fr
 19028,Épiaire laineuse,,fr
@@ -6342,7 +6342,7 @@ taxonID,vernacularName,source,language
 19263,Molène de Crète,,fr
 19266,blīvziedu deviņvīruspēks,,lv
 19266,Dense-flowered Mullein,,en
-19274,miltainais deviņvīruspēks,,lv
+19274,miltainais deviņvīruspēks ,,lv
 19274,pööris-vägihein,,et
 19274,Šakotoji tūbė,,lt
 19283,Molène d'Orient,,fr
@@ -6485,7 +6485,7 @@ taxonID,vernacularName,source,language
 19494,Troène à feuilles ovales,,fr
 19494,Troène de Californie,,fr
 19500,Paprastasis ligustras,,lt
-19500,parastais ligustrs,,lv
+19500,parastais ligustrs ,,lv
 19503,oliveira,,pt
 19503,żebbuġ,,mt
 19509,Lilas,,fr
@@ -6569,7 +6569,7 @@ taxonID,vernacularName,source,language
 19725,Barker's Hebe,,en
 19727,Hooker's Hebe,,en
 19729,Dieffenbach's Hebe,,en
-19736,boca de dragón,,es
+19736,boca de dragón ,,es
 19736,bocas-de-lobo,,es
 19736,chaskousa,,el
 19736,coelhinhos,,es
@@ -6771,7 +6771,7 @@ taxonID,vernacularName,source,language
 20099,Straw Foxglove,,en
 20099,vajsárga gyűszűvirág,,hu
 20102,Naparstnica purpurowa,,pl
-20102,náprstník,,cs
+20102,náprstník ,,cs
 20102,piros gyűszűvirág,,hu
 20102,Roter Fingerhut,,de
 20105,Fairy Foxglove,,en
@@ -6924,7 +6924,7 @@ taxonID,vernacularName,source,language
 20334,pimenteiro-comum,,pt
 20334,pimenteiro-cornicabra,,pt
 20334,pimenteiro-doce,,pt
-20334,pipari,,lv
+20334,pipari ,,lv
 20334,Poivron,,fr
 20334,Sweet Pepper,,en
 20334,termesztett paprika,,hu
@@ -6949,7 +6949,7 @@ taxonID,vernacularName,source,language
 20351,Stramonio spinosissimo,,it
 20351,toloache,,es
 20351,trompetilla,,es
-20351,דטורה,,he
+20351,דטורה ,,he
 20353,arbol del cielo,,es
 20353,burladora,,es
 20353,chamico,,es
@@ -7035,8 +7035,8 @@ taxonID,vernacularName,source,language
 20389,Wright-Stechapfel,,de
 20391,blín bílý,,cs
 20391,Weißes Bilsenkraut,,de
-20393,blen,,cs
-20393,blín,,cs
+20393,blen ,,cs
+20393,blín ,,cs
 20393,Henbane,,en
 20393,meln,,lv
 20393,Schwarzes Bilsenkraut,,de
@@ -7064,8 +7064,8 @@ taxonID,vernacularName,source,language
 20411,Chinese Teaplant,,en
 20411,Chinesischer Bocksdorn,,de
 20411,kínai ördögcérna,,hu
-20411,kustovnica,,cs
-20411,kustovnice,,cs
+20411,kustovnica ,,cs
+20411,kustovnice ,,cs
 20411,Lyciet de Chine,,fr
 20411,Spina santa cinese,,it
 20417,Lyciet d'Europe,,fr
@@ -7084,7 +7084,7 @@ taxonID,vernacularName,source,language
 20422,tom,,lv
 20422,Tomate,,fr
 20422,Tomate,,de
-20422,tomate,,es
+20422,tomate ,,es
 20422,tomateiro,,pt
 20422,Tomato,,en
 20422,Valgomasis pomidoras,,lt
@@ -7308,14 +7308,14 @@ taxonID,vernacularName,source,language
 20667,Patlican,,tr
 20667,Tikrasis baklažanas,,lt
 20672,Haariger Schwarzer Nachtschatten,,de
-20672,lilek,,cs
+20672,lilek ,,cs
 20672,Schwarzer Nachtschatten,,de
 20680,csucsorfaj,,hu
 20680,Garden Huckleberry,,en
 20680,lilek borůvkovitý,,cs
-20680,lulok,,cs
-20690,lulok,,cs
-20695,lulok,,cs
+20680,lulok ,,cs
+20690,lulok ,,cs
+20695,lulok ,,cs
 20701,csucsorfaj,,hu
 20701,lulok leskloplodý,,cs
 20706,Argentinischer Nachtschatten,,de
@@ -7411,7 +7411,7 @@ taxonID,vernacularName,source,language
 20831,Bantistel,,sv
 20831,Cikoria,,sv
 20831,Cikorie,,da
-20831,Hunde-Tidsel,,da
+20831,Hunde-Tidsel ,,da
 20831,Kjempeturt,,no
 20831,Kæmpe-Turt,,da
 20831,Parksallat,,sv
@@ -7459,15 +7459,15 @@ taxonID,vernacularName,source,language
 20873,Horse-Tidsel,,da
 20873,Hunds-Kerbel,,de
 20873,Huopaohdake,,fi
-20873,Kål-Tidsel,,da
+20873,Kål-Tidsel ,,da
 20873,Kåltistel,,no
 20873,Kåltistel,,sv
-20873,Keltaohdake,,fi
+20873,Keltaohdake ,,fi
 20873,kerblík obecný,,cs
 20873,Kibiavaisis builis,,lt
 20873,Kvitbladtistel,,no
 20873,Piikkiohdake,,fi
-20873,saraugļu suņburkšķis,,lv
+20873,saraugļu suņburkšķis ,,lv
 20873,trebulka ježcová,,cs
 20873,Vägtistel,,sv
 20873,Vegtistel,,no
@@ -7511,7 +7511,7 @@ taxonID,vernacularName,source,language
 20920,Blå Tidselkugle,,da
 20920,Borstfibbla,,sv
 20920,Busthaukeskjegg,,no
-20920,Børste-Høgeskæg,,da
+20920,Børste-Høgeskæg ,,da
 20920,Gemsrot,,sv
 20920,Hjartegullkorg,,no
 20920,Hjertebladet Gemserod,,da
@@ -7521,21 +7521,21 @@ taxonID,vernacularName,source,language
 20920,Sinipallo-ohdake,,fi
 20920,Smågullkorg,,no
 20920,Stor gemsrot,,sv
-20920,Storgullkorg,,no
-20920,Sukakeltto,,fi
+20920,Storgullkorg ,,no
+20920,Sukakeltto ,,fi
 20920,Tag-Høgeskæg,,da
 20920,Takhaukeskjegg,,no
 20920,Tarhavuohenjuuri,,fi
-20920,Vejbred-Gemserod,,da
+20920,Vejbred-Gemserod ,,da
 20921,aedseller,,et
 20921,Bakkestjerna,,no
 20921,Bitter Bakkestjerna,,da
 20921,Bolltistel,,sv
-20921,Fligbladet Tidselkugle,,da
+20921,Fligbladet Tidselkugle ,,da
 20921,Grå bolltistel,,sv
 20921,Gråbinka,,sv
 20921,Karvaskallioinen,,fi
-20921,Kuletistel,,no
+20921,Kuletistel ,,no
 20921,miřík celer,,cs
 20921,Sädekallioinen,,fi
 20921,Sellerie,,de
@@ -7599,7 +7599,7 @@ taxonID,vernacularName,source,language
 20989,Buplèvre de Desfontaines,,fr
 2099,Bouchés Milchstern,,de
 2099,Śniedek Buchego,,pl
-20993,apaļlapu bupleire,,lv
+20993,apaļlapu bupleire ,,lv
 20993,Apskritalapis gaivenis,,lt
 20993,prerastlík okrúhlolistý,,cs
 20993,prorostlík okrouhlolistý,,cs
@@ -7635,14 +7635,14 @@ taxonID,vernacularName,source,language
 21003,Hundesalat,,da
 21003,Hvid Okseøje,,da
 21003,Juovamaitiainen,,fi
-21003,Kesämaitiainen,,fi
-21003,Lodnefølblom,,no
+21003,Kesämaitiainen ,,fi
+21003,Lodnefølblom ,,no
 21003,Nokketunge,,da
 21003,Päivänkakkara,,fi
 21003,Prästkrage,,sv
 21003,Prestekrage,,no
 21003,Sommarfibbla,,sv
-21003,Stivhåret Borst,,da
+21003,Stivhåret Borst ,,da
 21003,Strimfibbla,,sv
 21003,Stripefølblom,,no
 21005,Ager-Museurt,,da
@@ -7672,9 +7672,9 @@ taxonID,vernacularName,source,language
 21008,Eseltistel,,no
 21008,Etelänruttojuuri,,fi
 21008,Gumbuotasis gurgždis,,lt
-21008,Japaninruttojuuri,,fi
-21008,Japanpestrot,,da
-21008,Japanpestrot,,no
+21008,Japaninruttojuuri ,,fi
+21008,Japanpestrot ,,da
+21008,Japanpestrot ,,no
 21008,Kruunuohdake,,fi
 21008,Lækjepestrot,,no
 21008,mugul-varesputk,,et
@@ -7765,13 +7765,13 @@ taxonID,vernacularName,source,language
 21051,Kanadisk Gyldenris,,da
 21051,Kjempegullris,,no
 21051,klibbkorsört,,sv
-21051,Klistersvineblom,,no
-21051,Klæbrig Brandbæger,,da
+21051,Klistersvineblom ,,no
+21051,Klæbrig Brandbæger ,,da
 21051,Korsört,,sv
 21051,Krossgras,,is
 21051,Peltovillakko,,fi
 21051,Sildig Gyldenris,,da
-21051,Tahmavillakko,,fi
+21051,Tahmavillakko ,,fi
 21054,Carrot,,en
 21054,mrkev obecná setá,,cs
 21054,mrkva oby,,cs
@@ -7821,7 +7821,7 @@ taxonID,vernacularName,source,language
 21090,Rejnfan,,da
 21090,Renfana,,sv
 21090,Sikkelkruid,,nl
-21090,Stor Gedeskæg,,da
+21090,Stor Gedeskæg ,,da
 21090,Stor haverrot,,sv
 21090,Stor tusindstråle,,da
 21090,Strålöga,,sv
@@ -7891,10 +7891,10 @@ taxonID,vernacularName,source,language
 21152,Berberiss,,no
 21152,Blekbalsamin,,sv
 21152,Häckbeberis,,sv
-21152,Mongolspringfrø,,no
-21152,Rikkapalsami,,fi
+21152,Mongolspringfrø ,,no
+21152,Rikkapalsami ,,fi
 21152,Ruostehappomarja,,fi
-21152,Småblomstret Balsamin,,da
+21152,Småblomstret Balsamin ,,da
 21154,chapéus,,pt
 21154,Hydrocotyle de Buenos Aires,,fr
 21159,Hairy Pennywort,,en
@@ -7920,7 +7920,7 @@ taxonID,vernacularName,source,language
 21170,Hvid Kalkkarse,,da
 21170,Kaukasianpitkäpalko,,fi
 21170,Masterwort,,en
-21170,meistarsakne,,lv
+21170,meistarsakne ,,lv
 21170,všedobr horský,,cs
 21170,všeliek hojivý,,cs
 21176,Sélin douteux,,fr
@@ -7953,7 +7953,7 @@ taxonID,vernacularName,source,language
 21195,Gåsefot,,no
 21195,Gurkört,,sv
 21195,Hjulkrone,,da
-21195,Italiensk oksetunge,,da
+21195,Italiensk oksetunge ,,da
 21195,Italiensk oxtunga,,sv
 21195,Læge-Oksetunge,,da
 21195,Oksetunge,,no
@@ -7973,29 +7973,29 @@ taxonID,vernacularName,source,language
 21204,Slangehoved,,da
 21204,Sminkrot,,sv
 21205,Åkerförgätmigej,,sv
-21205,Åkerminneblom,,no
+21205,Åkerminneblom ,,no
 21205,Brokförgätmigej,,sv
 21205,Forskelligfarvet,,da
 21205,Kirjolemmikki,,fi
-21205,Læge-Stenfrø,,da
-21205,Lækjesteinfrø,,no
-21205,Mark-forglemmigej,,da
-21205,Peltolemmikki,,fi
+21205,Læge-Stenfrø ,,da
+21205,Lækjesteinfrø ,,no
+21205,Mark-forglemmigej ,,da
+21205,Peltolemmikki ,,fi
 21205,Perleminneblom,,no
-21205,Rohtorusojuuri,,fi
+21205,Rohtorusojuuri ,,fi
 21205,Stenfrön,,sv
 21206,Äkta förgätmigej,,sv
 21206,Eng-Forglemmigej,,da
 21206,Engjamunablóm,,is
 21206,Engminneblom,,no
 21206,Fåblommig förgätmigej,,sv
-21206,Fåblomstret Forglemmigej,,da
-21206,Gjerdeminneblom,,no
-21206,Harsulemmikki,,fi
-21206,Kevätkaihonkukka,,fi
-21206,Kirjonunna,,fi
+21206,Fåblomstret Forglemmigej ,,da
+21206,Gjerdeminneblom ,,no
+21206,Harsulemmikki ,,fi
+21206,Kevätkaihonkukka ,,fi
+21206,Kirjonunna ,,fi
 21206,Kvapioji garduoklė,,lt
-21206,Kærminde,,da
+21206,Kærminde ,,da
 21206,Luhtalemmikki,,fi
 21206,Marchewnik anyżowy,,pl
 21206,mesiputk,,et
@@ -8009,12 +8009,12 @@ taxonID,vernacularName,source,language
 21206,Skogminneblom,,no
 21206,Skogsförgätmigej,,sv
 21206,Skov-Forglemmigej,,da
-21206,smaržīgais mirris,,lv
+21206,smaržīgais mirris ,,lv
 21206,Sortrød Kosakurt,,da
 21206,Süßdolde,,de
 21206,Svartnonnea,,sv
 21206,Sweet Cicely,,en
-21206,Vårkjærminne,,no
+21206,Vårkjærminne ,,no
 21218,Beverneltorkruid,,nl
 21220,Silaublättriger Wasserfenchel,,de
 21222,Acker-Haftdolde,,de
@@ -8073,14 +8073,14 @@ taxonID,vernacularName,source,language
 21296,krétai földitömjén*,,hu
 21297,Boucage jaune,,fr
 21297,Pimpinelle jaune,,fr
-21298,Frynsevinterkarse,,no
+21298,Frynsevinterkarse ,,no
 21298,Mellangyllen,,sv
 21298,Peberrod,,da
 21298,Peparrot,,no
 21298,pepparrot,,sv
 21298,Piparjuuri,,fi
 21298,Praktstenört,,sv
-21298,Randhåret Vinterkarse,,da
+21298,Randhåret Vinterkarse ,,da
 21298,Vinterkarse,,no
 21300,Fremde Bibernelle,,de
 21302,Almindelig Vinterkarse,,da
@@ -8089,10 +8089,10 @@ taxonID,vernacularName,source,language
 21302,Kløvplade,,da
 21302,Kvitdodre,,no
 21302,Sandvita,,sv
-21302,Sarepta-Sennep,,da
-21302,Sareptansinappi,,fi
+21302,Sarepta-Sennep ,,da
+21302,Sareptansinappi ,,fi
 21302,Sareptasenap,,sv
-21302,Sareptasennep,,no
+21302,Sareptasennep ,,no
 21302,Svarthavskål,,sv
 21306,Aneth des moissons,,fr
 21306,False Fennel,,en
@@ -8197,10 +8197,10 @@ taxonID,vernacularName,source,language
 21394,Breitblättrige Haftdolde,,de
 21394,Caucalis à larges feuilles,,fr
 21394,Kålsenap,,sv
-21394,Keltakynsimö,,fi
+21394,Keltakynsimö ,,fi
 21394,Nagelört,,sv
 21394,Pla,,lt
-21394,platlapu turgēnija,,lv
+21394,platlapu turgēnija ,,lv
 21394,Salatsennep,,da
 21394,Salatsennep,,no
 21394,Sanddraba,,sv
@@ -8210,7 +8210,7 @@ taxonID,vernacularName,source,language
 21394,turgeenia,,et
 21394,Turgénie à larges feuilles,,fr
 21394,Vårrublom,,no
-21394,Vegrublom,,no
+21394,Vegrublom ,,no
 2140,csillagos Puskin-virág,,hu
 2140,Puschkinie,,de
 2140,puškinie ladoňkovitá,,cs
@@ -8251,20 +8251,20 @@ taxonID,vernacularName,source,language
 21458,Cornish Bellflower,,en
 21458,Knoblauchraukenblättrige Glockenblume,,de
 21458,Lauchkrautblättrige Glockenblume,,de
-21458,Mongoliskt fetblad,,sv
-21458,Röd kärlekört,,sv
-21458,zvonek,,cs
+21458,Mongoliskt fetblad ,,sv
+21458,Röd kärlekört ,,sv
+21458,zvonek ,,cs
 21460,Kamtjatkafetblad,,sv
 21461,Campanule des Carpates,,fr
 21461,Karpaten-Glockenblume,,de
 21461,kárpáti harangvirág,,hu
 21467,Gargano-Glockenblume,,de
-21469,Kinesisk kärleksört,,sv
+21469,Kinesisk kärleksört ,,sv
 21469,Kinesisk sct. Hansurt,,da
 21469,Luddhårig fetknopp,,sv
-21469,Pyrenæisk stenurt,,da
-21469,Spenslig fetknopp,,sv
-21469,Vandmelon,,da
+21469,Pyrenæisk stenurt ,,da
+21469,Spenslig fetknopp ,,sv
+21469,Vandmelon ,,da
 21469,Vattenmelon,,sv
 21472,Gurka,,sv
 21472,Indianstarr,,sv
@@ -8284,18 +8284,18 @@ taxonID,vernacularName,source,language
 21479,Almindelig ærteblomst,,da
 21479,Blå stregbælg,,da
 21479,Canterbury-bells,,en
-21479,Fodergetruta,,sv
+21479,Fodergetruta ,,sv
 21479,Getruta,,sv
-21479,Luktärt,,sv
+21479,Luktärt ,,sv
 21479,Læge-stregbælg,,da
 21479,Marien-Glockenblume,,de
-21479,rehuvuohenherne,,fi
+21479,rehuvuohenherne ,,fi
 21479,Sojaböna,,fi
 21479,Soyabønne,,da
 21479,zvonek zahradní,,cs
 2148,Alpine Squill,,en
 2148,Vroege sterhyacint,,nl
-21483,Linse,,da
+21483, Linse ,,da
 21483,Dårrepe,,sv
 21483,Giftig rajgræs,,da
 21483,Græs-fladbælg,,da
@@ -8314,17 +8314,17 @@ taxonID,vernacularName,source,language
 21497,blålupin,,sv
 21497,Creeping Bellflower,,en
 21497,Fläcklusern,,sv
-21497,Gul lupin,,da
+21497,Gul lupin ,,da
 21497,Gullupin,,sv
 21497,Krog-sneglebælg,,da
 21497,Plettet sneglebælg,,da
-21497,Smalbladet lupin,,da
+21497,Smalbladet lupin ,,da
 21497,Tagglusern,,sv
-21500,Furet stenkløver,,da
+21500,Furet stenkløver ,,da
 21500,Rampion Bellflower,,en
 21500,ribbsötväppling,,sv
 21500,Russisk stenkløver,,da
-21500,Rysk sötväppling,,sv
+21500,Rysk sötväppling ,,sv
 21500,Serradel,,da
 21500,Serradella,,sv
 21500,zvonek řepka,,cs
@@ -8332,10 +8332,10 @@ taxonID,vernacularName,source,language
 21503,Rautenblättrige Glockenblume,,de
 21503,Rhomben-Glockenblume,,de
 21503,zvonek kosníkovitý,,cs
-21506,Luktklöver,,sv
+21506, Luktklöver,,sv
 21506,Aleksandriner-kløver,,da
 21506,Alexandrinerklöver,,sv
-21506,Bondböna,,sv
+21506,Bondböna ,,sv
 21506,Have-bønne,,da
 21506,Hestebønne,,da
 21506,Omvendt kløver,,da
@@ -8343,7 +8343,7 @@ taxonID,vernacularName,source,language
 21508,Californian Lobelia,,en
 21512,Kleiner Frauenspiegel,,de
 21512,Kleiner Venusspiegel,,de
-21512,spretnäva,,sv
+21512,spretnäva ,,sv
 21512,Ungarsk vikke,,da
 21512,Ungersk vicker,,sv
 21512,Venus's-looking-glass,,en
@@ -8363,16 +8363,16 @@ taxonID,vernacularName,source,language
 21545,Stauden-Lobelie,,de
 21548,Blekgul daglilja,,sv
 21548,brunröd daglilja,,sv
-21548,klibbnäva,,sv
-21548,Rundbladet storkenæb,,da
-21548,Rødgul daglije,,da
-21548,Spansk storkenæb,,da
-21548,Spansknäva,,sv
+21548,klibbnäva ,,sv
+21548,Rundbladet storkenæb ,,da
+21548,Rødgul daglije ,,da
+21548,Spansk storkenæb ,,da
+21548,Spansknäva ,,sv
 21550,Oxford Rampion,,en
 21552,Almindelig honningurt,,da
 21552,Blå bägarkrokus,,sv
 21552,Blå øjeblomst,,da
-21552,gul daglilja,,sv
+21552,gul daglilja ,,sv
 21552,Gul daglilje,,da
 21552,Honungsfacelia,,sv
 21552,Prins Gustafs öga,,sv
@@ -8383,12 +8383,12 @@ taxonID,vernacularName,source,language
 21566,turáně zvrhlé,,cs
 21571,Leberbalsam-Schafgarbe,,de
 21573,Achillée de Bieberstein,,fr
-21575,Almindelig Hyld,,da
+21575,Almindelig Hyld ,,da
 21575,Fläder,,sv
-21575,Mustaselja,,fi
+21575,Mustaselja ,,fi
 21575,Svarthyll,,no
 21578,Achillée à feuilles de Criste marine,,fr
-21578,Alpe-Pengeurt,,da
+21578,Alpe-Pengeurt ,,da
 21578,Backskärvfrö,,sv
 21578,Buksbom,,da
 21578,Hjärtklocka,,sv
@@ -8397,7 +8397,7 @@ taxonID,vernacularName,source,language
 21578,Meerfenchel-Schafgarbe,,de
 21578,Meerfenchelblättrige Schafgarbe,,de
 21578,řebří,,cs
-21578,Vårpengeurt,,no
+21578,Vårpengeurt ,,no
 21582,Tall Yarrow,,en
 21587,Achillée à feuilles de Fougère,,fr
 21587,aquilea amarilla,,es
@@ -8408,7 +8408,7 @@ taxonID,vernacularName,source,language
 21593,Southern Yarrow,,en
 21595,smilts pelašķis,,lv
 21596,Ängsklocka,,sv
-21596,Bredbladet Klokke,,da
+21596,Bredbladet Klokke ,,da
 21596,Eng-Klokke,,da
 21596,Engklokke,,no
 21596,Harakankello,,fi
@@ -8416,11 +8416,11 @@ taxonID,vernacularName,source,language
 21596,Mariaklocka,,sv
 21596,milefólio,,es
 21596,Mjölkklocka,,sv
-21596,Nøgleblomstret Klokke,,da
+21596,Nøgleblomstret Klokke ,,da
 21596,Peurankello,,fi
 21596,Storklokke,,no
 21596,Toppklocka,,sv
-21596,Toppklokke,,no
+21596,Toppklokke ,,no
 21596,Ukonkello,,fi
 21599,Achillée Millefeuille,,fr
 21599,Millefeuille,,fr
@@ -8432,19 +8432,19 @@ taxonID,vernacularName,source,language
 21602,"Ensidig Klokke, Havepest",,da
 21602,Kauriinkello,,fi
 21602,Kilnioji kraujažolė,,lt
-21602,Kissankello,,fi
+21602,Kissankello ,,fi
 21602,Knölklocka,,sv
 21602,Liden Venusspejl,,da
 21602,Liten blåklocka,,sv
 21602,lõhnav raudrohi,,et
 21602,Rapunkelklocka,,sv
-21602,Rapunsel-Klokke,,da
+21602,Rapunsel-Klokke ,,da
 21602,Ugrasklokke,,no
 21602,Vuohenkello,,fi
 21605,Achillée de Hongrie,,fr
 21610,Aks-Rapunsel,,da
-21610,Blå Rapunsel,,da
-21610,Blåleddved,,no
+21610,Blå Rapunsel ,,da
+21610,Blåleddved ,,no
 21610,Blårapunkel,,sv
 21610,Blåtry,,sv
 21610,Blåvadderot,,no
@@ -8461,7 +8461,7 @@ taxonID,vernacularName,source,language
 21610,Tatarisk gedeblad,,da
 21610,Tummatähkämunkki,,fi
 21610,Tuoksuköynnöskuusama,,fi
-21610,Vaaleatähkämunkki,,fi
+21610,Vaaleatähkämunkki ,,fi
 21610,Vadderot,,no
 21610,Vitrapunkel,,sv
 21612,Achillée,,fr
@@ -8477,7 +8477,7 @@ taxonID,vernacularName,source,language
 21634,Federblume,,de
 21634,Kar,,lt
 21634,Kriechende Spitzenfederflockenblume,,de
-21634,ložņu akroptilone,,lv
+21634,ložņu akroptilone ,,lv
 21634,Russian Knapweed,,en
 21644,Centaurée fausse Chicorée,,fr
 21646,Centaurée,,fr
@@ -8508,7 +8508,7 @@ taxonID,vernacularName,source,language
 21685,Fodervicker,,sv
 21685,Fôrvikke,,no
 21685,Gewöhnliche Saatwucherblume,,de
-21685,Kaitahiirenvirna,,fi
+21685,Kaitahiirenvirna ,,fi
 21685,Kaitavirna,,fi
 21685,kollane jaanikakar,,et
 21685,Liten sommarvicker,,sv
@@ -8524,7 +8524,7 @@ taxonID,vernacularName,source,language
 21685,Rød-Eg,,da
 21685,Saat-Wucherblume,,de
 21685,Sand-Vikke,,da
-21685,sējuma krizantēma,,lv
+21685,sējuma krizantēma ,,lv
 21685,Smalbladet Vikke,,da
 21685,Sommarvikke,,no
 21685,vetési aranyvirág,,hu
@@ -8555,9 +8555,9 @@ taxonID,vernacularName,source,language
 21692,pujulehine ambroosia,,et
 21692,Ragweed,,en
 21692,Ragweed,,de
-21692,Raudhyll,,no
+21692,Raudhyll ,,no
 21692,"Selja, Terttuselj",,fi
-21692,Snöbär,,sv
+21692,Snöbär ,,sv
 21692,Snøbær,,no
 21692,Storarve,,no
 21692,Storblomstret Hønsetarm,,da
@@ -8577,16 +8577,16 @@ taxonID,vernacularName,source,language
 21701,Ausdauerndes Traubenkraut,,de
 21701,évelő parlagfű,,hu
 21701,Filtet Hønsetarm,,da
-21701,Hnoðafræhyrna,,is
+21701,Hnoðafræhyrna ,,is
 21701,Hopeahärkki,,fi
 21701,kailv,,lv
 21701,kare ambroosia,,et
 21701,Knipparv,,sv
 21701,Nacktähren-Traubenkraut,,de
-21701,Nurmihärkki,,fi
+21701,Nurmihärkki ,,fi
 21701,Perennial Ragweed,,en
 21701,Silverarv,,sv
-21701,Sykeröhärkki,,fi
+21701,Sykeröhärkki ,,fi
 21701,Sølvarve,,no
 21701,Tät silverarv,,sv
 21701,Vanlig arve,,no
@@ -8599,13 +8599,13 @@ taxonID,vernacularName,source,language
 21719,Ambrosia tzarat-alim,,he
 21722,Ambroisie trifide,,fr
 21722,Ambrosia seshu'a,,he
-21722,Ambrosia trifida,,it
+21722,Ambrosia trifida ,,it
 21722,ambrozie trojklaná,,cs
 21722,Backnejlika,,sv
 21722,Bakke-Nellike,,da
 21722,Borstnejlika,,sv
 21722,Brödranejlika,,sv
-21722,Busknellik,,no
+21722,Busknellik ,,no
 21722,Dreilappiges Traubenkraut,,de
 21722,Dreispaltiges Traubenkraut,,de
 21722,Engnellik,,no
@@ -8652,7 +8652,7 @@ taxonID,vernacularName,source,language
 21743,Keulen-Bertram,,de
 21743,Knytling,,sv
 21743,Murslør,,no
-21743,Rustokki,,fi
+21743,Rustokki ,,fi
 21743,trahok lékařský,,cs
 21745,ħass,,mt
 21746,Endivie,,de
@@ -8660,19 +8660,19 @@ taxonID,vernacularName,source,language
 21756,Åkerstorkenebb,,no
 21756,Blød Storkenæb,,da
 21756,Brunnäva,,sv
-21756,Brunstorkenebb,,no
-21756,Bølgekronet Storkenæb,,da
+21756,Brunstorkenebb ,,no
+21756,Bølgekronet Storkenæb ,,da
 21756,Chicory,,en
 21756,Fliknäva,,sv
 21756,Flocknäva,,sv
 21756,Gewöhnliche Wegwarte,,de
 21756,Kløftet Storkenæb,,da
-21756,Liuskakurjenpolvi,,fi
+21756,Liuskakurjenpolvi ,,fi
 21756,Lodnestorkenebb,,no
 21756,Mjuknäva,,sv
 21756,Pehmytkurjenpolvi,,fi
 21756,Storrodet storkenæb,,da
-21756,Tummakurjenpolvi,,fi
+21756,Tummakurjenpolvi ,,fi
 2176,bókoló csillagvirág,,hu
 2176,kahelehine siniliilia,,et
 2176,ladoňka sibiřská,,cs
@@ -8684,8 +8684,8 @@ taxonID,vernacularName,source,language
 21770,Valencia-Bertram,,de
 21809,Alperips,,no
 21809,Ängsnäva,,sv
-21809,Askerstorkenebb,,no
-21809,Eng-Storkenæb,,da
+21809,Askerstorkenebb ,,no
+21809,Eng-Storkenæb ,,da
 21809,Engstorkenebb,,no
 21809,Fjeld-Ribs,,da
 21809,Guld-ribs,,da
@@ -8700,10 +8700,10 @@ taxonID,vernacularName,source,language
 21809,Russisk storkenæb,,da
 21809,Ryssnäva,,sv
 21809,Skuggnäva,,sv
-21809,Småstorkenebb,,no
+21809,Småstorkenebb ,,no
 21809,Sparvnäva,,sv
 21809,Taikinamarja,,fi
-21811,Spärrkrusbär,,sv
+21811, Spärrkrusbär,,sv
 21811,Hagerips,,no
 21811,Have-Ribs,,da
 21811,Lännenpunaherukka,,fi
@@ -8779,7 +8779,7 @@ taxonID,vernacularName,source,language
 21837,Snökrokus,,sv
 21837,Tidig vårstjärna,,sv
 21837,Tobladet skilla,,da
-21837,Tyrkarblåstjerne,,no
+21837,Tyrkarblåstjerne ,,no
 21837,Vårpryd,,no
 21838,áldott bárcs,,hu
 21838,benedikt lékařský,,cs
@@ -8791,7 +8791,7 @@ taxonID,vernacularName,source,language
 21847,Åkerknavel,,sv
 21847,Corn Chamomile,,en
 21847,Eittårsknavel,,no
-21847,Enårig Knavel,,da
+21847,Enårig Knavel ,,da
 21847,Fältnarv,,sv
 21847,Fleirårsknavel,,no
 21847,Flerårig Knavel,,da
@@ -8803,7 +8803,7 @@ taxonID,vernacularName,source,language
 21847,Suopayrtti,,fi
 21847,Sæbeurt,,da
 21847,Vaaleajäsenruoho,,fi
-21847,Viherjäsenruoho,,fi
+21847,Viherjäsenruoho ,,fi
 21847,Vitknavel,,sv
 21852,macela-de-cabeça-curta,,pt
 21852,Österreichische Hundskamille,,de
@@ -8828,9 +8828,9 @@ taxonID,vernacularName,source,language
 21855,vanlig Gaffelglim,,sv
 21855,vanlig Sandglim,,sv
 21859,Gelbe (Falsche) Margerite,,de
-21859,korunkovník středomořský,,cs
+21859,korunkovník středomořský ,,cs
 21865,Sicilian Chamomile,,en
-21867,Dagstjarna,,is
+21867,Dagstjarna ,,is
 21867,Krievijas ilzīte,,lv
 21867,Krievzemes ilzīte,,lv
 21867,Nat-Limurt,,da
@@ -8842,22 +8842,22 @@ taxonID,vernacularName,source,language
 21867,Rusinis bobramunis,,lt
 21867,Ruthenische Hundskamille,,de
 21867,Ryssglim,,sv
-21867,Rød jonsokblom,,no
+21867,Rød jonsokblom ,,no
 21867,Yöailakki,,fi
 21873,Saat-Hundskamille,,de
-21876,Aften-Pragtstjerne,,da
+21876,Aften-Pragtstjerne ,,da
 21876,Åkerspärgel,,sv
 21876,Almindelig Spergel,,da
 21876,Blæresmælde,,da
 21876,Engsmelle,,no
 21876,Faerber-Hundskamille,,de
 21876,Gele kamille,,nl
-21876,Kvit jonsokblom,,no
-21876,Linbendel,,no
+21876,Kvit jonsokblom ,,no
+21876,Linbendel ,,no
 21876,Mark-Hindeknæ,,da
 21876,Nurmikohokki,,fi
 21876,Peltohatikka,,fi
-21876,Punasolmukki,,fi
+21876,Punasolmukki ,,fi
 21876,Rödnarv,,sv
 21876,Skurfa,,is
 21876,Smällglim,,sv
@@ -8949,7 +8949,7 @@ taxonID,vernacularName,source,language
 21977,Schönauge,,de
 21979,Almindelig Fuglegræs,,da
 21979,Benved,,sv
-21979,Grasarfi,,is
+21979,Grasarfi ,,is
 21979,Grässtjärnblomma,,sv
 21979,Grasstjerneblom,,no
 21979,Greater Burdock,,en
@@ -8958,9 +8958,9 @@ taxonID,vernacularName,source,language
 21979,Heinätähtimö,,fi
 21979,lopuch větší,,cs
 21979,Pihatähtimö,,fi
-21979,Sorvarinpensas,,fi
+21979,Sorvarinpensas ,,fi
 21979,Spolebusk,,no
-21979,Vassarve,,no
+21979,Vassarve ,,no
 21979,Våtarv,,sv
 21987,Bede,,da
 21987,Bete,,no
@@ -8971,14 +8971,14 @@ taxonID,vernacularName,source,language
 21987,lopuch menší,,cs
 21987,Strandbeta,,sv
 21987,Svine-Melde,,da
-21987,Svinemelde,,no
+21987,Svinemelde ,,no
 21987,Vägmålla,,sv
 2199,Kerry Lily,,en
 21993,Aks-Jordbærspinat,,da
 21993,Bärmålla,,sv
 21993,Bærmelde,,no
 21993,Figenbladet Gåsefod,,da
-21993,Fikenmelde,,no
+21993,Fikenmelde ,,no
 21993,Fikonmålla,,sv
 21993,Hvidmelet Gåsefod,,da
 21993,Hyvänheikinsavikka,,fi
@@ -8986,8 +8986,8 @@ taxonID,vernacularName,source,language
 21993,Jordbærmelde,,no
 21993,lopuch plstnatý,,cs
 21993,Lungrot,,sv
-21993,Meldestokk,,no
-21993,Mykerösavikka,,fi
+21993,Meldestokk ,,no
+21993,Mykerösavikka ,,fi
 21993,Purpurrød Jordbærspinat,,da
 21993,Smultronmålla,,sv
 21993,Stolt Henrik,,no
@@ -9067,11 +9067,11 @@ taxonID,vernacularName,source,language
 22055,Crépide à feuilles de Capselle,,fr
 22056,Ballastsev,,no
 22056,Borsttåg,,sv
-22056,Børste-Siv,,da
+22056,Børste-Siv ,,da
 22056,Glanskapslet Siv,,da
-22056,Harjasvihvilä,,fi
-22056,Heisev,,no
-22056,Miekkavihvilä,,fi
+22056,Harjasvihvilä ,,fi
+22056,Heisev ,,no
+22056,Miekkavihvilä ,,fi
 22056,Nurmivihvilä,,fi
 22056,Ryllsev,,no
 22056,škarda vláskovitá,,cs
@@ -9089,7 +9089,7 @@ taxonID,vernacularName,source,language
 22073,škarda smrdutá mákolistá,,cs
 22074,Crépide,,fr
 22075,Bymålla,,sv
-22075,Bymelde,,no
+22075,Bymelde ,,no
 22075,Fiskmålla,,sv
 22075,Frømelde,,no
 22075,Grøn Gåsefod,,da
@@ -9140,7 +9140,7 @@ taxonID,vernacularName,source,language
 22098,Nurmipiippo,,fi
 22098,Pyramide-Læbeløs,,da
 22098,škarda štětinkatá,,cs
-22098,Storjonsokkoll,,no
+22098,Storjonsokkoll ,,no
 22098,Vanlig ängsfryle,,sv
 22101,Äkta bosyska,,sv
 22101,Drakblomma,,sv
@@ -9149,7 +9149,7 @@ taxonID,vernacularName,source,language
 22101,Hvid Tandbæger,,da
 22101,Isoampiaisyrtti,,fi
 22101,Krybende Læbeløs,,da
-22101,Krypjonsokkoll,,no
+22101,Krypjonsokkoll ,,no
 22101,Narrow-leaved Hawk's-beard,,en
 22101,Porro,,fi
 22101,Revsuga,,sv
@@ -9166,7 +9166,7 @@ taxonID,vernacularName,source,language
 22106,Löwenzahn-Pippau,,de
 22106,škarda mnohotvará pampeliškolistá,,cs
 22117,Höckerlattich,,de
-22121,istenfa,,hu
+22121, istenfa,,hu
 22121,Armoise Aurone,,fr
 22121,Diemedis,,lt
 22121,dievkociņš,,lv
@@ -9180,7 +9180,7 @@ taxonID,vernacularName,source,language
 22121,Rankspenat,,sv
 22121,Särmäkuisma,,fi
 22121,sidrunpuju,,et
-22121,Sildemelde,,no
+22121,Sildemelde ,,no
 22121,Southernwood,,en
 22121,Stabwurz,,de
 22121,Stinkende Gåsefod,,da
@@ -9201,7 +9201,7 @@ taxonID,vernacularName,source,language
 22126,pelyněk pravý,,cs
 22126,Rosenvinda,,sv
 22126,Skär snårvinda,,sv
-22126,Snerle-Pileurt,,da
+22126,Snerle-Pileurt ,,da
 22126,Stärnrams,,sv
 22126,Strandvindel,,no
 22126,vērmele,,lv
@@ -9259,14 +9259,14 @@ taxonID,vernacularName,source,language
 22164,Baltasis kietis,,lt
 22165,Apilanvieras,,fi
 22165,Armoise de la mer Noire,,fr
-22165,Humalanvieras,,fi
-22165,Hvid Kornel,,da
+22165,Humalanvieras ,,fi
+22165,Hvid Kornel ,,da
 22165,Idänkanukka,,fi
 22165,Kvitkornell,,no
 22165,Ljungsnärja,,sv
 22165,Lyng-Silke,,da
 22165,Nässelsnärja,,sv
-22165,Neslesnikjetråd,,no
+22165,Neslesnikjetråd ,,no
 22165,Nælde-Silke,,da
 22165,Petite Absinthe,,fr
 22165,Petite Armoise,,fr
@@ -9320,12 +9320,12 @@ taxonID,vernacularName,source,language
 22193,Bleg Stenurt,,da
 22193,Blek fetknopp,,sv
 22193,Espanjanmaksaruoho,,fi
-22193,Fransk Stenurt,,da
-22193,Gråbergknapp,,no
+22193,Fransk Stenurt ,,da
+22193,Gråbergknapp ,,no
 22193,Haustbergknapp,,no
 22193,Lydisk fetknopp,,sv
 22193,Lyydianmaksaruoho,,fi
-22193,Mongolianmaksaruoho,,fi
+22193,Mongolianmaksaruoho ,,fi
 22193,Mongoliskt fetblad,,sv
 22193,Mos-Stenurt,,da
 22193,Sibirbergknapp,,no
@@ -9348,11 +9348,11 @@ taxonID,vernacularName,source,language
 22201,Harestorr,,no
 22201,Håret Star,,da
 22201,Harstass,,sv
-22201,Jänönsara,,fi
+22201,Jänönsara ,,fi
 22201,Karvasara,,fi
 22201,Lämmelstarr,,sv
 22201,Lemenstorr,,no
-22201,Lodnestorr,,no
+22201,Lodnestorr ,,no
 22201,pajuaster,,et
 22201,Sopulinsara,,fi
 22201,vītolu miķelīte,,lv
@@ -9368,7 +9368,7 @@ taxonID,vernacularName,source,language
 22225,stokro,,cs
 22225,százszorszép-gerebcsin,,hu
 22227,áster-da-china,,pt
-22227,astra,,cs
+22227,astra ,,cs
 22227,China Aster,,en
 22227,Gartenaster,,de
 22227,kerti őszirózsa,,hu
@@ -9407,7 +9407,7 @@ taxonID,vernacularName,source,language
 22252,süstlehine aster,,et
 22252,Tradescacants Aster,,de
 22272,Herzblättrige Aster,,de
-22272,hvězdnice velkolistá,,cs
+22272,hvězdnice velkolistá ,,cs
 22273,Aster de Nouvelle-Angleterre,,fr
 22273,Aster nowoangielski,,pl
 22273,Astro del New England,,it
@@ -9418,20 +9418,20 @@ taxonID,vernacularName,source,language
 22273,Neuenglische Aster,,de
 22273,Raublatt-Aster,,de
 22273,Šiurkš,,lt
-22281,Almindelig Sanct Hansurt,,da
+22281,Almindelig Sanct Hansurt ,,da
 22281,Aster de jardin,,fr
 22281,Aster de la Nouvelle-Belgique,,fr
 22281,Aster de nouvelle-Belgique,,fr
 22281,Aster de Virginie,,fr
 22281,Aster nowobelgijski,,pl
 22281,Astro americano,,it
-22281,Bjerg-Stenurt,,da
+22281,Bjerg-Stenurt ,,da
 22281,Broddbergknapp,,no
 22281,Confused Michaelmas-daisy,,en
 22281,Gewöhnliche Glattblatt-Aster,,de
 22281,Gravbergknapp,,no
 22281,hvězdnice novobelgická,,cs
-22281,Isomaksaruoho,,fi
+22281,Isomaksaruoho ,,fi
 22281,Kalliomaksaruoho,,fi
 22281,Kantbergknapp,,no
 22281,Kantig fetknopp,,sv
@@ -9444,7 +9444,7 @@ taxonID,vernacularName,source,language
 22281,Röd kärleksört,,sv
 22281,Rød Stenurt,,da
 22281,Särmämaksaruoho,,fi
-22281,Seksradet Stenurt,,da
+22281,Seksradet Stenurt ,,da
 22281,Smørbukk,,no
 22281,Stor fetknopp,,sv
 22281,Virgininis astras,,lt
@@ -9462,7 +9462,7 @@ taxonID,vernacularName,source,language
 22309,Fieder-Dahlie,,de
 22309,jiřina zahradní,,cs
 22313,pesti őszirózsa*,,hu
-22317,Enbo Galdebær,,da
+22317,Enbo Galdebær ,,da
 22317,Hundrova,,sv
 22317,Husløg,,da
 22317,Kattomehitähti,,fi
@@ -9478,7 +9478,7 @@ taxonID,vernacularName,source,language
 22317,Tvebo Galdebær,,da
 22317,Vår-Star,,da
 22317,Vårstarr,,sv
-22317,Vårstorr,,no
+22317,Vårstorr ,,no
 22320,ajenjo de China,,es
 22320,àsteer esquamós,,es
 22320,Aster écailleux,,fr
@@ -9493,9 +9493,9 @@ taxonID,vernacularName,source,language
 22320,rompedallas,,es
 22331,Großblütige Chrysantheme,,de
 22331,kerti margitvirág,,hu
-2235,maguey,,es
-2235,pitaco,,es
-2235,pitera,,es
+2235, maguey,,es
+2235, pitaco,,es
+2235, pitera,,es
 2235,acibara,,es
 2235,agabe,,es
 2235,Agave,,it
@@ -9544,7 +9544,7 @@ taxonID,vernacularName,source,language
 22386,Kaitapillike,,fi
 22386,Kalkdån,,sv
 22386,kamzi,,cs
-22386,Ketoampiaisyrtti,,fi
+22386,Ketoampiaisyrtti ,,fi
 22386,Mjukdån,,sv
 22386,Orient-Gämswurz,,de
 22386,Pehmytpillike,,fi
@@ -9558,7 +9558,7 @@ taxonID,vernacularName,source,language
 22387,Hamp-Hanekro,,da
 22387,Hampdån,,sv
 22387,Hjálmgras,,is
-22387,Iisoppi,,fi
+22387,Iisoppi ,,fi
 22387,Isop,,da
 22387,Isop,,no
 22387,Isop,,sv
@@ -9574,21 +9574,21 @@ taxonID,vernacularName,source,language
 22387,Maahumala,,fi
 22387,párducfojtó zergevirág,,hu
 22387,Pipdån,,sv
-22392,Dauvnesle,,no
+22392,Dauvnesle ,,no
 22392,Døvnælde,,da
 22392,Guldnælde,,da
 22392,Gulltvitann,,no
 22392,Gulplister,,sv
 22392,Keltapeippi,,fi
-22392,Liden Tvetann,,da
+22392,Liden Tvetann ,,da
 22392,Ljósatvítönn,,is
 22392,Mellanplister,,sv
-22392,Mjúkatvítönn,,is
+22392,Mjúkatvítönn ,,is
 22392,Mjukplister,,sv
 22392,Mjuktvitann,,no
 22392,Nyrebladet Tvetann,,da
 22392,Plantain-leaved Leopard's-bane,,en
-22392,Sepiväpeippi,,fi
+22392,Sepiväpeippi ,,fi
 22392,Välipeippi,,fi
 22392,Valkopeippi,,fi
 22392,Vitplister,,sv
@@ -9596,7 +9596,7 @@ taxonID,vernacularName,source,language
 22392,Weegbreezonnebloem,,nl
 22396,Gänseblümchen,,de
 22396,ilggadīg,,lv
-22396,Ketunsara,,fi
+22396,Ketunsara ,,fi
 22396,Rävstarr,,sv
 22396,Revestorr,,no
 22396,Ræve-Star,,da
@@ -9623,7 +9623,7 @@ taxonID,vernacularName,source,language
 22403,Garten-Kugeldistel,,de
 22403,Lavendel,,sv
 22403,Liuskapeippi,,fi
-22403,Punapeippi,,fi
+22403,Punapeippi ,,fi
 22403,Raudtvitann,,no
 22403,Rödplister,,sv
 22403,Rosenplister,,sv
@@ -9665,7 +9665,7 @@ taxonID,vernacularName,source,language
 22424,Bident feuillu,,fr
 22424,cáñamo de agua americano,,es
 22424,Dichtbelaubter Zweizahn,,de
-22424,dvouzubec,,cs
+22424,dvouzubec ,,cs
 22424,erva-rapa,,pt
 22424,feketés farkasfog,,hu
 22424,Forbicina peduncolata,,it
@@ -9725,13 +9725,13 @@ taxonID,vernacularName,source,language
 22448,Bident chevelu,,fr
 22448,Fjellknapp,,no
 22448,Gullknapp,,no
-22448,Gærde-Kartebolle,,da
-22448,Isokirahvinkukka,,fi
+22448,Gærde-Kartebolle ,,da
+22448,Isokirahvinkukka ,,fi
 22448,Jättevädd,,sv
 22448,Kardeborre,,no
 22448,Kardvädd,,sv
-22448,Lodnekardeborre,,no
-22448,Pikarikarttaohdake,,fi
+22448,Lodnekardeborre ,,no
+22448,Pikarikarttaohdake ,,fi
 22448,Pindsvin-Kartebolle,,da
 22448,Skælhoved,,da
 22448,Sträv kardvädd,,sv
@@ -9752,7 +9752,7 @@ taxonID,vernacularName,source,language
 22491,Blånepeta,,sv
 22491,Fligbladet Brunelle,,da
 22491,Flikbrunört,,sv
-22491,Isokissanminttu,,fi
+22491,Isokissanminttu ,,fi
 22491,Röd lejonsvans,,sv
 22491,Stor Kattemynte,,no
 22493,Ängssalvia,,sv
@@ -9763,7 +9763,7 @@ taxonID,vernacularName,source,language
 22493,Niittysalvia,,fi
 22493,Småblomstret Salvie,,da
 22493,Stäppsalvia,,sv
-22495,Aitokissanminttu,,fi
+22495,Aitokissanminttu ,,fi
 22495,Ästiger Feinstrahl,,de
 22495,Cespica annua,,it
 22495,Einjähriger Feinstrahl,,de
@@ -9772,7 +9772,7 @@ taxonID,vernacularName,source,language
 22495,Grønmynte,,no
 22495,Hjärtmynta,,sv
 22495,Kattemynte,,no
-22495,Katteurt,,da
+22495,Katteurt ,,da
 22495,Kattmynta,,sv
 22495,Kransmynta,,sv
 22495,Nördlicher Feinstrahl,,de
@@ -9846,21 +9846,21 @@ taxonID,vernacularName,source,language
 22609,akantlapu dzelksnis,,lv
 22609,akantu dzelksnis,,lv
 22609,Åkervädd,,sv
-22609,Almindelig Sølvblad,,da
+22609,Almindelig Sølvblad ,,da
 22609,Blåhat,,da
 22609,bodlák obecný,,cs
 22609,Dygusis dagys,,lt
 22609,Fjellsnelle,,no
 22609,Fujirododendron,,sv
-22609,Kilsepensas,,fi
-22609,Kirjokorte,,fi
+22609,Kilsepensas ,,fi
+22609,Kirjokorte ,,fi
 22609,Liden Padderok,,da
 22609,Raudknapp,,no
-22609,Rauðkollur,,is
+22609,Rauðkollur ,,is
 22609,Ruusuruoho,,fi
 22609,Silverbuske,,sv
 22609,Smalfräken,,sv
-22609,Sølvbusk,,no
+22609,Sølvbusk ,,no
 22609,torkav karuohakas,,et
 22609,Weg-Distel,,de
 22615,calentura,,es
@@ -9876,7 +9876,7 @@ taxonID,vernacularName,source,language
 22633,Eupatoire Chanvrine,,fr
 22634,Bantörel,,sv
 22634,bodlák kadeřavý,,cs
-22634,Cypres-Vortemælk,,da
+22634,Cypres-Vortemælk ,,da
 22634,Söttörel,,sv
 22634,Sypressvortemjølk,,no
 22634,Tarhatyräkki,,fi
@@ -9885,10 +9885,10 @@ taxonID,vernacularName,source,language
 22639,Åkervortemjølk,,no
 22639,Bredbladig vargtörel,,sv
 22639,Byvortemjølk,,no
-22639,Gaffel-Vortemælk,,da
+22639,Gaffel-Vortemælk ,,da
 22639,Kenttätyräkki,,fi
 22639,Kolmisädetyräkki,,fi
-22639,Langbladet Vortemælk,,da
+22639,Langbladet Vortemælk ,,da
 22639,Liden Vortemælk,,da
 22639,longus karuohakas,,et
 22639,nokarenais dzelksnis,,lv
@@ -9898,7 +9898,7 @@ taxonID,vernacularName,source,language
 22639,Skærm-Vortemælk,,da
 22639,Småtörel,,sv
 22639,Småvortemjølk,,no
-22639,Vegvortemjølk,,no
+22639,Vegvortemjølk ,,no
 22639,Viisisädetyräkki,,fi
 2264,"Drago, Sangue di Drago",,it
 22642,Plymouth Thistle,,en
@@ -9907,22 +9907,22 @@ taxonID,vernacularName,source,language
 22645,Gullkollur,,is
 22645,Kenttätyräkki,,fi
 22645,Kikvedel,,sv
-22645,Langbladet Vortemælk,,da
+22645,Langbladet Vortemælk ,,da
 22645,Liten getväppling,,sv
-22645,Masmalo,,fi
-22645,Pulleakurjenherne,,fi
+22645,Masmalo ,,fi
+22645,Pulleakurjenherne ,,fi
 22645,Rikkasinijuuri,,fi
-22645,Rundbælg,,da
+22645,Rundbælg ,,da
 22645,Rundskolm,,no
 22645,Smalbladig vargtörel,,sv
 22645,Ugrasbingel,,no
-22645,Vegvortemjølk,,no
+22645,Vegvortemjølk ,,no
 22648,Acanthusblättrige Eberwurz,,de
 22649,Brokginst,,sv
-22649,Ertebusk,,no
+22649,Ertebusk ,,no
 22649,Häckkaragan,,sv
 22649,Imeläkurjenherne,,fi
-22649,Lakritsmelt,,no
+22649,Lakritsmelt ,,no
 22649,Lyckobladsbuske,,sv
 22649,Siperianhernepensas,,fi
 22649,Sötvedel,,sv
@@ -9931,19 +9931,19 @@ taxonID,vernacularName,source,language
 2265,cânhamo-da-mauritânia,,pt
 2265,furcroia,,pt
 2265,piteira-amarela,,pt
-22653,Alpe-Guldregn,,da
+22653,Alpe-Guldregn ,,da
 22653,Alpegullregn,,no
 22653,Alpgullregn,,sv
-22653,Fargeginst,,no
+22653,Fargeginst ,,no
 22653,Färgginst,,sv
 22653,Farve-Visse,,da
-22653,Gyvel,,da
-22653,Gyvel,,no
+22653,Gyvel ,,da
+22653,Gyvel ,,no
 22653,Harris,,sv
 22653,Jänönvihma,,fi
 22653,Kaljukultasade,,fi
 22653,Krypginst,,sv
-22653,Pensasväriherne,,fi
+22653,Pensasväriherne ,,fi
 22658,Carpésium penché,,fr
 22661,Almindelig Hvene,,da
 22661,Backtrift,,sv
@@ -9962,15 +9962,15 @@ taxonID,vernacularName,source,language
 22668,světlice vlnatá,,cs
 22668,villainais saflors,,lv
 22668,Wolliger Saflor,,de
-22670,Enårig Galtetand,,da
+22670,Enårig Galtetand ,,da
 22670,Gulsyska,,sv
-22670,Høj Skjolddrager,,da
+22670,Høj Skjolddrager ,,da
 22670,Keltapähkämö,,fi
-22670,Kiehkurasalvia,,fi
+22670,Kiehkurasalvia ,,fi
 22670,Krans-Salvie,,da
 22670,Kranssalvia,,sv
-22670,Kranssalvie,,no
-22670,Orientsvinerot,,no
+22670,Kranssalvie ,,no
+22670,Orientsvinerot ,,no
 22670,Skogssalvia,,sv
 22670,Stor frossört,,sv
 22676,Broad-leaved Cudweed,,en
@@ -9987,7 +9987,7 @@ taxonID,vernacularName,source,language
 22680,Safran des teinturiers,,fr
 22680,světlice barvířská,,cs
 22680,Yalanci safran,,tr
-22684,Ager-Galtetand,,da
+22684,Ager-Galtetand ,,da
 22684,Åkersyska,,sv
 22684,Lammeøre,,da
 22684,Lammeøyre,,no
@@ -9995,7 +9995,7 @@ taxonID,vernacularName,source,language
 22684,Luddsyska,,sv
 22684,Nukkapähkämö,,fi
 22684,Praktbetonika,,sv
-22684,Rikkapähkämö,,fi
+22684,Rikkapähkämö ,,fi
 22684,Småsvinerot,,no
 22686,fészekvirágzatúfélefaj,,hu
 22691,Blue Cupidone,,en
@@ -10021,16 +10021,16 @@ taxonID,vernacularName,source,language
 22737,Stern-Flockenblume,,de
 22743,Blod-Kløver,,da
 22743,Blodklöver,,sv
-22743,Blodkløver,,no
+22743,Blodkløver ,,no
 22743,Gul Kløver,,da
 22743,Jordklöver,,sv
 22743,Krabbekløver,,no
-22743,Pikkuapila,,da
-22743,Pikkuapila,,fi
-22743,Pikkuapila,,no
+22743,Pikkuapila ,,da
+22743,Pikkuapila ,,fi
+22743,Pikkuapila ,,no
 22743,Rentoapila,,fi
 22743,Trådklöver,,sv
-22743,Veriapila,,fi
+22743,Veriapila ,,fi
 22745,Centaurée Cinéraire,,fr
 22746,ambreta,,pt
 22746,Bleuet,,fr
@@ -10039,10 +10039,10 @@ taxonID,vernacularName,source,language
 22746,Cornflower,,en
 22746,fidalguinhos,,pt
 22746,Fortiriltunge,,no
-22746,Fuglaertur,,is
+22746,Fuglaertur ,,is
 22746,Gräsvial,,sv
 22746,Gul Fladbælg,,da
-22746,Gulskolm,,no
+22746,Gulskolm ,,no
 22746,Gulvial,,sv
 22746,Isomaite,,fi
 22746,Jordskolm,,no
@@ -10052,13 +10052,13 @@ taxonID,vernacularName,source,language
 22746,Kornblume,,de
 22746,Kær-Fladbælg,,da
 22746,lóios-de-jardim,,pt
-22746,Mukulanätkelmä,,fi
-22746,Mýraertur,,is
-22746,Myrskolm,,no
-22746,Niittynätkelmä,,fi
+22746,Mukulanätkelmä ,,fi
+22746,Mýraertur ,,is
+22746,Myrskolm ,,no
+22746,Niittynätkelmä ,,fi
 22746,Rantanätkelmä,,fi
 22746,Stor kärringtand,,sv
-22746,Sump-Kællingetand,,da
+22746,Sump-Kællingetand ,,da
 22756,chrpa bělavá,,cs
 22756,hártyásfészkű imola,,hu
 22759,Centaurée,,fr
@@ -10094,8 +10094,8 @@ taxonID,vernacularName,source,language
 22791,Kärringtand,,sv
 22791,Keltamaite,,fi
 22791,Komealupiini,,fi
-22791,Lúpína,,is
-22791,Mangebladet Lupin,,da
+22791,Lúpína ,,is
+22791,Mangebladet Lupin ,,da
 22791,Sandlupin,,no
 22791,Sandlupin,,sv
 22791,Tiriltunge,,no
@@ -10120,27 +10120,27 @@ taxonID,vernacularName,source,language
 22800,Hvid Stenkløver,,da
 22800,Høj Stenkløver,,da
 22800,Indisk Stenkløver,,da
-22800,Intianmesikkä,,fi
+22800,Intianmesikkä ,,fi
 22800,Isomesikkä,,fi
-22800,Kvitsteinkløver,,no
+22800,Kvitsteinkløver ,,no
 22800,Mellanlusern,,sv
 22800,Orientsteinkløver,,no
 22800,Perennial Cornflower,,en
 22800,Stor sötväppling,,sv
-22800,Strandsteinkløver,,no
-22800,Valkomesikkä,,fi
+22800,Strandsteinkløver ,,no
+22800,Valkomesikkä ,,fi
 22800,Vit sötväppling,,sv
 22804,Centaurée de Nice,,fr
-22805,chrpa,,cs
+22805,chrpa ,,cs
 22805,Schwarze Flockenblume,,de
 22808,Backklöver,,sv
-22808,Bakkekløver,,no
+22808,Bakkekløver ,,no
 22808,Bjerg-Kløver,,da
 22808,Brun Kløver,,da
 22808,Brunklöver,,sv
 22808,Brunkløver,,no
 22808,Hvid-Kløver,,da
-22808,Hvítsmári,,is
+22808,Hvítsmári ,,is
 22808,Kvitkløver,,no
 22808,Mäkiapila,,fi
 22808,Musta-apila,,fi
@@ -10152,26 +10152,26 @@ taxonID,vernacularName,source,language
 22808,Rød-Kløver,,da
 22808,Valkoapila,,fi
 22808,Vitklöver,,sv
-22812,chrpa,,cs
+22812,chrpa ,,cs
 22812,Ennetbirgische Flockenblume,,de
 22812,Schwaaerzliche Flockenblume,,de
 22812,Schwärzliche Flockenblume,,de
 22816,keleti imola,,hu
 22818,Alsike-Kløver,,da
 22818,Alsikeapila,,fi
-22818,Alsikekløver,,no
+22818,Alsikekløver ,,no
 22818,Ärttörne,,sv
 22818,Fuglevikke,,no
 22818,Gulltorn,,no
-22818,Hiirenvirna,,fi
+22818,Hiirenvirna ,,fi
 22818,Kråkvicker,,sv
 22818,Liten alsikeklöver,,sv
 22818,Muse-Vikke,,da
-22818,Piikkiherne,,fi
+22818,Piikkiherne ,,fi
 22818,Smuk Kløver,,da
 22818,Tornblad,,da
 22818,Túnsmári,,is
-22818,Umfeðmingsgras,,is
+22818,Umfeðmingsgras ,,is
 22818,Vanlig alsikeklöver,,sv
 22821,Aitovirna,,fi
 22821,Buskvicker,,sv
@@ -10202,17 +10202,17 @@ taxonID,vernacularName,source,language
 22833,Dvärgserradella,,sv
 22833,Dvergserradella,,no
 22833,Ert,,no
-22833,Esparsett,,no
+22833,Esparsett ,,no
 22833,Esparsett,,sv
-22833,Esparsette,,da
-22833,Esparsetti,,fi
+22833,Esparsette ,,da
+22833,Esparsetti ,,fi
 22833,Gul sötväppling,,sv
-22833,Herne,,fi
+22833,Herne ,,fi
 22833,Kääpiölinnunjalka,,fi
 22833,Liden Fugleklo,,da
 22833,Lækjesteinkløver,,no
-22833,Mark-Stenkløver,,da
-22833,Piikkiorakko,,fi
+22833,Mark-Stenkløver ,,da
+22833,Piikkiorakko ,,fi
 22833,Rohtomesikkä,,fi
 22833,Stachelige Skabiosen-Flockenblume,,de
 22833,Strand-Krageklo,,da
@@ -10246,7 +10246,7 @@ taxonID,vernacularName,source,language
 22867,Betonie,,no
 22867,Bredbladet Timian,,da
 22867,Busuioc salbatic,,ro
-22867,Drue-Kortlæbe,,da
+22867,Drue-Kortlæbe ,,da
 22867,Druvgamander,,sv
 22867,erva-da-moda,,pt
 22867,Firtann,,no
@@ -10339,13 +10339,13 @@ taxonID,vernacularName,source,language
 22955,Varjolilja,,fi
 22955,Vild Tulipan,,da
 22955,Vildtulpan,,sv
-22955,Villtulipan,,no
+22955,Villtulipan ,,no
 22955,Østrigsk Hør,,da
 22958,Cape Cudweed,,en
 22958,Cotonnière ondulée,,fr
 22958,Gnaphale ondulé,,fr
 2296,iuca,,pt
-2296,Jucca,,it
+2296,Jucca ,,it
 2296,Yucca,,fr
 22962,atskabargain,,lv
 22962,Geltonoji grindelija,,lt
@@ -10407,7 +10407,7 @@ taxonID,vernacularName,source,language
 23041,Harmaamalvikki,,fi
 23041,Hélianthe raide,,fr
 23041,Kelta-aulio,,fi
-23041,Kinajute,,da
+23041,Kinajute ,,da
 23041,Linderose,,no
 23041,Lindmalva,,sv
 23041,Moskus-Katost,,da
@@ -10415,7 +10415,7 @@ taxonID,vernacularName,source,language
 23041,Myskimalva,,fi
 23041,Myskmalva,,sv
 23041,Poppelrose,,no
-23041,Smalbladet kattehale,,da
+23041,Smalbladet kattehale ,,da
 23041,Steife Sonnenblume,,de
 23050,napraforgófaj,,hu
 23058,Blattstiel-Sonnenblume,,de
@@ -10509,11 +10509,11 @@ taxonID,vernacularName,source,language
 23153,Hvid Dueurt,,da
 23153,Karvahorsma,,fi
 23153,Lådden Dueurt,,da
-23153,Lännenhorsma,,fi
+23153,Lännenhorsma ,,fi
 23153,Rosendunört,,sv
-23153,Rusohorsma,,fi
+23153,Rusohorsma ,,fi
 23153,Stormjølke,,no
-23153,Vaalea-amerikanhorsma,,fi
+23153,Vaalea-amerikanhorsma ,,fi
 23153,Vit dunört,,sv
 23157,Helokki,,fi
 23157,Kantdunört,,sv
@@ -10522,25 +10522,25 @@ taxonID,vernacularName,source,language
 23157,Nattljus,,sv
 23157,Nattlys,,no
 23157,Särmähorsma,,fi
-23157,Strävt nattljus,,sv
+23157,Strävt nattljus ,,sv
 23157,Toårigt Natlys,,da
 23161,aedvaak,,et
 23161,Didysis debesylas,,lt
 23161,Echter Alant,,de
 23161,Elecampane,,en
 23161,Grande Aunée,,fr
-23161,helēniju,,lv
+23161,helēniju ,,lv
 23161,Jättenattljus,,sv
 23161,Knärot,,sv
-23161,Knerot,,no
-23161,Knærod,,da
+23161,Knerot ,,no
+23161,Knærod ,,da
 23161,oman pravý,,cs
 23161,Oman wielki,,pl
-23161,Pohjanhelokki,,fi
+23161,Pohjanhelokki ,,fi
 23161,Pricknattljus,,sv
 23161,Smalt nattljus,,sv
-23161,Täplähelokki,,fi
-23161,Yövilkka,,fi
+23161,Täplähelokki ,,fi
+23161,Yövilkka ,,fi
 23170,Dagišlapė grūstė,,lt
 23170,Ive à feuilles de Lampourde,,fr
 23170,Iwa rzepieniolistna,,pl
@@ -10565,7 +10565,7 @@ taxonID,vernacularName,source,language
 23185,Berberis-Gyvelkvæler,,da
 23185,Berberiss-snylterot,,no
 23185,Berberissnyltrot,,sv
-23185,Bergflette-snylterot,,no
+23185,Bergflette-snylterot ,,no
 23185,Flueblomst,,da
 23185,Flugblomster,,sv
 23185,Flugeblom,,no
@@ -10644,13 +10644,13 @@ taxonID,vernacularName,source,language
 23215,Pystykiurunkannus,,fi
 23215,Sibirisk Lærkespore,,da
 23215,Sibirisk nunneört,,sv
-23215,Sibirlerkespore,,no
+23215,Sibirlerkespore ,,no
 23215,Stor nunneört,,sv
 23217,Engelsk vallmo,,sv
 23217,Garðasól,,is
 23217,Hietaunikko,,fi
 23217,Klubbevallmue,,no
-23217,Kølle-Valmue,,da
+23217,Kølle-Valmue ,,da
 23217,Löjtnantshjärta,,sv
 23217,Sibirisk vallmo,,sv
 23217,Sibirisk Valmue,,da
@@ -10717,7 +10717,7 @@ taxonID,vernacularName,source,language
 23267,hispanka prutnatá,,cs
 23267,Mantisalca midbarit,,he
 23267,מנטיסלקה מדברית,,he
-23273,maura kumelīte,,lv
+23273, maura kumelīte,,lv
 23273,Ager-Rævehale,,da
 23273,Åkerreverumpe,,no
 23273,Ängskavle,,sv
@@ -10804,7 +10804,7 @@ taxonID,vernacularName,source,language
 23359,Onopordon,,fr
 23359,Reticulate Thistle,,en
 23372,Partheniun afil,,he
-23372,פרתניון,,he
+23372,פרתניון ,,he
 23374,White Butterbur,,en
 23377,Åben Hejre,,da
 23377,Blød Hejre,,da
@@ -10895,7 +10895,7 @@ taxonID,vernacularName,source,language
 23414,Eng-Svingel,,da
 23414,Engsvingel,,no
 23414,Finsvingel,,sv
-23414,Forskelligbladet Svingel,,da
+23414,Forskelligbladet Svingel ,,da
 23414,Grannsvingel,,no
 23414,Hapsilampaannata,,fi
 23414,Havingull,,is
@@ -10954,15 +10954,15 @@ taxonID,vernacularName,source,language
 235,Ribbon Fern,,en
 2350,Baltoji snieguolė,,lt
 2350,Brunskära,,sv
-2350,Fliget Brøndsel,,da
-2350,Flikbrønsle,,no
+2350,Fliget Brøndsel ,,da
+2350,Flikbrønsle ,,no
 2350,Gewoon sneeuwklokje,,nl
 2350,harilik lumikelluke,,et
 2350,Kaunokainen,,fi
 2350,Schneegloeckchen,,de
 2350,Sibirisk aster,,sv
 2350,Snowdrop,,en
-2350,Tummarusokki,,fi
+2350,Tummarusokki ,,fi
 2350,Tusenfryd,,no
 2350,Tusensköna,,sv
 2350,Tusindfryd,,da
@@ -10971,11 +10971,11 @@ taxonID,vernacularName,source,language
 23500,Ekorrkorn,,sv
 23500,Gold Byg,,da
 23500,Hiirenohra,,fi
-23500,Krattlodnegras,,no
+23500,Krattlodnegras ,,no
 23500,Lentåtel,,sv
 23500,Musebygg,,no
 23500,Partaohra,,fi
-23500,Pehmytmesiheinä,,fi
+23500,Pehmytmesiheinä ,,fi
 23500,Silkebygg,,no
 23500,Vildkorn,,sv
 23508,Chardon,,fr
@@ -11050,14 +11050,14 @@ taxonID,vernacularName,source,language
 2358,Pleated Snowdrop,,en
 23603,Senecione,,it
 23603,Séneçon anguleux,,fr
-23606,Enårig Rapgræs,,da
+23606,Enårig Rapgræs ,,da
 23606,Eng-Rottehale,,da
 23606,Flentimotej,,sv
 23606,Glat Rottehale,,da
 23606,Helpitähkiö,,fi
 23606,Knölgröe,,sv
-23606,Kylänurmikka,,fi
-23606,Laukrapp,,no
+23606,Kylänurmikka ,,fi
+23606,Laukrapp ,,no
 23606,Nurmitähkiö,,fi
 23606,Sipulinurmikka,,fi
 23606,Smaltimotei,,no
@@ -11065,7 +11065,7 @@ taxonID,vernacularName,source,language
 23606,Timotej,,sv
 23606,Tunrapp,,no
 23606,Túnskollapuntur,,is
-23606,Varpasveifgras,,is
+23606,Varpasveifgras ,,is
 23606,Vitgröe,,sv
 23608,cenicera marítima,,es
 23608,cenicienta,,es
@@ -11097,7 +11097,7 @@ taxonID,vernacularName,source,language
 23642,Alpslide,,sv
 23642,Blågull,,sv
 23642,Broad-leaved Ragwort,,en
-23642,Fjellflokk,,no
+23642,Fjellflokk ,,no
 23642,Hiirenhäntänata,,fi
 23642,Lehtosinilatva,,fi
 23642,Mossflox,,sv
@@ -11125,11 +11125,11 @@ taxonID,vernacularName,source,language
 23670,Almindelig Rug,,da
 23670,Älväxing,,sv
 23670,Ängsgröe,,sv
-23670,Eng-Rapgræs,,da
+23670,Eng-Rapgræs ,,da
 23670,Engrapp,,no
 23670,Grått saltgräs,,sv
 23670,Kujasorsimo,,fi
-23670,Lupikka,,fi
+23670,Lupikka ,,fi
 23670,Niittynurmikka,,fi
 23670,Råg,,sv
 23670,Rug,,no
@@ -11212,16 +11212,16 @@ taxonID,vernacularName,source,language
 2372,Kyläkarhiainen,,fi
 2372,Lenteklokje,,nl
 2372,Nicktistel,,sv
-2372,Nikkende Tidsel,,da
-2372,Nikketistel,,no
-2372,Nuokkukarhiainen,,fi
+2372,Nikkende Tidsel ,,da
+2372,Nikketistel ,,no
+2372,Nuokkukarhiainen ,,fi
 2372,Olymptistel,,no
 2372,Olymptistel,,sv
-2372,Piggtistel,,no
+2372,Piggtistel ,,no
 2372,Piggtistel,,sv
-2372,Piikkikarhiainen,,fi
+2372,Piikkikarhiainen ,,fi
 2372,Spring Snowflake,,en
-2372,Tornet Tidsel,,da
+2372,Tornet Tidsel ,,da
 23725,Åkerpilört,,sv
 23725,Almindelig Pileurt,,da
 23725,Bärgartrampört,,sv
@@ -11332,7 +11332,7 @@ taxonID,vernacularName,source,language
 23772,Guldlysing,,sv
 23772,Late guldenroede,,nl
 23772,magas aranyvessző,,hu
-23772,milzu zeltgalvīte,,lv
+23772,milzu zeltgalvīte ,,lv
 23772,Nawłoć późna,,pl
 23772,Nonsblom,,no
 23772,Puna-alpi,,fi
@@ -11435,7 +11435,7 @@ taxonID,vernacularName,source,language
 23841,Schmalblatt-Samtblume,,de
 23841,Studentenblume,,de
 23841,Tagete comune,,it
-23846,balzsamos aranyvirág,,hu
+23846, balzsamos aranyvirág,,hu
 23846,Ager-Ranunkel,,da
 23846,Åkerranunkel,,sv
 23846,Balsamkraut,,de
@@ -11467,10 +11467,10 @@ taxonID,vernacularName,source,language
 23866,Saltsoleie,,no
 23866,Skydinis skaistenis,,lt
 23866,Suolaleinikki,,fi
-23866,Uldhåret Ranunkel,,da
-23866,Villaleinikki,,fi
+23866,Uldhåret Ranunkel ,,da
+23866,Villaleinikki ,,fi
 23869,Akeleiefrøstjerne,,no
-23869,Akeleje-Frøstjerne,,da
+23869,Akeleje-Frøstjerne ,,da
 23869,Aklejaruta,,sv
 23869,Bidende Ranunkel,,da
 23869,Großblatt-Wucherblume,,de
@@ -11498,7 +11498,7 @@ taxonID,vernacularName,source,language
 23892,Glansruta,,sv
 23892,Grande Camomille,,fr
 23892,Hoikkaängelmä,,fi
-23892,Hvid Reseda,,da
+23892,Hvid Reseda ,,da
 23892,Kvitreséda,,no
 23892,Kystfrøstjerne,,no
 23892,lõhnav neitsikummel,,et
@@ -11556,7 +11556,7 @@ taxonID,vernacularName,source,language
 23930,Puošnioji telekija,,lt
 23930,Rukkemarikåpe,,no
 23930,Sammetsdaggkåpa,,sv
-23930,Suppilopoimulehti,,fi
+23930,Suppilopoimulehti ,,fi
 23930,Télékia élégant,,fr
 23930,Telekie,,de
 23930,Télékie élégante,,fr
@@ -11580,13 +11580,13 @@ taxonID,vernacularName,source,language
 23949,Garðamaríustakkur,,is
 23949,Grå Løvefod,,da
 23949,Hjuldaggkåpa,,sv
-23949,Hjulmarikåpe,,no
+23949,Hjulmarikåpe ,,no
 23949,Jättedaggkåpa,,sv
 23949,kozí brada pochybná,,cs
 23949,Lådden løvefod,,da
 23949,Laidunpoimulehti,,fi
 23949,Laskospoimulehti,,fi
-23949,Pyöröpoimulehti,,fi
+23949,Pyöröpoimulehti ,,fi
 23949,Salsifis douteux,,fr
 23949,Trubbdaggkåpa,,sv
 23951,Didžiojo pūtelio stambusis porūšis,,lt
@@ -11594,7 +11594,7 @@ taxonID,vernacularName,source,language
 23955,Slender Salsify,,en
 23959,Ängsdaggkåpa,,sv
 23959,Butlappet Løvefod,,da
-23959,Engmarikåpe,,no
+23959,Engmarikåpe ,,no
 23959,Haferwurz,,de
 23959,Hakamaapoimulehti,,fi
 23959,måndaggkåpa,,sv
@@ -11656,7 +11656,7 @@ taxonID,vernacularName,source,language
 24004,Pyöröliuskaorapihlaja,,fi
 24004,Rundhagtorn,,sv
 24004,Ulloxbär,,sv
-24006,Aitaorapihlaja,,fi
+24006,Aitaorapihlaja ,,fi
 24006,Almindelig buskpotentil,,da
 24006,Brudbröd,,sv
 24006,Buskmure,,no
@@ -11771,7 +11771,7 @@ taxonID,vernacularName,source,language
 24085,olasz szerbtövis,,hu
 24085,pegotes,,es
 24085,rioles espinoses,,es
-24085,לכיד,,he
+24085,לכיד ,,he
 24098,arrancamoños,,es
 24098,bardana,,es
 24098,cachurrera,,es
@@ -11817,7 +11817,7 @@ taxonID,vernacularName,source,language
 24149,Behüllte Heckenkirsche,,de
 24149,Broksalvia,,sv
 24149,Californian Honeysuckle,,en
-24149,Dusk-salvie,,da
+24149,Dusk-salvie ,,da
 24153,agioklima,,el
 24153,Caprifoglio giapponese,,it
 24153,Chèvrefeuille du Japon,,fr
@@ -11875,7 +11875,7 @@ taxonID,vernacularName,source,language
 24198,sarkanais plūškoks,,lv
 24198,sarkanais plūškoks cv.,,lv
 24203,Hybrid Coralberry,,en
-24214,keleti bogyóslonc,,hu
+24214, keleti bogyóslonc,,hu
 24214,Arbre aux perles,,fr
 24214,Baltauogė meškytė,,lt
 24214,Gewöhnliche Schneebeere,,de
@@ -11897,7 +11897,7 @@ taxonID,vernacularName,source,language
 2424,Hoop-petticoat Daffodil,,en
 24241,Coralberry,,en
 24241,Korallenbeerstrauch,,de
-24241,pámelník,,cs
+24241,pámelník ,,cs
 24241,piros bogyóslonc,,hu
 24253,Sodinis putinas,,lt
 24253,vilnain,,lv
@@ -11944,7 +11944,7 @@ taxonID,vernacularName,source,language
 24336,hlavá,,cs
 24336,kaukázusi ördögszem,,hu
 2434,Lesser Daffodil,,en
-24341,baložu krievpoga,,lv
+24341,baložu krievpoga ,,lv
 24344,kollane tähtepea,,et
 24344,Scabieuse jaune pâle,,fr
 24345,hlavá,,cs
@@ -11958,7 +11958,7 @@ taxonID,vernacularName,source,language
 24365,Camarezza tubulosa,,it
 24366,Centranthe rouge,,fr
 24366,Lilas d'Espagne,,fr
-24366,mavuň,,cs
+24366,mavuň ,,cs
 24366,"milamores, hierba de San Jorge",,es
 24366,piros sarkantyúvirág,,hu
 24366,Red Valerian,,en
@@ -11979,7 +11979,7 @@ taxonID,vernacularName,source,language
 24391,valeriánka zúbkatá,,cs
 244,csíkos szalagpáfrány,,hu
 244,Fougère à feuilles longues,,fr
-24402,dūnaugļu baldriņš,,lv
+24402,dūnaugļu baldriņš ,,lv
 24402,Hairy-fruited Cornsalad,,en
 24402,Wollfrüchtiger Feldsalat,,de
 24405,Gewöhnlicher Feldsalat,,de
@@ -11988,7 +11988,7 @@ taxonID,vernacularName,source,language
 24405,valeriánka polná,,cs
 24411,Broad-fruited Cornsalad,,en
 24411,kozlí,,cs
-24411,uzpūstais baldriņš,,lv
+24411,uzpūstais baldriņš ,,lv
 24411,valeriánka škárkatá,,cs
 2444,Almindelig Bakketidsel,,da
 2444,Blåklint,,sv
@@ -12047,18 +12047,18 @@ taxonID,vernacularName,source,language
 2537,Kevättaskuruoho,,fi
 2537,Peltotaskuruoho,,fi
 2537,Pengeurt,,no
-2537,Peningakál,,is
+2537,Peningakál ,,is
 2537,Penningört,,sv
-2537,Rikkataskuruoho,,fi
+2537,Rikkataskuruoho ,,fi
 2537,Spraġġ,,mt
 2537,Storskärvfrö,,sv
 2537,Vaistinis smidras,,lt
-2537,Vårpengeurt,,no
+2537,Vårpengeurt ,,no
 2537,Vårskärvfrö,,sv
 2537,Volga-Vejsennep,,da
 2537,Volganpernaruoho,,fi
 2537,Volgasenap,,sv
-2537,Volgasennep,,no
+2537,Volgasennep ,,no
 2541,Asperge,,fr
 2541,Asperge officinale,,fr
 2541,Garden Asparagus,,en
@@ -12126,7 +12126,7 @@ taxonID,vernacularName,source,language
 2726,Laxmanns Rohrkolben,,de
 2726,Massette de Laxmann,,fr
 2726,olasz gyékény,,hu
-2745,cilindriskais egilopss,,lv
+2745, cilindriskais egilopss ,,lv
 2745,Ben-hita glilani,,he
 2745,Cilindrinis kentris,,lt
 2745,cilindriskais egilops,,lv
@@ -12506,7 +12506,7 @@ taxonID,vernacularName,source,language
 3355,Chloris,,fr
 3355,Feathery Rhodes-grass,,en
 3355,עשבה רותמית,,he
-3358,Jób könnye,,hu
+3358, Jób könnye,,hu
 3358,Herbe à chapelets,,fr
 3358,könnyfű,,hu
 3358,Larme-de-Job,,fr
@@ -12760,7 +12760,7 @@ taxonID,vernacularName,source,language
 380,Doftkörvel,,sv
 380,Finsk Hulsvøb,,da
 380,harilik elupu,,et
-380,Idänkirveli,,fi
+380,Idänkirveli ,,fi
 380,nyugati tuja,,hu
 380,"Parkkörvel, Guldkörvel",,sv
 380,Rietumu tuja,,lv
@@ -12791,20 +12791,20 @@ taxonID,vernacularName,source,language
 3827,Teff,,en
 383,Almindelig Hulsvøb,,da
 383,Cèdre de l'Ouest,,fr
-383,Giftkjeks,,no
+383,Giftkjeks ,,no
 383,Gulrot,,no
 383,Hårkörvel,,sv
 383,hiigel-elupuu,,et
 383,Jordnøtt,,no
 383,Morot,,sv
-383,Myrkkykatko,,fi
+383,Myrkkykatko ,,fi
 383,Myrkkykirveli,,fi
 383,Nötkörvel,,sv
 383,Odört,,sv
 383,óriás tuja,,hu
 383,Porkkana,,fi
 383,Riesen-Lebensbaum,,de
-383,Skarntyde,,da
+383,Skarntyde ,,da
 383,Svimekjeks,,no
 383,Svinenød,,da
 383,Thuya géant,,fr
@@ -12965,7 +12965,7 @@ taxonID,vernacularName,source,language
 4186,Zuckerohr-Chinaschilf,,de
 4190,Eulalia,,it
 4190,Gewöhnliches Chinaschilf,,de
-4190,ozdobnice,,cs
+4190,ozdobnice ,,cs
 4196,Mulenbergia messicana,,it
 42,Toothed Clear-leaf Moss,,en
 4202,Mulembergia di Schereber,,it
@@ -13160,7 +13160,7 @@ taxonID,vernacularName,source,language
 4439,görög komócsin*,,hu
 4441,bojínek latnatý,,cs
 4441,Rispen-Lieschgras,,de
-4441,skarainais timotiņš,,lv
+4441,skarainais timotiņš ,,lv
 4447,Tymotka halna,,pl
 4449,bojínek šídlovitý,,cs
 4449,egyéves komócsin,,hu
@@ -13221,7 +13221,7 @@ taxonID,vernacularName,source,language
 4619,שנפלדיה עדינה,,he
 4621,tužanka tvrdá,,cs
 4623,centeio,,pt
-4623,centeno,,es
+4623,centeno ,,es
 4623,Roggen,,de
 4623,Rye,,en
 4623,Seigle,,fr
@@ -13300,7 +13300,7 @@ taxonID,vernacularName,source,language
 4762,Panico falso,,it
 4762,Sétaire verte,,fr
 4774,bér zelený pravý,,cs
-4778,tönkölykása,,hu
+4778, tönkölykása,,hu
 4778,bókoló cirok,,hu
 4778,cirok,,hu
 4778,Dvispalvis sorgas,,lt
@@ -13311,7 +13311,7 @@ taxonID,vernacularName,source,language
 4778,Sorgho bicolore,,fr
 4778,Sorgho commun,,fr
 4778,Süpürge darisi,,tr
-4793,szudánifű,,hu
+4793, szudánifű,,hu
 4793,Sorgho du Soudan,,fr
 4793,szudáni cirokfű,,hu
 48,Stanford Screw-moss,,en
@@ -13421,7 +13421,7 @@ taxonID,vernacularName,source,language
 495,nagylevelű moszatpáfrány,,hu
 495,Šakotoji azolė,,lt
 495,water fern,,en
-4961,pļavas zeltauzīte,,lv
+4961,pļavas zeltauzīte ,,lv
 4970,Blé,,fr
 4970,Blé tendre,,fr
 4970,Bread Wheat,,en
@@ -13479,7 +13479,7 @@ taxonID,vernacularName,source,language
 50159,Slipper limpet,,en
 50162,Common Carp,,en
 50162,Sazan,"Кесслер, 1856",be
-50169,Dreissena,,be
+50169,Dreissena ,,be
 50169,Zebra Mussel,,en
 5017,Vulpie genouillée,,fr
 50175,parasitic copepod,,en
@@ -13539,7 +13539,7 @@ taxonID,vernacularName,source,language
 50555,New Zealand oyster,,en
 50556,American tingle,,en
 50560,Magellan mussel,,en
-5064,tengeri,,hu
+5064, tengeri,,hu
 5064,Frumentone,,it
 5064,Granone,,it
 5064,Granoturco,,it
@@ -13555,7 +13555,7 @@ taxonID,vernacularName,source,language
 5064,Melga,,it
 5064,Misir,,tr
 5064,Qamh ir-rum,,mt
-50656,Asian Cotton Leafworm,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
+50656,Asian Cotton Leafworm ,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 50662,Soft scale,Essl & Rabitsch (2002),en
 50665,greenhouse camel cricket,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
 5067,ūdens tuskarora,,lv
@@ -13618,7 +13618,7 @@ taxonID,vernacularName,source,language
 50869,Larch Woolly Aphid,,en
 50880,Douglas Fir Woolly Aphid,Essl & Rabitsch (2002),en
 50883,Citrus mealybug,"Tschorbadjiev, P., 1938. Materialen uber die schadlichen insecten und anderen Feinde der kulturpelanzen in Bulgarien, Mitteilungen der Bulgarischen Entomologischen Gesellschaft  in Sofia,  band 10: 55-72",en
-50883,common mealybug,"Tschorbadjiev, P., 1938. Materialen uber die schadlichen insecten und anderen Feinde der kulturpelanzen in Bulgarien, Mitteilungen der Bulgarischen Entomologischen Gesellschaft  in Sofia,  band 10: 55-72",en
+50883, common mealybug,"Tschorbadjiev, P., 1938. Materialen uber die schadlichen insecten und anderen Feinde der kulturpelanzen in Bulgarien, Mitteilungen der Bulgarischen Entomologischen Gesellschaft  in Sofia,  band 10: 55-72",en
 50890,Egyptian Cotton Leafworm,,en
 50897,Raisin moth,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 50908,Garden tortrix,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
@@ -13656,7 +13656,7 @@ taxonID,vernacularName,source,language
 50997,cypress seed chalcid,,en
 51,Clay Screw-moss,,en
 51009,potato tuber moth,Huemer & Mayr 2000,en
-51009,Kartoffelmè¸l,Huemer & Mayr 2000,en
+51009, Kartoffelmè¸l,Huemer & Mayr 2000,en
 51011,Azalea Leaf Miner,Klimesch 1990,en
 51014,Japanese oak silk moth,"Kühnert 1969, Walzl 1985, Deschka 1995a",en
 51016,Ethiopian rat flea,"Smit, F.G.A.M. 1957. Siphonaptera. Handbooks for the Identification of British Insects Vol. 1 Part 16. Royal Entomological Society, London, U.K. (1957)",en
@@ -13688,20 +13688,20 @@ taxonID,vernacularName,source,language
 51102,Citrus flower moth,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 51106,cigarette beetle,,en
 51112,Pine Sawyer,,en
-51113,Chinese powderpost beetle,Alexander 2002,en
+51113,Chinese powderpost beetle ,Alexander 2002,en
 51116,pea weevil,"Beenen R, Roques A (2010) Leaf and Seed Beetles (Coleoptera, Chrysomelidae). Chapter 8.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 267–292.",en
 51120,Colorado potato beetle,"Beenen R, Roques A (2010) Leaf and Seed Beetles (Coleoptera, Chrysomelidae). Chapter 8.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 267–292.",en
 51124,eucalyptus weevil,,en
 51127,pink bolworm,"Roll E., Dayan T. & Simberloff D., 2007. Non-indigenous species in Israel and adjacent areas. Biol. Inv. 9: 629-643",en
 51127,Pink bolworm,"Russo g., 1939 - Contributo alla conoscenza degli insetti dannosi al cotone nell'Africa orientale italiana. I Lepidotteri. Bollettino Regio Laboratorio di Entomologia Agraria. Portici, 3:105-220.",en
-51127,Bomuldsmè¸l,"Roll E., Dayan T. & Simberloff D., 2007. Non-indigenous species in Israel and adjacent areas. Biol. Inv. 9: 629-643",en
-51127,Bomuldsmè¸l,"Russo g., 1939 - Contributo alla conoscenza degli insetti dannosi al cotone nell'Africa orientale italiana. I Lepidotteri. Bollettino Regio Laboratorio di Entomologia Agraria. Portici, 3:105-220.",en
+51127, Bomuldsmè¸l,"Roll E., Dayan T. & Simberloff D., 2007. Non-indigenous species in Israel and adjacent areas. Biol. Inv. 9: 629-643",en
+51127, Bomuldsmè¸l,"Russo g., 1939 - Contributo alla conoscenza degli insetti dannosi al cotone nell'Africa orientale italiana. I Lepidotteri. Bollettino Regio Laboratorio di Entomologia Agraria. Portici, 3:105-220.",en
 51128,merchant grain beetle,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 51129,Rust-red flour beetle,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 51129,Rust-red flour beetle,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
-51129,Ferrugineous flour beetle,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
-51129,Red flour beetle,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
-51129,Bran bug.,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
+51129, Ferrugineous flour beetle,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
+51129, Red flour beetle,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
+51129, Bran bug. ,"Perera, AP (1991). Bases Bioecológicas para a Cultura em Massa de Tribolium castaneum Hbst (Coleoptera, Tenebrionidae) em Laboratório. Estácio, FLF (1956). Estudos, Ensaios e Documentos XVIII. A Entomofauna dos Produtos Armazenados. Os Trbolum spp. (Coleo",en
 51140,Medfly,"Fimiani P (1989) The Mediterranean region: In: (eds Robinson AS, Hooper G) Fruit Flies: their Biology, Natural Enemies and Control, pp. 37–50. Elsevier, New York.",en
 51150,Larger Pirate Bug,,en
 51157,Puceron jaune du fraisier,,en
@@ -13717,7 +13717,7 @@ taxonID,vernacularName,source,language
 512,Kaukasianjättiputki,,fi
 512,Kjempebjønnkjeks,,no
 512,Kæmpe-Bjørneklo,,da
-512,Kæmpe-Mandstro,,no
+512,Kæmpe-Mandstro ,,no
 512,Ryskmartorn,,sv
 512,Sagkjeks,,no
 512,Seglblad,,da
@@ -13761,7 +13761,7 @@ taxonID,vernacularName,source,language
 51300,Spruce carpet,,en
 51309,Southern cowpea weevil,"Beenen R, Roques A (2010) Leaf and Seed Beetles (Coleoptera, Chrysomelidae). Chapter 8.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 267–292.",en
 51310,chinese bruchid,"Hoffmann, A. (1945) Sainte-Claire Deville J (1938)",en
-51310,cowpea weevil,"Hoffmann, A. (1945) Sainte-Claire Deville J (1938)",en
+51310, cowpea weevil,"Hoffmann, A. (1945) Sainte-Claire Deville J (1938)",en
 51311,Japanese Cedar Longhorned Beetle,Plavilstshtikov (1934),en
 51317,Fuller rose beetle,Clerc A (1928) Normark BB. (1996),en
 51319,Citrus Longhorned Beetle,"Vukadin A, Hrašovec B (2008) Anoplophora chinensis (Forster) in Croatia. Forstschutz Aktuell 44, 23-24.",en
@@ -13791,7 +13791,7 @@ taxonID,vernacularName,source,language
 51390,Ligurian leafhopper,,en
 51399,Dump fly,pers. comm. Diptera person 2005. (),en
 51403,Hemerocallis gall midge,Skuhravá M et al. (2010) Diptera. Chapter 10. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 553–602.,en
-51403,daylily gall midge,Skuhravá M et al. (2010) Diptera. Chapter 10. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 553–602.,en
+51403, daylily gall midge,Skuhravá M et al. (2010) Diptera. Chapter 10. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 553–602.,en
 51416,Maize Orange Leafhopper,,en
 51417,Asian Ambrosia beetle,,en
 51433,dubas date tropiduchid,,en
@@ -13799,7 +13799,7 @@ taxonID,vernacularName,source,language
 5144,Tresco Rhodostachys,,en
 51448,copra beetle,Essl & Rabitsch (2002),en
 5147,Rhodostachys,,en
-51476,coffee bean weevil,Essl & Rabitsch (2002),en
+51476,coffee bean weevil ,Essl & Rabitsch (2002),en
 51493,plaster beetle,Essl & Rabitsch (2002),en
 51495,Sisal weevil,"FREDON-Corse, 2010",en
 51500,Odd beetle,www.insecte.org/forum/dermestidae-de-france-avec-cle-simplifiee-vt6017.html,en
@@ -13817,7 +13817,7 @@ taxonID,vernacularName,source,language
 516,Séquoia à feuilles d'If,,fr
 516,Séquoia sempervirent,,fr
 51616,frond-feeding weevil,"Sauvard D et al. (2010) Weevils and Bark Beetles (Coleoptera, Curculionoidea). Chapter 8.2. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 219–266.",en
-51616,azolla weevil,"Sauvard D et al. (2010) Weevils and Bark Beetles (Coleoptera, Curculionoidea). Chapter 8.2. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 219–266.",en
+51616, azolla weevil,"Sauvard D et al. (2010) Weevils and Bark Beetles (Coleoptera, Curculionoidea). Chapter 8.2. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 219–266.",en
 51644,Australian carpet beetle,"Hava, 2003. World Catalogue of Dermestidae, Kabourek (2007 version)",en
 51648,yellow-spotted longicorn beetle,EPPO Rep. Serv. 2008/201,en
 51656,hairy powder-post beetle,"Audisio P., Gobbi G., Liberti G., Nardi G.,   1995 - Coleoptera Polyphaga IX (Bostrichoidea, Cleroidea, Lymexyloidea) In: Minelli A., Ruffo S., La Posta (eds.), Check list delle specie della fauna italiana, 54, Calderini, Bologna, 27pp",en
@@ -13832,12 +13832,12 @@ taxonID,vernacularName,source,language
 51731,groundnut seed beetle,"Beenen R, Roques A (2010) Leaf and Seed Beetles (Coleoptera, Chrysomelidae). Chapter 8.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(1): 267–292.",en
 51732,Ant beetles,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 51744,cave cricket,,en
-51745,Large Pale Clothes Moth,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
+51745,Large Pale Clothes Moth ,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 51768,Laurel Scale,,en
 51770,warehouse beetle,"Hava, 2003. World Catalogue of Dermestidae, Kabourek",en
 51771,globular spider beetle,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 51784,Surinam cockroach,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
-51833,Cattleya fly,Rasplus J-Y et al. (2010) Hymenoptera. Chapter 12. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(2): 669–776.,en
+51833,Cattleya fly ,Rasplus J-Y et al. (2010) Hymenoptera. Chapter 12. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(2): 669–776.,en
 51837,Maritime earwig,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
 51847,American bean beetle,"Hoffmann, A. (1945)",en
 51856,Black fungus beetle,"Brendell, M.J.D. 1975. Coleoptera, Tenebrionidae. Handbooks for the Identification of British Insects Vol. 5 Part 10. Royal Entomological Society, London, U.K. (1975)",en
@@ -13857,7 +13857,7 @@ taxonID,vernacularName,source,language
 51982,Odd beetle,www.insecte.org/forum/dermestidae-de-france-avec-cle-simplifiee-vt6017.html,en
 52001,Bardee,,en
 52011,Laboratory stick-insect,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
-52011,Indian Stick insect,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
+52011, Indian Stick insect,"Rasplus J-Y, Roques A (2010) Dictyoptera (Blattodea, Isoptera), Orthoptera, Phasmatodea and Dermaptera. Chapter 13.3. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 807–831.",en
 52020,Green garden looper,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 52041,North American cherry fruit fly,"Merz B, Niehuis M (2001) [Remarkable records of fruit flies (Diptera, Tephritidae) from Rhineland-Palatinate (Germany)]. Dipteron 4(1), 57-64.",en
 52054,carpet beetle,,en
@@ -13890,10 +13890,10 @@ taxonID,vernacularName,source,language
 52156,grape leafhopper,"Duso C., Bressan A., Mazzon L., Girolami V. (2005)",en
 52157,Silver Fir Woolly Aphid,,en
 52161,Ant beetles,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
-52163,giant mealworm,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
+52163,giant mealworm ,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 52172,Dark Mottled Willow,,en
 52180,Oak Bark Phylloxera,,en
-52188,smooth spider beetle,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
+52188,smooth spider beetle ,"Denux O, Zagatti P (2010) Coleoptera families other than Cerambycidae, Curculionidae sensu lato, Chrysomelidae sensu lato and Coccinelidae. Chapter 8.5. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk4 (1): 315–406",en
 52193,tobacco thrips,Reynaud P (2010) Th rips (Th ysanoptera). Chapter 13.1. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 767–791.,en
 52196,Blair's shoulder knot,,en
 52208,Pine Sawyer,,en
@@ -13996,7 +13996,7 @@ taxonID,vernacularName,source,language
 52911,citrus bud mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
 52912,Persian walnut leaf blister mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
 52913,black locust leaf curl mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
-52913,false acacia rust mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
+52913, false acacia rust mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
 52916,pink citrus rust mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
 5293,Souchet,,fr
 5294,Marisque,,fr
@@ -14137,7 +14137,7 @@ taxonID,vernacularName,source,language
 5443,Tradescanzia sudamericana,,it
 5443,Wandering-jew,,en
 5452,Éphémère de Virginie,,fr
-5452,Erba miseria,,it
+5452,Erba miseria ,,it
 5452,Fiore d'un giorno,,it
 5452,Garten-Dreimasterblume,,de
 5452,Spiderwort,,en
@@ -14297,7 +14297,7 @@ taxonID,vernacularName,source,language
 5721,Daržinė aguona,,lt
 5721,mák setý,,cs
 5721,mak siaty,,cs
-5721,miega magone,,lv
+5721,miega magone ,,lv
 5721,Opium Poppy,,en
 5721,Pavot à opium,,fr
 5721,Pavot officinal,,fr
@@ -14362,7 +14362,7 @@ taxonID,vernacularName,source,language
 5865,plamének východní,,cs
 587,loureiro-real,,pt
 587,vinhático,,pt
-5871,augstais mežvītenis,,lv
+5871,augstais mežvītenis ,,lv
 5874,clemátide,,es
 5874,herba de llagues,,es
 5874,hierba de los pordioseros,,es
@@ -14401,20 +14401,20 @@ taxonID,vernacularName,source,language
 5909,ostrožka východní,,cs
 5909,Rytinis raguolis,,lt
 593,Birthwort,,en
-593,Etelännenätti,,fi
+593,Etelännenätti ,,fi
 593,Gewöhnliche Osterluzei,,de
 593,Gul Sennep,,da
 593,Keltasinappi,,fi
 593,Klotfräne,,sv
 593,Kulekarse,,no
-593,Kvitsennep,,no
+593,Kvitsennep ,,no
 593,mežvīteņu aristolochija,,lv
 593,mežvīteņu aristolohija,,lv
 593,Paprastoji kartuolė,,lt
 593,Rikkanenätti,,fi
 593,Strandfräne,,sv
 593,Vägfräne,,sv
-593,Vegkarse,,no
+593,Vegkarse ,,no
 593,Vej-Guldkarse,,da
 593,Vitsenap,,sv
 593,Østrigsk Guldkarse,,da
@@ -14483,9 +14483,9 @@ taxonID,vernacularName,source,language
 6022,Dirvinis vėdrynas,,lt
 6022,iskerník rolný,,cs
 6022,praskyřník rolní,,cs
-6022,tīruma gundega,,lv
+6022,tīruma gundega ,,lv
 6031,pintyőboglárka*,,hu
-604,Ager-Sennep,,da
+604,Ager-Sennep ,,da
 604,Åkersenap,,sv
 604,Åkersennep,,no
 604,Akurmustarður,,is
@@ -14494,11 +14494,11 @@ taxonID,vernacularName,source,language
 604,Borstsenap,,sv
 604,Glat Vejsennep,,da
 604,Hamnsenap,,sv
-604,Karvapernaruoho,,fi
-604,Kiiltopernaruoho,,fi
+604,Karvapernaruoho ,,fi
+604,Kiiltopernaruoho ,,fi
 604,Kjempesennep,,no
-604,Rikkasinappi,,fi
-604,Stivhåret Vejsennep,,da
+604,Rikkasinappi ,,fi
+604,Stivhåret Vejsennep ,,da
 604,Stridsennep,,no
 604,Ungarsk Vejsennep,,da
 604,Unkarinpernaruoho,,fi
@@ -14517,23 +14517,23 @@ taxonID,vernacularName,source,language
 607,Coda di lucertola,,it
 6070,Chinese Meadow-rue,,en
 6074,mazais saulkrēsliņš,,lv
-608,kalme,,lv
+608, kalme,,lv
 608,Balinis ajeras,,lt
-608,Bastardsennep,,da
+608,Bastardsennep ,,da
 608,Blomsteriberis,,sv
 608,Gråsenap,,sv
 608,harilik kalamus,,et
-608,Hilmiö,,fi
+608,Hilmiö ,,fi
 608,Kalmoes,,nl
 608,Kalmus,,de
-608,Katkerasaippo,,fi
-608,Narresennep,,no
+608,Katkerasaippo ,,fi
+608,Narresennep ,,no
 608,Obligeana,,ro
 608,orvosi kálmos,,hu
-608,Prydsløyfe,,no
+608,Prydsløyfe ,,no
 608,puškvorec obecný,,cs
 608,Roseniberis,,sv
-608,Sløyfeblomst,,da
+608,Sløyfeblomst ,,da
 608,smaržiga kalme,,lv
 608,Sorgört,,sv
 608,sweet flag,,en
@@ -14626,7 +14626,7 @@ taxonID,vernacularName,source,language
 6134,háquea-folhas-de-salgueiro,,pt
 6139,Hakea,,fr
 6139,háquea-picante,,pt
-6145,közönséges p.,,hu
+6145, közönséges p.,,hu
 6145,Ahornblättrige Platane,,de
 6145,Bastard-Platane,,de
 6145,Gewöhnliche Platane,,de
@@ -14642,12 +14642,12 @@ taxonID,vernacularName,source,language
 6177,Platane d'Orient,,fr
 6178,Fiore di loto,,it
 6178,indiai lótusz,,hu
-6181,Körsbärskornell,,sv
-6181,Purpur-pragtsnerle,,da
+6181, Körsbärskornell ,,sv
+6181, Purpur-pragtsnerle,,da
 6181,Buchs,,de
 6181,Buchsbaum,,de
 6181,Grovsnärja,,sv
-6181,Kirsebær-kornel,,da
+6181,Kirsebær-kornel ,,da
 6181,Klöversnärja,,sv
 6181,Kløver-silke,,da
 6181,krušpán vždyzelený,,cs
@@ -14661,7 +14661,7 @@ taxonID,vernacularName,source,language
 6191,Brazilian Giant-rhubarb,,en
 6193,giant rhubarb,,en
 6193,Giant-rhubarb,,en
-6202,Cresta di gallo,,it
+6202,Cresta di gallo ,,it
 6202,Hahnenkamm,,de
 6202,Silber-Brandschopf,,de
 6204,madal mätashari,,et
@@ -14675,7 +14675,7 @@ taxonID,vernacularName,source,language
 6222,Shrubby Orache,,en
 6226,Maluh sfogi,,he
 6226,מלוח ספוגי,,he
-6229,d,,lv
+6229, d,,lv
 6229,aedmalts,,et
 6229,Arroche des jardins,,fr
 6229,d,,lv
@@ -14796,7 +14796,7 @@ taxonID,vernacularName,source,language
 6412,Thé du Mexique,,fr
 6412,ürt-hanemalts,,et
 6412,Welriekende ganzenvoet,,nl
-6412,כף,,he
+6412,כף ,,he
 6425,akotain,,lv
 6425,Dygliuotoji balanda,,lt
 6425,Farinello aristato,,it
@@ -14849,8 +14849,8 @@ taxonID,vernacularName,source,language
 6496,võõr-hanemalts,,et
 65,Wiesen-Moosfarn,,de
 6502,Europinė soduotė,,lt
-6503,כף,,he
-6503,Caf-avaz,,he
+6503, כף ,,he
+6503,Caf-avaz ,,he
 6503,Fig-leaved Goosefoot,,en
 6503,merlík fíkolistý,,cs
 6503,vīģlapain,,lv
@@ -14887,7 +14887,7 @@ taxonID,vernacularName,source,language
 655,Canadian arrowhead,,en
 6553,Caf-avaz missourie,,he
 6553,merlík missourský,,cs
-6553,כף,,he
+6553,כף ,,he
 6556,Chénopode multifide,,fr
 6556,Farinello multifido,,it
 6556,fésűslevelű libatop,,hu
@@ -14926,7 +14926,7 @@ taxonID,vernacularName,source,language
 6603,Bitzan dokrani,,he
 6603,ביצן דוקרני,,he
 6607,Chénopode,,fr
-6607,merlík,,cs
+6607,merlík ,,cs
 6607,Reismelde,,de
 6607,tšiili hanemalts,,et
 6609,Ansérine rouge,,fr
@@ -14962,7 +14962,7 @@ taxonID,vernacularName,source,language
 6656,merlík městský,,cs
 6656,Straßen-Gänsefuß,,de
 6656,Upright Goosefoot,,en
-6656,כף,,he
+6656,כף ,,he
 6664,Dvokian,,lt
 6664,haisev hanemalts,,et
 6664,merlík smrdutý,,cs
@@ -15001,8 +15001,8 @@ taxonID,vernacularName,source,language
 673,Isokrassi,,fi
 673,Matkarse,,no
 673,Pihakrassi,,fi
-673,Rikkakrassi,,fi
-673,Rundkarse,,no
+673,Rikkakrassi ,,fi
+673,Rundkarse ,,no
 673,Rundkrassing,,sv
 673,Smörgåskrasse,,sv
 673,Stinkende Karse,,da
@@ -15019,7 +15019,7 @@ taxonID,vernacularName,source,language
 6742,Amaranto bianco,,it
 6742,aspro vlito,,el
 6742,balt,,lv
-6742,baltais amarants,,lv
+6742,baltais amarants ,,lv
 6742,Baltasis burnotis,,lt
 6742,bledo,,es
 6742,bledo blanco,,es
@@ -15055,7 +15055,7 @@ taxonID,vernacularName,source,language
 6752,Amarante fausse Blette,,fr
 6752,amaranto,,es
 6752,Amaranto blitoide,,it
-6752,balandu amarants,,lv
+6752,balandu amarants ,,lv
 6752,balandu kaķaste,,lv
 6752,bledo,,es
 6752,blet,,es
@@ -15098,10 +15098,10 @@ taxonID,vernacularName,source,language
 677,Silkedodre,,no
 677,Strandkrassing,,sv
 677,Valkopielus,,fi
-677,Virginiakarse,,no
+677,Virginiakarse ,,no
 677,Virginiakrassing,,sv
-677,Virginiankrassi,,fi
-677,Virginsk Karse,,da
+677,Virginiankrassi ,,fi
+677,Virginsk Karse ,,da
 6782,Amarante de Bouchon,,fr
 6782,Bouchon-disznóparéj,,hu
 6782,Bouchon-Fuchsschwanz,,de
@@ -15114,7 +15114,7 @@ taxonID,vernacularName,source,language
 6795,Cape Pigweed,,en
 6804,Amarante Queue-de-renard,,fr
 6804,Amaranto coda rossa,,it
-6804,astainais amarants,,lv
+6804,astainais amarants ,,lv
 6804,bókoló amaránt,,hu
 6804,bredo-macho,,pt
 6804,cauda-de-raposa,,pt
@@ -15132,7 +15132,7 @@ taxonID,vernacularName,source,language
 6804,rabo-de-gato,,pt
 681,Dwergkroos,,nl
 681,least duckweed,,en
-681,Lente d'acqua,,it
+681,Lente d'acqua  ,,it
 681,Lentille d'eau minuscule,,fr
 681,Winzige Wasserlinse,,de
 681,Zierliche Wasserlinse,,de
@@ -15249,7 +15249,7 @@ taxonID,vernacularName,source,language
 6937,blet punxent,,es
 6937,bredo,,pt
 6937,glintos,,el
-6937,laskavec,,cs
+6937,laskavec ,,cs
 6937,marxant,,es
 6937,piros amaránt,,hu
 6937,Prince's-feather,,en
@@ -15361,7 +15361,7 @@ taxonID,vernacularName,source,language
 706,Knopkroos,,nl
 706,Lenticule à turion,,fr
 706,Lentille-d'eau,,fr
-706,okřehek,,cs
+706,okřehek ,,cs
 706,Rote Wasserlinse,,de
 7060,Amanranto spinoso,,it
 7060,Amarante épineuse,,fr
@@ -15421,7 +15421,7 @@ taxonID,vernacularName,source,language
 7101,Wilde Runkelrübe,,de
 7105,Foliage Beet,,en
 7105,mangold (cvikla),,cs
-7126,řepa obecná,,cs
+7126,řepa obecná ,,cs
 7126,Root Beet,,en
 7126,Selq salvaġġ,,mt
 7133,podivka trojklaná,,cs
@@ -15432,9 +15432,9 @@ taxonID,vernacularName,source,language
 7139,špenát setý,,cs
 7139,Spinach,,en
 7153,radziņu sveda,,lv
-7154,jūrmalas sveda,,lv
+7154,jūrmalas sveda ,,lv
 7154,Pajūrinė soduotė,,lt
-7159,Krievijas sveda,,lv
+7159,Krievijas sveda ,,lv
 7161,Lachan lavid,,he
 7161,לחן לביד,,he
 7165,apténia,,pt
@@ -15537,17 +15537,17 @@ taxonID,vernacularName,source,language
 7299,tuna,,es
 730,Bankrassing,,sv
 730,Fältkrassing,,sv
-730,Farve-Vajd,,da
+730,Farve-Vajd ,,da
 730,Forskelligbladet Karse,,da
 730,Kenttäkrassi,,fi
 730,Markkarse,,no
-730,Morsinko,,fi
+730,Morsinko ,,fi
 730,Nurmikrassi,,fi
 730,Ratakrassi,,fi
 730,Salomons Lysestage,,da
 730,Tettkarse,,no
 730,Tætblomstret Karse,,da
-730,Vaid,,no
+730,Vaid ,,no
 730,Vallkrassing,,sv
 730,Vejde,,sv
 730,Vollkarse,,no
@@ -15653,7 +15653,7 @@ taxonID,vernacularName,source,language
 7446,kerti szegfű,,hu
 7446,Oeillet des fleuristes,,fr
 7446,Oeillet Giroflée,,fr
-7455,hvozdík,,cs
+7455,hvozdík ,,cs
 7459,Fischeri nelk,,et
 7462,Riesen-Nelke,,de
 7464,Pfingst-Nelke,,de
@@ -15722,7 +15722,7 @@ taxonID,vernacularName,source,language
 7563,Steinbrech-Felsennelke,,de
 7563,Tunicflower,,en
 7575,Kransmuur,,nl
-7575,kýlatka,,cs
+7575,kýlatka ,,cs
 7575,négylevelű csészepörc,,hu
 7575,Vierblatt-Nagelkraut,,de
 7575,Vierblättriges Nagelkraut,,de
@@ -15832,7 +15832,7 @@ taxonID,vernacularName,source,language
 7763,ložņu plaukšķene,,lv
 7763,pazvilu plaukšķene,,lv
 7768,Alpine Campion,,en
-7771,ložņu plaukšķene,,lv
+7771,ložņu plaukšķene ,,lv
 7778,Himmelsröschen,,de
 7778,lenvirágú habszegfű,,hu
 7778,Rose-of-heaven,,en
@@ -15920,7 +15920,7 @@ taxonID,vernacularName,source,language
 7954,Pink Purslane,,en
 7954,Roze winterpostelein,,nl
 7954,Sibirisches Tellerkraut,,de
-7968,Kossuth-csillag,,hu
+7968, Kossuth-csillag,,hu
 7968,Chevalier-d'onze-heures,,fr
 7968,nagyvirágú porcsin,,hu
 7968,Porcellana a fiori grandi,,it
@@ -15982,7 +15982,7 @@ taxonID,vernacularName,source,language
 8037,Rdestowiec pośredni,,pl
 8037,Renouée de bohême,,fr
 8064,Auberts Heckenknoeterich,,de
-8064,opletka,,cs
+8064,opletka ,,cs
 8064,Poligono del Turkestan,,it
 8064,Renouée,,fr
 8064,Russian-vine,,en
@@ -16160,12 +16160,12 @@ taxonID,vernacularName,source,language
 851,Dwarf Mountain-pine,,en
 851,Kalninė pušis,,lt
 851,Kalnu priede,,lv
-851,Keltanarsissi,,fi
+851,Keltanarsissi ,,fi
 851,Kevätkello,,fi
 851,Kirskål,,sv
 851,Klosterklokke,,no
-851,Påskelilje,,da
-851,Påskelilje,,no
+851,Påskelilje ,,da
+851,Påskelilje ,,no
 851,Påsklilja,,sv
 851,Pin,,fr
 851,Pingstlillja,,sv
@@ -16244,8 +16244,8 @@ taxonID,vernacularName,source,language
 8634,plumbago-azul,,pt
 8636,Indian Pokeweed,,en
 864,Austrian and Corsican Pines,,en
-864,borovica,,cs
-864,borovice,,cs
+864,borovica ,,cs
+864,borovice ,,cs
 864,feketefenyő,,hu
 864,Juodoji pušis,,lt
 864,Pin noir d’Autriche,,fr
@@ -16253,7 +16253,7 @@ taxonID,vernacularName,source,language
 864,pinheiro-negro,,pt
 864,Schwarz-Foehre,,de
 864,Schwarz-Kiefer,,de
-8642,a. karmazsinbogyó,,hu
+8642, a. karmazsinbogyó,,hu
 8642,agriostafida,,el
 8642,American pokeweed,,en
 8642,amerikai alkörmös,,hu
@@ -16294,10 +16294,10 @@ taxonID,vernacularName,source,language
 8642,uvas de Indias,,es
 8642,vinagreira,,pt
 8642,Westerse karmozijnbes,,nl
-8642,פיטולקה,,he
+8642,פיטולקה ,,he
 8650,Belombra,,fr
 8650,Raisinier dioïque,,fr
-8652,k. karmazsinbogyó,,hu
+8652, k. karmazsinbogyó,,hu
 8652,Asiatische Kermesbeere,,de
 8652,kínai alkörmös,,hu
 8652,lí,,cs
@@ -16341,7 +16341,7 @@ taxonID,vernacularName,source,language
 8673,sanpedros,,es
 8673,suspiros,,pt
 8673,trompetilla,,es
-8673,tumba vaquero,,es
+8673,tumba vaquero ,,es
 8673,Wunderblume,,de
 8676,Bella di notte longiflora,,it
 8679,Allionia comune,,it
@@ -16438,7 +16438,7 @@ taxonID,vernacularName,source,language
 8892,Orpin de Nice,,fr
 8892,Orpin élevé,,fr
 8892,Pale Stonecrop,,en
-8896,maigais laimiņš,,lv
+8896,maigais laimiņš ,,lv
 8896,Tasteless Stonecrop,,en
 8899,Siebold-Fetthenne,,de
 8899,Zyboldo vilkpupė,,lt
@@ -16589,7 +16589,7 @@ taxonID,vernacularName,source,language
 9094,Cassissier,,fr
 9094,Groseillier noir,,fr
 9094,meln,,lv
-9094,ríbezla,,cs
+9094,ríbezla ,,cs
 9094,Schwarz-Ribisel,,de
 9099,Buffalo Currant,,en
 9099,meruzalka vonná,,cs
@@ -16598,13 +16598,13 @@ taxonID,vernacularName,source,language
 9110,Groseillier à grappes,,fr
 9110,Groseillier rouge,,fr
 9110,kerti ribiszke,,hu
-9110,Porzeczka zwyczajna,,pl
+9110,Porzeczka zwyczajna ,,pl
 9110,punane sõstar,,et
 9110,Raudonasis serbentas,,lt
 9110,Ribes rosso,,it
-9110,ríbezla,,cs
+9110,ríbezla ,,cs
 9110,Rot-Ribisel,,de
-9110,rybíz,,cs
+9110,rybíz ,,cs
 9110,sarkan,,lv
 9130,Blut-Johannisbeere,,de
 9130,Cassis-fleur,,fr
@@ -16794,12 +16794,12 @@ taxonID,vernacularName,source,language
 9405,Pyrenaeen-Storchschnabel,,de
 9405,Pyrenäen-Storchschnabel,,de
 9412,Zurückgebogener Storchschnabel,,de
-9413,apaļlapu gandrene,,lv
+9413,apaļlapu gandrene ,,lv
 9413,kakost okrouhlolistý,,cs
 9413,Rundblättriger Storchschnabel,,de
 9413,ümaralehine kurereha,,et
 9415,Greater Herb-Robert,,en
-9418,Sibīrijas gandrene,,lv
+9418, Sibīrijas gandrene ,,lv
 9418,Bodziszek syberyjski,,pl
 9418,Geranio di Siberia,,it
 9418,kakost sibiřský,,cs
@@ -16908,7 +16908,7 @@ taxonID,vernacularName,source,language
 9608,Clarkia,,en
 9608,Mandelröschen,,de
 967,Åkerreddik,,no
-967,Flerårig Knopskulpe,,da
+967,Flerårig Knopskulpe ,,da
 967,Flerårig stäppsenap,,sv
 967,Håret Knopskulpe,,da
 967,Hårig stäppsenap,,sv
@@ -16992,7 +16992,7 @@ taxonID,vernacularName,source,language
 9797,Wiesiołek mylący,,pl
 9797,zécora,,pt
 9815,Hein-Nachtkerze,,de
-9818,Enagra,,it
+9818,Enagra ,,it
 9818,Oehlkers' Nachtkerze,,de
 9818,Onagre d'Oehlkers,,fr
 9818,pupalka Oehlkersova,,cs
