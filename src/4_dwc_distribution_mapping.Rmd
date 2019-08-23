@@ -101,19 +101,14 @@ remove_taxa %>%
   select(replacement_idspecies)
 ```
 
-
-```{r}
-distribution %>% recode()
-```
-
 2. Replace these values with the correct taxonID
 
+
 ```{r}
-distribution$idspecies <- 
-  with(distribution, 
-       mapvalues(x = idspecies, 
-                 from = remove_taxa$idspecies, 
-                 to = remove_taxa$replacement_idspecies))
+distribution %<>% 
+  mutate(idspecies = 
+           recode(idspecies,"52845" = "52831")
+)
 ```
 
 3. Map `taxonID`
