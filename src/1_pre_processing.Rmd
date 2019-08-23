@@ -1,0 +1,441 @@
+---
+title: "Pre-processing step for Darwin Core mapping"
+subtitle: "For: Inventory of alien species in Europe (DAISIE)"
+author:
+- Lien Reyserhove
+- David Roy
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+#  pdf_document:
+#    df_print: kable
+#    number_sections: yes
+#    toc: yes
+#    toc_depth: 3
+---
+
+This file describes the steps required to reorganize the input datasets. The goal of this reorganization is to improve the readability of the mapping scripts later.
+
+# Setup 
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+Load libraries:
+
+```{r}
+library(tidyverse)      # To do data science
+library(magrittr)       # To use %<>% pipes
+library(janitor)        # To clean input data
+library(readxl)         # To read Excel files
+```
+
+# Read data
+
+1. Define data types
+
+```{r}
+col_types <- cols(.default = col_character())
+```
+
+2. Read literature references
+
+```{r}
+literature_references <- read_delim(
+  file = "../data/raw/input_literature_references.csv", 
+  delim = ",",
+  col_types = col_types)
+```
+
+3. Read taxon data
+
+```{r}
+taxon <- read_delim(
+  file = "../data/raw/input_taxon.csv", 
+  delim = ",",
+  col_types = col_types) 
+```
+
+4. Read distribution data:
+
+```{r}
+distribution <- read_delim(
+  file = "../data/raw/input_distribution.csv", 
+  delim = ",",
+  col_types = col_types) 
+```
+
+# Compile reference data
+
+The file `literature_references` includes all sources used to compile the DAISIE checklist.
+
+1. Inspect `literature_references`:
+
+```{r}
+literature_references %>% head(n=10)
+```
+
+Each source can be identified by its `sourceid` and is composed of:
+- a citation (`shortref`) and/or
+- a full references (`longref`) and/or
+- an url (`url`)
+
+Most input files use the field `sourceid` to link with the sources included in `literature_references`. In the Darwin Core mapping process, we want to replace the `sourceid` with the full reference to each source. To accomplish this, we need to compile the full reference from:
+- `shortref` and/or
+- `longref` and/or
+- `url`
+
+2. Inspect longref:
+
+```{r, echo=FALSE}
+literature_references %>% 
+  group_by(longref) %>% 
+  summarize(records = n()) %>%
+  arrange(longref)
+```
+
+Cleaning the conent of this field is outside scope op this mapping). However, several `longref` values start with a number (e.g. `1`, `1, 28`). These can easily be removed.
+
+3. Remove numbers from `longref`
+
+```{r, echo=FALSE}
+literature_references %<>% mutate(longref = str_replace(longref, "^[0-9]", NA_character_))
+```
+
+4. Verify if numbers are removed (should be `TRUE`)
+
+```{r}
+unique(literature_references %>%  str_detect("^[0-9]")) == FALSE
+```
+
+5. Inspect `shortref`
+
+```{r}
+literature_references %>% 
+  group_by(shortref) %>% 
+  summarize(records = n()) %>%
+  arrange(shortref)
+```
+
+Cleaning of this fiels is outside the scope of this mapping.
+
+6. Inspect `url`
+
+```{r}
+literature_references %>% 
+  group_by(url) %>% 
+  summarize(records = n()) %>%
+  arrange(url)
+```
+
+This information is, in most cases, wrong: `url` often refers to scientific names rather than to a real url. We remove the scientific names from `url` and keep real url values only.
+
+7. Remove non-valid url values
+
+```{r}
+literature_references %<>%  mutate(url = if_else(str_detect(url, pattern = "^http"), url, NA_character_))
+```
+
+8. Verify cleaning step
+
+```{r}
+literature_references %>% 
+  group_by(url) %>% 
+  summarize(records = n()) %>%
+  arrange(url)
+```
+
+8. Show mapping of full reference from `shortref`, `longref` and `url`
+
+For most records, one or more of the abovementioned fields are empty. We need to know which (and how many) meaningfull combinations of these fields occur in `literature_references`: 
+
+```{r}
+overview_references <- arrange(
+  bind_cols(
+        data.frame(matrix(c(
+                            "x","x","",          
+                            "x","","",          
+                            "x", "x", "x",   
+                            "x","", "x",
+                            
+                            "","","",                            
+                            "", "x","",
+                            "","", "x",
+                            "", "x", "x"),
+                       nrow = 8, byrow = TRUE, 
+                       dimnames = list(c(1:8), c("longref", "shortref", "url"))
+                       )),
+        data.frame(bind_rows(
+
+          # "x","x",""  
+          summarize(filter(literature_references,
+                           !is.na(longref) &
+                             !is.na(shortref) &
+                             is.na(url)),
+                     records = n()),
+          
+          # "x","",""
+           summarize(filter(literature_references,
+                           !is.na(longref) &
+                             is.na(shortref) &
+                             is.na(url)), 
+                     records = n()),
+          
+          # "x", "x", "x",   
+           summarize(filter(literature_references,
+                           !is.na(longref) &
+                             !is.na(shortref) &
+                             !is.na(url)),
+                    records = n()),
+        
+          # "x","", "x",
+           summarize(filter(literature_references,
+                           !is.na(longref) &
+                             is.na(shortref) &
+                             !is.na(url)),
+                    records = n()),          
+          # "","","",        
+           summarize(filter(literature_references, 
+                           is.na(longref) & 
+                           is.na(shortref) & 
+                           is.na(url)),
+                    records = n()),
+                              
+          # "", "x",""
+          summarize(filter(literature_references, 
+                           is.na(longref) &
+                             !is.na(shortref) &
+                             is.na(url)),
+                    records = n()),
+  
+          # "","", "x"
+          summarize(filter(literature_references,
+                            is.na(longref) &
+                            is.na(shortref) &
+                           !is.na(url)),
+                    records = n()),  
+          
+          # "", "x", "x"                
+          summarize(filter(literature_references,
+                           is.na(longref) &
+                             !is.na(shortref) &
+                             !is.na(url)),
+                    records = n())                    
+                    
+        ))
+  )
+)
+
+
+overview_references
+```
+
+We use the following rules to generate `source`:
+
+- If a longref is provided, never use a shortref. Url is integrated where provided
+- If no longref is provided, use a shortref and/or Url:
+
+```{r}
+overview_references %>% mutate(source = case_when(
+   
+# Longref provided:
+  longref == "x" & shortref == "x" & url == ""  ~ "longref",
+  longref == "x" & shortref == ""  & url == ""  ~ "longref",
+  longref == "x" & shortref == "x" & url == "x" ~ "longref + url",  
+  longref == "x" & shortref == "" & url  == "x" ~ "longref + url",
+
+# No longref provided:
+  longref == ""  & shortref == ""  & url == ""  ~ "",
+  longref == ""  & shortref == "x" & url == ""  ~ "shortref",
+  longref == ""  & shortref == ""  & url == "x" ~ "url",
+  longref == ""  & shortref == "x" & url == "x" ~ "shortref + url"))
+```
+
+9. Generate full reference (`source`)
+
+```{r}
+literature_references %<>% mutate(source = case_when(
+  
+# Longref provided:
+  !is.na(longref) & !is.na(shortref) & is.na(url) ~ paste(longref),
+  !is.na(longref) & is.na(shortref)  & is.na(url) ~ paste(longref),  
+  !is.na(longref) & !is.na(shortref) & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),  
+  !is.na(longref) & is.na(shortref)  & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),  
+  
+# No longref provided:
+  is.na(longref)  & is.na(shortref)  & is.na(url) ~ "",
+  is.na(longref)  & !is.na(shortref) & is.na(url) ~ paste(shortref),
+  is.na(longref)  & is.na(shortref)  & !is.na(url) ~ paste(url),  
+  is.na(longref)  & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(",url,")"), sep = "")
+))  
+```
+
+We can now use `literature_references` to add the full reference to the generated Darwin Core files (except the distribution extension, see further), using `sourceid` as the link.
+
+# Generate reference dataset for distribution extension 
+
+The distribution extension has no `sourceid` field to link with the full reference in `literature_reference`.
+In the case of the distribution extension, a specific reference can only be linked to a record using a combination between:
+- `id_sp_region`
+- `field_name`
+
+We save this information in a separate dataframe `distribution_sources` here and export it to use it later to generate the full reference for the distribution extension.
+
+1. Generate `distribution_sources
+
+```{r}
+distribution_sources <- 
+  literature_references %>% 
+    filter(!is.na(id_sp_region)) %>% 
+    select(id_sp_region, field_name, sourceid, source)
+```
+
+2. Export as `distribution_sources`
+
+```{r}
+write_csv(distribution_sources, "../data/interim/distribution_sources.csv", na = "")
+```
+
+## Generate interim_literature_references
+
+Wemove duplicated sources in `literature_references` (duplicates are only needed for the mapping of the distribution extension) and export them as interim file.
+
+1. Remove duplicates:
+
+```{r}
+interim_literature_references <-
+  literature_references %<>% distinct(sourceid, .keep_all = TRUE)
+```
+
+2. Export as `interim_literature_references`:
+
+```{r}
+write_csv(interim_literature_references, "../data/interim/interim_literature_references.csv", na = "")
+```
+
+# Generate additional files for description extension
+
+## From input_taxon
+
+`input_taxon` has one fields that can't be used for mapping of the Taxon Core:
+ - `ecofunct_group`
+
+We will integrate this information in the description extension. 
+
+1. Save information on ecofunctional groups (create `ecofunct_group`):
+
+```{r}
+ecofunctional_group <- 
+  taxon %>% 
+    select(idspecies, ecofunct_group, sourceid) %>% 
+    distinct(idspecies, ecofunct_group, .keep_all = TRUE)
+```
+
+2. Remove records for which `ecofunct_group` is empty:
+
+```{r}
+ecofunctional_group %<>% filter(!is.na(ecofunct_group))
+```
+
+3. Export as `ecofunctional_group`
+
+```{r}
+write_csv(ecofunctional_group, "../data/interim/ecofunctional_group.csv", na = "")
+```
+
+## From input_distribution
+
+`input_distribution` has several fields that can't be used for mapping of the Distribution Extension:
+- `population_status`
+- `current_distribution`
+- `region_of_first_record`
+
+We will integrate this information in the description extension. 
+
+1. Save information on population status
+
+```{r}
+population_status <- 
+  distribution %>% 
+    select(idspecies, id_sp_region, population_status) %>% 
+    distinct(id_sp_region, .keep_all = TRUE)
+```
+
+2. Remove records for which `population_status` is empty:
+
+```{r}
+population_status %<>% filter(!is.na(population_status))
+```
+
+3. Add `sourceid` (which is empty, but required field for mapping description extension)
+
+```{r}
+population_status %<>% mutate(sourceid = "") 
+```
+
+4. Export as `population_status`
+
+```{r}
+write_csv(population_status, "../data/interim/population_status.csv", na = "")
+```
+
+5. Save information on current distribution
+
+```{r}
+current_distribution <- 
+  distribution %>% 
+    select(idspecies, id_sp_region, current_distribution) %>% 
+    distinct(id_sp_region, .keep_all = TRUE)
+```
+
+6. Remove records for which `current_distribution` is empty:
+
+```{r}
+current_distribution %<>% filter(!is.na(current_distribution))
+```
+
+7. Add `sourceid` (which is empty, but required field for mapping description extension)
+
+```{r}
+current_distribution %<>% mutate(sourceid = "") 
+```
+
+8. Export as `current_distribution`
+
+```{r}
+write_csv(current_distribution, "../data/interim/current_distribution.csv", na = "")
+```
+
+9. Save information on region of first record:
+
+```{r}
+region_of_first_record <- 
+  distribution %>% 
+    select(idspecies, id_sp_region, region_of_first_record) %>% 
+    distinct(id_sp_region, .keep_all = TRUE)
+```
+
+10. Remove records for which `region_of_first_record` is empty:
+
+```{r}
+region_of_first_record %<>% filter(!is.na(region_of_first_record))
+```
+
+11. Add `sourceid` (which is empty, but required field for mapping description extension)
+
+```{r}
+region_of_first_record %<>% mutate(sourceid = "") 
+```
+
+12. Export as `region_of_first_record`
+
+```{r}
+write_csv(region_of_first_record, "../data/interim/region_of_first_record.csv", na = "")
+```
+
