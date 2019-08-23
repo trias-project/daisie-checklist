@@ -124,18 +124,24 @@ The information in `scientificName` will be a compilation of several fields: `sp
 1. Paste information together
 
 ```{r}
-taxon %<>% mutate(dwc_scientificName =
-                    paste(genus, species, authority, subtaxon, subtaxon_authority, sep = " ")
+taxon %<>% mutate(
+  dwc_scientificName = paste(genus, 
+                             species, 
+                             authority, 
+                             subtaxon, 
+                             subtaxon_authority, 
+                             sep = " ")
 )
 ```
 
 2. Remove all `NA`
 
 ```{r}
-taxon %<>% 
-  mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "NA", "")) %>% 
-  mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "(\\s){2,}", " ")) %>% 
-  mutate(dwc_scientificName = trimws(dwc_scientificName))
+taxon <-
+  taxon %>% 
+    mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "NA", "")) %>% 
+    mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "(\\s){2,}", " ")) %>% 
+    mutate(dwc_scientificName = trimws(dwc_scientificName))
 ```
 
 3. We use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist.
