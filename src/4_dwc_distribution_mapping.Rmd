@@ -64,6 +64,16 @@ distribution_sources <- read_delim(
   col_types = col_types) 
 ```
 
+4. Read `remove_taxa`
+
+```{r}
+remove_taxa <- read_delim(
+  file = "../data/interim/remove_taxa.csv", 
+  delim = ",",
+  col_types = col_types) 
+```
+
+
 # Map distribution extension
 
 Preview of the data:
@@ -73,6 +83,40 @@ distribution %>% head(n = 5)
 ```
 
 ## taxonID
+
+1. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+
+```{r}
+distribution %>% 
+  filter(idspecies %in% remove_taxa$idspecies) %>% 
+  select(idspecies) %>% 
+  unique()
+```
+
+2. Show replacement value:
+
+```{r}
+remove_taxa %>% 
+  filter(idspecies == "52845") %>% 
+  select(replacement_idspecies)
+```
+
+
+```{r}
+distribution %>% recode()
+```
+
+2. Replace these values with the correct taxonID
+
+```{r}
+distribution$idspecies <- 
+  with(distribution, 
+       mapvalues(x = idspecies, 
+                 from = remove_taxa$idspecies, 
+                 to = remove_taxa$replacement_idspecies))
+```
+
+3. Map `taxonID`
 
 ```{r}
 distribution %<>% mutate(dwc_taxonID = idspecies) 
@@ -93,12 +137,6 @@ Two of these fields contain a location code (mapped to `locationID`):
 The codes in `code_region` and `code_coast` refer to standards used/developed for the codes (mapped to `locationID`), respectively:
 - TDWG or DAISIE consortium (`system_country`) and
 - IHO23_4 or DIHO23_4 (`system_coast`) 
-
-```{r}
-distribution %>% 
-  group_by(region_country, code_region, system_country, region_coast, code_coast, system_coast) %>% 
-  summarize(records = n())
-```
 
 Note that coastal information is not always provided (`NA`). For these records, we will exclude information related to coastal regions:
 
@@ -243,7 +281,7 @@ distribution %<>% mutate(dwc_countryCode =
 ```{r}
 distribution %>% 
   group_by(region_country, dwc_countryCode) %>% 
-  summarize(records = n())
+  summarise(records = n())
 ```
 
 ## occurrenceStatus
