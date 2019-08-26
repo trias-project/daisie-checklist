@@ -261,7 +261,10 @@ map_to_description_with_locality <- function(data_frame, column_name, descriptor
 Generate `eunis_habitat`
 
 ```{r}
-habitat %<>% mutate(eunis_habitat = paste(ideunis, "level", level, "-", habitat))
+habitat %<>% mutate(eunis_habitat = case_when(
+  !is.na(habitat) ~ paste(ideunis, "level", level, "-", habitat),
+  TRUE ~ ideunis)
+)
 ```
 
 Apply transformation function:
