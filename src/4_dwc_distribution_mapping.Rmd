@@ -36,6 +36,7 @@ library(janitor)        # To clean input data
 library(readxl)         # To read Excel files
 library(rgbif)          # To use GBIF services
 library(lubridate)      # To process dates and times
+library(stringr)
 ```
 
 # Read data
@@ -366,7 +367,7 @@ distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
     "Cryptogenic"    = "uncertain",
     "<NA>"           = "",
     "Naturalized"    = "introduced",
-    "casual"         = "vagrant",
+    "Casual"         = "introduced",
     "Alien_invasive" = "introduced")) 
 ```
 
@@ -665,6 +666,8 @@ distribution %<>% mutate(dwc_eventDate = case_when(
   !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep="/")
 ))
 ```
+
+## occurrenceRemarks
 
 Generate occurrenceRemarks:
 
