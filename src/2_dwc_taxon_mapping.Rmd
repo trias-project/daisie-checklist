@@ -472,6 +472,12 @@ taxon %<>% mutate(dwc_taxonRank = case_when(
   is.na(rankmarker) & subtaxon_rank == "agg." ~ "genus",
   is.na(rankmarker) & subtaxon_rank == "hyb." ~ "species",
   is.na(rankmarker) & subtaxon_rank == "subsp." ~ "subspecies",
+  is.na(rankmarker) & subtaxon_rank == "var." ~ "variety",
+  is.na(rankmarker) & subtaxon_rank == "f. sp." ~ "form",
+  is.na(rankmarker) & subtaxon_rank == " " ~ "species",
+  is.na(rankmarker) & subtaxon_rank == "Crous" ~ "species",
+  is.na(rankmarker) & subtaxon_rank == "Cytosporina sp." ~ "species",
+
   TRUE ~ rankmarker))
 ```
 
