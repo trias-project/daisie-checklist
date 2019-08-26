@@ -537,15 +537,22 @@ taxonID_to_replace
 ```{r}
 remove_taxa %>% 
   filter(idspecies %in% taxonID_to_replace$taxonID) %>% 
-  select(replacement_idspecies)
+  select(idspecies, replacement_idspecies)
 ```
 
 2. Replace these values with the correct taxonID
 
 ```{r}
 description %<>% 
-  mutate(idspecies = 
-           recode(idspecies,"52845" = "52831")
+  mutate(taxonID = 
+           recode(taxonID,
+                 "52845" = "52831",
+                 "900966" = "900975",
+                 "900977" = "52847",
+                 "900984" = "52858",
+                 "900995" = "52877",
+                 "900997" = "52878",
+                 "901002" = "52889")
 )
 ```
 
