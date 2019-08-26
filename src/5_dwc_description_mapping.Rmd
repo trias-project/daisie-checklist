@@ -352,7 +352,7 @@ donor_area <-
   map_to_description_with_locality(
     data_frame = donor_area, 
     column_name = "region", 
-    descriptor = "donor_area")
+    descriptor = "donor area")
 ```
 
 ## Region of first record
@@ -555,9 +555,6 @@ description %<>%
                  "901002" = "52889")
 )
 ```
-
-
-
 
 3. Sort on `taxonid`
 
