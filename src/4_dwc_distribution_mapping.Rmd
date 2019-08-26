@@ -373,6 +373,8 @@ distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
 
 ## eventDate
 
+### Clean start year
+
 Inspect content of `start_year`, which contains the information for `eventDate`:
 
 ```{r}
@@ -511,6 +513,8 @@ distribution %>%
   summarize(records = n())
 ```
 
+### Clean end year
+
 Inspect content of `end_year`, which contains the information for `eventDate`:
 
 ```{r}
@@ -553,7 +557,7 @@ distribution %>%
   filter(str_detect(end_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
 ```
 
-Let's clean the start years information step by step:
+Let's clean the end years information step by step:
 
 1. Everything that is NA or should be NA, make it NA:
 
@@ -622,7 +626,6 @@ distribution %<>%
   mutate(end_year = replace(end_year, end_year == "19th century", "1800")) %>%
   mutate(end_year = replace(end_year, end_year == "1950's", "1950"))
 ```
-
 
 recheck cleanup action:
 
