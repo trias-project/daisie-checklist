@@ -140,7 +140,13 @@ region_country | region_coast | locationID | locality
 country | NA | system_country: code_region | region_country
 country | coast | system_country: code_region|system_coast: code_coast | region_country|region_coast
 
-1. Map `locationID`
+1. Convert `system_country` to uppercase:
+
+```{r}
+distribution %<>% mutate(system_country = str_to_upper(system_country))
+```
+
+2. Map `locationID`
 
 ```{r}
 distribution %<>% mutate(
@@ -153,7 +159,7 @@ distribution %<>% mutate(
 ))
 ```
 
-2. Map `locality`
+3. Map `locality`
 
 ```{r}
 distribution %<>% mutate(
@@ -178,7 +184,7 @@ sp_in_region_with_location <-
     select(idspecies, id_sp_region, dwc_locationID)
 ```
 
-3. Export `sp_in_region_with_location` as .csv
+4. Export `sp_in_region_with_location` as .csv
 
 ```{r}
 write_csv(sp_in_region_with_location, "../data/interim/sp_in_region_with_location.csv",  na = "")
