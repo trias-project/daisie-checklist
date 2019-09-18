@@ -106,7 +106,7 @@ taxon %<>% mutate(dwc_institutionCode = "CEH")
 ## datasetName
 
 ```{r}
-taxon %<>% mutate(dwc_datasetName = "The inventory of alien species in Europe (DAISIE)") 
+taxon %<>% mutate(dwc_datasetName = "The DAISIE inventory of alien invasive species in Europe")
 ```
 
 The following terms contain information about the taxon:
@@ -498,6 +498,12 @@ taxon %>%
 taxon %<>% left_join(
   select(literature_references, sourceid, source),
   by = "sourceid")
+```
+
+Rename `source` to `taxonRemarks`:
+
+```{r}
+taxon %<>% rename("dwc_taxonRemarks" = "source")
 ```
 
 # Post-processing
