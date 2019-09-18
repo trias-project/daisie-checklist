@@ -152,11 +152,11 @@ distribution %<>% mutate(system_country = str_to_upper(system_country))
 ```{r}
 distribution %<>% mutate(
   dwc_locationID = case_when(
-    is.na(region_coast) ~ paste(system_country, code_region, sep = ": "),
+    is.na(region_coast) ~ paste(system_country, code_region, sep = ":"),
     TRUE ~ paste(
       paste(system_country, code_region, sep = ":"),
       paste(system_coast, code_coast, sep = ":"),
-      sep = "|")
+      sep = " | ")
 ))
 ```
 
