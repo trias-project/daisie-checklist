@@ -106,7 +106,7 @@ taxon %<>% mutate(dwc_institutionCode = "CEH")
 ## datasetName
 
 ```{r}
-taxon %<>% mutate(dwc_datasetName = "The DAISIE inventory of alien invasive species in Europe")
+taxon %<>% mutate(dwc_datasetName = "DAISIE - Inventory of alien invasive species in Europe")
 ```
 
 The following terms contain information about the taxon:
