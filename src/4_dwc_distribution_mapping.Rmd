@@ -12,11 +12,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-#  pdf_document:
-#    df_print: kable
-#    number_sections: yes
-#    toc: yes
-#    toc_depth: 3
 ---
 
 This file describes the steps required to map the data to [Species Distribution](http://rs.gbif.org/extension/gbif/1.0/distribution.xml).
@@ -32,11 +27,12 @@ Load libraries:
 ```{r}
 library(tidyverse)      # To do data science
 library(magrittr)       # To use %<>% pipes
+library(here)           # To find files
 library(janitor)        # To clean input data
 library(readxl)         # To read Excel files
 library(rgbif)          # To use GBIF services
 library(lubridate)      # To process dates and times
-library(stringr)
+library(stringr)        # To parse strings
 ```
 
 # Read data
@@ -47,33 +43,29 @@ library(stringr)
 col_types <- cols(.default = col_character())
 ```
 
-2. Read distribution data
+2. Read data
 
 ```{r}
-distribution <- read_delim(
-  file = "../data/raw/input_distribution.csv", 
-  delim = ",",
-  col_types = col_types) 
+# Raw data
+input_distribution <- read_csv(here::here("data", "raw", "input_distribution.csv"), col_types = col_types)
+input_donor_area <- read_csv(here::here("data", "raw", "input_donor_area.csv"), col_type = col_types)
+input_pathways <- read_csv(here::here("data", "raw", "input_pathways.csv"), col_type = col_types)
+input_impact <- read_csv(here::here("data", "raw", "input_impact.csv"), col_type = col_types)
+
+# Preprocessed interim data
+distribution_sources <- read_csv(here::here("data", "interim", "distribution_sources.csv"), col_types = col_types)
+remove_taxa <- read_csv(here::here("data", "interim", "remove_taxa.csv"), col_types = col_types)
 ```
 
-3. Read `distribution_sources`
+3. Merge source data:
 
 ```{r}
-distribution_sources <- read_delim(
-  file = "../data/interim/distribution_sources.csv", 
-  delim = ",",
-  col_types = col_types) 
+distribution <-
+  input_distribution %>%
+  left_join(input_donor_area, by = c("idspecies", "id_sp_region"), suffix = c("", "_donor")) %>%
+  left_join(input_impact, by = c("idspecies", "id_sp_region"), suffix = c("", "_impact")) %>%
+  left_join(input_pathways, by = c("idspecies", "id_sp_region"), suffix = c("", "_pathways"))
 ```
-
-4. Read `remove_taxa`
-
-```{r}
-remove_taxa <- read_delim(
-  file = "../data/interim/remove_taxa.csv", 
-  delim = ",",
-  col_types = col_types) 
-```
-
 
 # Map distribution extension
 
@@ -103,7 +95,6 @@ remove_taxa %>%
 ```
 
 2. Replace these values with the correct taxonID
-
 
 ```{r}
 distribution %<>% 
@@ -673,12 +664,20 @@ distribution %<>% mutate(dwc_eventDate = case_when(
 
 ## occurrenceRemarks
 
-Generate occurrenceRemarks:
+In this field we will gather all the extra information related to a distribution. The syntax we will use is: `field: value | field: value`. Even if a column does not contain information, it will be included as `field: NA` which will make it easier for end users to separate the `occurrenceRemarks` field back into multiple columns. Note that `input_pathways` and `input_impact` have a `sourceid` column that will be ignored in this mapping (it is very seldom populated).
 
 ```{r}
-distribution %<>% mutate(dwc_occurrenceRemarks = case_when(
-  is.na(region_of_first_record) | region_of_first_record == "" ~ "",
-  !is.na(region_of_first_record) ~ paste("region_of_first_record", region_of_first_record, sep = ": ")))
+distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
+  "distribution_id: ", id_sp_region,
+  " | population_status: ", str_to_lower(population_status),
+  " | region_of_first_record: ", str_replace(region_of_first_record, "Unknown", "unknown"),
+  " | current_distribution: ", str_replace(current_distribution, "Unknown", "unknown"),
+  " | donor_region: ", str_replace(region, "Unknown", "unknown"),
+  " | pathway: ", str_to_lower(pathway),
+  " | vector: ", str_to_lower(vector),
+  " | impact_on_ecology: ", str_to_lower(category_ecology),
+  " | impact_on_use: ", str_to_lower(category_uses)
+))
 ```
 
 ## source
@@ -804,5 +803,5 @@ distribution %>% head()
 4. Save to CSV
 
 ```{r}
-write_csv(distribution, "../data/processed/distribution.csv", na = "")
+write_csv(distribution, here::here("data", "processed", "distribution.csv"), na = "")
 ```
