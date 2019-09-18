@@ -82,7 +82,7 @@ taxon %<>% mutate(dwc_language = "en")
 ## license
 
 ```{r}
-taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/legalcode") 
+taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/") 
 ```
 
 ## rightsHolder
