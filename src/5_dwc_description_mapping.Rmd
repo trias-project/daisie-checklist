@@ -234,6 +234,8 @@ description %<>%
 )
 ```
 
+7. Change data type of `taxonid` to numeric
+
 7. Sort on `taxonid`
 
 ```{r}
