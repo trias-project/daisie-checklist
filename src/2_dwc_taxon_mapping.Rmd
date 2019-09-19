@@ -49,7 +49,7 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 taxon <- read_delim(
-  file = "../data/raw/input_taxon.csv", 
+  file = here::here("data","raw","input_taxon.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -58,7 +58,7 @@ taxon <- read_delim(
 
 ```{r}
 literature_references <- read_delim(
-  file = "../data/interim/interim_literature_references.csv", 
+  file = here::here("data","interim","interim_literature_references.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -226,7 +226,7 @@ taxon %<>% filter(!(idspecies %in% remove_idspecies))
 11. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
 
 ```{r}
-write_csv(remove_taxa, "../data/interim/remove_taxa.csv")
+write_csv(remove_taxa, here::here("data","interim","remove_taxa.csv"))
 ```
 
 ## kingdom
@@ -541,6 +541,6 @@ taxon %>% head()
 5.Save to CSV:
 
 ```{r}
-write_csv(taxon, "../data/processed/taxon.csv", na = "")
+write_csv(taxon, here::here("data","processed","taxon.csv"), na = "")
 ```
 

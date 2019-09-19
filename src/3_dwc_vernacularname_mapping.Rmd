@@ -49,7 +49,7 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 vernacular_names <- read_delim(
-  file = "../data/raw/input_vernacular_names.csv", 
+  file = here::here("data","raw","input_vernacular_names.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -58,7 +58,7 @@ vernacular_names <- read_delim(
 
 ```{r}
 literature_references <- read_delim(
-  file = "../data/interim/interim_literature_references.csv", 
+  file = here::here("data","interim","interim_literature_references.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -67,7 +67,7 @@ literature_references <- read_delim(
 
 ```{r}
 remove_taxa <- read_delim(
-  file = "../data/interim/remove_taxa.csv", 
+  file = here::here("data","interim","remove_taxa.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -196,5 +196,7 @@ vernacular_names %<>% arrange(taxonID)
 5. Save to CSV:
 
 ```{r}
-write_csv(vernacular_names, "../data/processed/vernacular_names.csv", na = "")
+write_csv(vernacular_names,
+          here::here("data","processed","vernacular_names.csv"),
+          fna = "")
 ```

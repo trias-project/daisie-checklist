@@ -49,7 +49,7 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 habitat <- read_delim(
-  file = "../data/raw/input_habitat.csv", 
+  file = here::here("data","raw","input_habitat.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -58,7 +58,7 @@ habitat <- read_delim(
 
 ```{r}
 native_range <- read_delim(
-  file = "../data/raw/input_native_range.csv", 
+  file = here::here("data","raw","input_native_range.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -67,7 +67,7 @@ native_range <- read_delim(
 
 ```{r}
 ecofunctional_group <- read_delim(
-  file = "../data/interim/ecofunctional_group.csv", 
+  file = here::here("data","interim","ecofunctional_group.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -76,7 +76,7 @@ ecofunctional_group <- read_delim(
 
 ```{r}
 literature_references <- read_delim(
-  file = "../data/interim/interim_literature_references.csv", 
+  file = here::here("data","interim","interim_literature_references.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -85,7 +85,7 @@ literature_references <- read_delim(
 
 ```{r}
 remove_taxa <- read_delim(
-  file = "../data/interim/remove_taxa.csv", 
+  file = here::here("data","interim","remove_taxa.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -234,7 +234,11 @@ description %<>%
 )
 ```
 
-7. Change data type of `taxonid` to numeric
+7. Change data type of `taxonid` to numeric:
+
+```{r}
+description %<>% mutate(taxonID = as.numeric(taxonID))  
+```
 
 7. Sort on `taxonid`
 
