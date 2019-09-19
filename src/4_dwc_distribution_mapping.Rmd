@@ -1,0 +1,826 @@
+---
+title: "Darwin Core mapping script for Distribution Extension"
+subtitle: "For: Inventory of alien species in Europe (DAISIE)"
+author:
+- Lien Reyserhove
+- David Roy
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+This file describes the steps required to map the data to [Species Distribution](http://rs.gbif.org/extension/gbif/1.0/distribution.xml).
+
+# Setup 
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+Load libraries:
+
+```{r}
+library(tidyverse)      # To do data science
+library(magrittr)       # To use %<>% pipes
+library(here)           # To find files
+library(janitor)        # To clean input data
+library(readxl)         # To read Excel files
+library(rgbif)          # To use GBIF services
+library(lubridate)      # To process dates and times
+library(stringr)        # To parse strings
+```
+
+# Read data
+
+1. Define data types
+
+```{r}
+col_types <- cols(.default = col_character())
+```
+
+2. Read data
+
+```{r}
+# Raw data
+input_distribution <- 
+  read_csv(here::here("data", "raw", "input_distribution.csv"), col_types = col_types)
+
+input_donor_area <- 
+  read_csv(here::here("data", "raw", "input_donor_area.csv"), col_type = col_types)
+
+input_pathways <- 
+  read_csv(here::here("data", "raw", "input_pathways.csv"), col_type = col_types)
+
+input_impact <- 
+  read_csv(here::here("data", "raw", "input_impact.csv"), col_type = col_types)
+
+# Preprocessed interim data
+distribution_sources <- 
+  read_csv(here::here("data", "interim", "distribution_sources.csv"), col_types = col_types)
+
+remove_taxa <- 
+  read_csv(here::here("data", "interim", "remove_taxa.csv"), col_types = col_types)
+
+core_taxa <-
+  read_csv(here::here("data", "interim", "core_taxa.csv"), col_types = col_types)
+
+```
+
+3. Merge source data:
+
+```{r}
+distribution <-
+  input_distribution %>%
+  left_join(input_donor_area, by = c("idspecies", "id_sp_region"), suffix = c("", "_donor")) %>%
+  left_join(input_impact, by = c("idspecies", "id_sp_region"), suffix = c("", "_impact")) %>%
+  left_join(input_pathways, by = c("idspecies", "id_sp_region"), suffix = c("", "_pathways"))
+```
+
+# Map distribution extension
+
+Preview of the data:
+
+```{r}
+distribution %>% head(n = 5)
+```
+
+## taxonID
+
+1. Remove all taxonID's that are not included in the taxon core
+
+```{r}
+distribution %<>% filter(idspecies %in% core_taxa$taxonID)
+```
+
+2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+
+```{r}
+distribution %>% 
+  filter(idspecies %in% remove_taxa$idspecies) %>% 
+  select(idspecies) %>% 
+  unique()
+```
+
+3. Map `taxonID`
+
+```{r}
+distribution %<>% mutate(dwc_taxonID = as.numeric(idspecies)) 
+```
+
+## locationID and locality
+
+Six fields in `input_distributions` are used to map `locationID` and `locality`:
+
+Two of these fields refer to verbatim location information (mapped to `locality`):
+- `region_country`
+- `region_coast`
+
+Two of these fields contain a location code (mapped to `locationID`):
+- `code_region`  (for location linked to coountries)
+- `code_coast` (forl location linked to coastal areas)
+
+The codes in `code_region` and `code_coast` refer to standards used/developed for the codes (mapped to `locationID`), respectively:
+- TDWG or DAISIE consortium (`system_country`) and
+- IHO23_4 or DIHO23_4 (`system_coast`) 
+
+Note that coastal information is not always provided (`NA`). For these records, we will exclude information related to coastal regions:
+
+region_country | region_coast | locationID | locality
+--- | --- | --- | ---
+country | NA | system_country: code_region | region_country
+country | coast | system_country: code_region|system_coast: code_coast | region_country|region_coast
+
+1. Convert `system_country` to uppercase:
+
+```{r}
+distribution %<>% mutate(system_country = str_to_upper(system_country))
+```
+
+2. Map `locationID`
+
+```{r}
+distribution %<>% mutate(
+  dwc_locationID = case_when(
+    is.na(region_coast) ~ paste(system_country, code_region, sep = ":"),
+    TRUE ~ paste(
+      paste(system_country, code_region, sep = ":"),
+      paste(system_coast, code_coast, sep = ":"),
+      sep = " | ")
+))
+```
+
+3. Map `locality`
+
+```{r}
+distribution %<>% mutate(
+  dwc_locality = case_when(
+    is.na(region_coast)  ~ paste(region_country),
+    !is.na(region_coast) ~ paste(region_country, region_coast, sep = " | ")
+))
+```
+
+Some information in the description extension (e.g. for `impact on use` or `impact on ecolgy`) is a property of a particular taxon in a particular _region_, identified by `id_sp_region`, rather than a property of a species as a whole. To emphasize that this descriptor is linked to a taxon in a particular region, we will add the `locationID` to the descriptor:
+
+idspecies | sp_in_region | description | description_with_locationID
+--- | --- | --- | ---
+1 | 1.1 | impact_on_use_1.1 |impact_on_use_1.1 (locationID)
+1 | 1.2 | impact_on_use_1.2 | impact_on_use_1.2 (locationID)
+
+We here save the link between `id_sp_region` and `locationID` in a separate dataframe, to use it later in the mapping of the description extension:
+
+```{r}
+sp_in_region_with_location <- 
+  distribution %>% 
+    select(idspecies, id_sp_region, dwc_locationID) %>% 
+    distinct()  # Remove all duplicates
+```
+
+4. Export `sp_in_region_with_location` as .csv
+
+```{r}
+write_csv(sp_in_region_with_location,
+          here::here("data","interim","sp_in_region_with_location.csv"),
+          na = "")
+```
+
+## countryCode
+
+Map countryCode to the [ISO 3166 Code](https://www.iso.org/iso-3166-country-codes.html)
+
+```{r}
+distribution %<>% mutate(dwc_countryCode = 
+  recode(region_country, 
+    "Åland"                   = "AX",
+    "Albania"	                = "AL",
+    "Algeria"	                = "DZ",
+    "Andorra"	                = "AD",
+    "Austria"	                = "AT",
+    "Azores"                  = "PT",
+    "Baleares"	              = "ES",
+    "Belarus"	                = "BY",
+    "Belgium"	                = "BE",
+    "Bosnia-Herzegovina"	    = "BA",
+    "Bulgaria"	              = "BG",
+    "Canary Is."	            = "ES",
+    "Channel Is."	            = "UK",
+    "Corse (Corsica)"	        = "FR",
+    "Croatia"	                = "HR",
+    "Cyprus"	                = "CY",
+    "Czech Republic"	        = "CZ",
+    "Denmark"	                = "DK",
+    "Egypt"                 	= "EG",
+    "England"	                = "UK",
+    "Estonia"                 = "ES",
+    "Europe"	                = "",
+    "European part of Russia"	= "RU",
+    "Faroyar (Faroes)"	      = "FO",
+    "Finland"	                = "FI",
+    "France"	                = "FR",
+    "Germany"	                = "DE",
+    "Gilbraltar"	            = "GI",
+    "Great Britain"	          = "UK",
+    "Greece"	                = "GR",
+    "Greece (East Aegean)"	  = "GR",
+    "Greece (Ionian Islands)" = "GR",
+    "Greece (North Aegean)"   = "GR",
+    "Greece (South Aegean)"   = "GR",
+    "Greenland"	              = "GL",
+    "Hungary"	                = "HU",
+    "Iceland"	                = "IS",
+    "Ireland"	                = "IE",
+    "Israel"	                = "IL",
+    "Italy"	                  = "IT",
+    "Kriti (Crete)"	          = "GR",
+    "Latvia"	                = "LV",
+    "Lebanon"	                = "LB",
+    "Libya"	                  = "LY",
+    "Liechtenstein"	          = "LI",
+    "Lithuania"	              = "LT",
+    "Luxembourg"	            = "LU",
+    "Macedonia"	              = "MK",
+    "Madeira"	                = "PT",
+    "Malta"	                  = "MT",
+    "Moldova"	                = "MD",
+    "Monaco"	                = "MC",
+    "Montenegro"	            = "YU",
+    "Morocco"	                = "MA",
+    "Netherlands"	            = "NL",
+    "Northern Ireland"	      = "UK",
+    "Norway"	                = "NO",
+    "Poland"	                = "PL",
+    "Portugal"	              = "PT",
+    "Romania"	                = "RO",
+    "Russian Far East"	      = "RU",
+    "San Marino"	            = "SM",
+    "Sardegna (Sardinia)"	    = "IT",
+    "Scotland"	              = "UK",
+    "Serbia"	                = "YU",
+    "Sicilia"	                = "IT",
+    "Sicilia (Sicily)"	      = "IT",
+    "Slovakia"	              = "SK",
+    "Slovenia"	              = "SI",
+    "Spain"	                  = "ES",
+    "Svalbard"	              = "SJ",
+    "Sweden"	                = "SE",
+    "Switzerland"	            = "CH",
+    "Syria"	                  = "SY",
+    "Tunisia"	                = "TN",
+    "Turkey (in Europe)"	    = "TR",
+    "Ukraine"	                = "UA",
+    "United Kingdom"	        = "UK",
+    "Wales"	                  = "UK",
+    "Yugoslavia"	            = ""
+))
+```
+
+```{r}
+distribution %>% 
+  group_by(region_country, dwc_countryCode) %>% 
+  summarise(records = n())
+```
+
+## occurrenceStatus
+
+Information to map `occurrenceStatus` is contained `abundance` and `population_status`.
+
+```{r}
+distribution %>% 
+  group_by(abundance, population_status) %>% 
+  summarize(records = n())
+```
+
+In most cases , we can translate `abundance` to the GBIF [controlled vocabulary](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) of `occurrenceStatus`:
+
+|abundance         | occurrenceStatus               |
+|:-----------------|:------------------------------:|
+|Absent or extinct | absent (or extinct, see below) |
+|Abundant          | common                         |
+|Common            | common                         |
+|Local             | present                        |
+|Rare              | rare                           |
+|Single record     | present                        |
+|Sporadic          | irregular                      |
+|Unknown           | doubtful                       |
+
+However, for 30 taxa, `population_status` contains the field `extinct`, which is valuable information for `occurrenceStatus`:
+
+|population_status |abundance         | records|
+|:-----------------|:-----------------|-------:|
+|Extinct           |Absent or extinct |       9|
+|Extinct           |Local             |       6|
+|Extinct           |Rare              |      11|
+|Extinct           |Single record     |       4|
+|Extinct           |Unknown           |       8|
+
+We decided to set `occurrencesStatus` as `extinct`, irrespective of the content of `abundance`(see [this issue](https://github.com/trias-project/daisie-checklist/issues/4)).
+
+```{r}
+distribution %<>% mutate(dwc_occurrenceStatus = case_when(
+  
+# Mapping of occurrenceStatus for extinct taxa:
+  population_status == "Extinct" ~ "extinct",
+    
+# Mapping of absent or extinct taxa, depending on the value of population_status:
+  abundance == "Absent or extinct" & population_status !="Extinct"     ~ "absent",
+  abundance == "Absent or extinct" & is.na(population_status)          ~ "absent",
+
+# Mapping of occurrenceStatus values based on abundance values (irrespective of population_status):  
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Abundant"       ~ "common",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Common"        ~ "common",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Local"         ~ "present",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Rare"          ~ "rare",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Single record" ~ "present",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Sporadic"      ~ "irregular",
+  (population_status != "Extinct" | is.na(population_status))  & abundance == "Unknown"       ~ "doubtful",
+  (population_status != "Extinct" | is.na(population_status))  & is.na(abundance)             ~ ""
+))
+```
+
+```{r}
+distribution %>% 
+  group_by(abundance, population_status, dwc_occurrenceStatus) %>% 
+  summarize(records = n())
+```
+
+## establishmentMeans
+
+Information for the mapping of `establishmentMeans` is contained in `species_status`:
+
+```{r}
+distribution %>% 
+  group_by(species_status) %>% 
+  summarize(records = n())
+```
+
+For mapping `soecies_status` to `establishmentMeans`, see [issue 15](https://github.com/trias-project/daisie-checklist/issues/15) on GitHub:
+
+```{r}
+distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
+    "Alien"          = "introduced",
+    "Cryptogenic"    = "uncertain",
+    "<NA>"           = "",
+    "Naturalized"    = "introduced",
+    "Casual"         = "introduced",
+    "Alien_invasive" = "introduced")) 
+```
+
+## eventDate
+
+### Clean start year
+
+Inspect content of `start_year`, which contains the information for `eventDate`:
+
+```{r}
+distribution %>% 
+  mutate(start_year = as.character(start_year)) %>%
+  group_by(start_year) %>% 
+  summarize(records = n()) %>%
+  arrange(desc(records))
+```
+
+Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) and a smaller group of _others_:
+
+- NA cases:
+  * Unknown -> NA
+  * unknown -> NA
+  * . -> NA
+  * ? -> NA
+  * since long -> NA
+- negative years: also to NA
+  * -5300, -2200, -750 -> NA
+- before/after cases, question marks,... remove the </>/? signs
+  * <1925   -> 1925, i.e. year itself
+  * year with question mark, e;g. 1921?, 1930 ? -> year itself is best guess, so extract year
+  * 1999\n -> clean to 1999  
+- full dates: 10.06.1995., 01/04/1993, 15/10/2005,...  
+- multiple years:
+  * range of years: 1889-1892  -> take first year
+  * options: '2000, 2001'; 1992 or 2010, 2000 OR 2004 -> take first year occurrence
+- specials: 20. century, 1957*; 2008**, , 2004, earlier unconformed records, March,1993, 90`s
+  * try to extract a 4-digit year (or use Damianos improvd funtionality)
+
+The remaining will probably require some claenup manually. 
+
+Get an overview of the amount of records with just a `YYYY` year format:
+
+```{r}
+distribution %>%
+  select(start_year) %>%
+  filter(str_detect(start_year, "^[0-9]{4}$")) %>% nrow()
+```
+
+We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
+
+```{r}
+distribution %>%
+  select(start_year) %>%
+  filter(str_detect(start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+```
+
+Let's clean the start years information step by step:
+
+1. Everything that is NA or should be NA, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(start_year = as.character(start_year)) %>%
+  mutate(start_year = replace(start_year, start_year == "Unknown", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "unknown", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == ".", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "?", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "since long", NA)) %>%
+  mutate(start_year = replace(start_year, start_year == "Since long", NA))
+
+```
+
+2. For all negative values, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(start_year = 
+           if_else(str_detect(start_year, "^-[0-9]*"),
+                   NA_character_, start_year))
+```
+
+3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
+
+```{r}
+distribution %<>% 
+  mutate(start_year = str_replace(start_year, "<|>|\\?", ""))
+```
+
+4. When a full date is available, parse it to ISO 8601 date format:
+
+```{r}
+full_date_indices <- str_detect(distribution$start_year, 
+                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$start_year)
+parsed_dates <- parse_date_time(distribution$start_year[full_date_indices], orders = "dmy")
+parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
+distribution$start_year[full_date_indices] <- parsed_dates_char
+```
+
+5. When textwise containing a single or multiple years, exrtact the first year in the text:
+
+```{r}
+# ignore already parsed dates for this replacement
+not_date_indices <- !str_detect(distribution$start_year, 
+                               "[0-9]{4}-[0-9]{2}-[0-9]{2}") & !is.na(distribution$start_year)
+records_to_parse <- distribution$start_year[not_date_indices]
+extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
+                           records_to_parse,
+                           str_extract(records_to_parse, "[0-9]{4}"))
+distribution$start_year[not_date_indices] <- extracted_years
+```
+
+5. Replace some specials still present:
+
+First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
+
+```{r}
+distribution  %>%
+  select(start_year) %>%
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+```
+
+and replace those values:
+
+```{r}
+distribution %<>% 
+  mutate(start_year = replace(start_year, start_year == "20. century", "1900")) %>%
+  mutate(start_year = replace(start_year, start_year == "90`s", "1990"))
+```
+
+recheck cleanup action:
+
+```{r}
+distribution  %>%
+  select(start_year) %>%
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+```
+
+Show content:
+
+```{r}
+distribution %>% 
+  group_by(start_year) %>% 
+  summarize(records = n())
+```
+
+### Clean end year
+
+Inspect content of `end_year`, which contains the information for `eventDate`:
+
+```{r}
+distribution %>% 
+  mutate(end_year = as.character(end_year)) %>%
+  group_by(end_year) %>% 
+  summarize(records = n()) %>%
+  arrange(desc(records))
+```
+
+Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) and a smaller group of _others_:
+
+- NA cases:
+  * unknown -> NA
+  *   -> NA
+  * ? -> NA
+- negative years: also to NA
+  * -2200, -750 -> NA
+- before/after cases, question marks,... remove the </>/? signs
+  * year with question mark, 2004? -> year itself is best guess, so extract year
+- full dates: 15.06.2003.
+- specials: 20. century, 1950's*
+  try to extract a 4-digit year (or use Damianos improvd funtionality)
+
+The remaining will probably require some claenup manually. 
+
+Get an overview of the amount of records with just a `YYYY` year format:
+
+```{r}
+distribution %>%
+  select(end_year) %>%
+  filter(str_detect(end_year, "^[0-9]{4}$")) %>% nrow()
+```
+
+We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
+
+```{r}
+distribution %>%
+  select(end_year) %>%
+  filter(str_detect(end_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+```
+
+Let's clean the end years information step by step:
+
+1. Everything that is NA or should be NA, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = as.character(end_year)) %>%
+  mutate(end_year = replace(end_year, end_year == " ", NA)) %>% 
+  mutate(end_year = replace(end_year, end_year == "        ", NA)) %>% 
+  mutate(end_year = replace(end_year, end_year == "unknown", NA)) %>%
+  mutate(end_year = replace(end_year, end_year == "?", NA)) 
+```
+
+2. For all negative values, make it NA:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = 
+           if_else(str_detect(end_year, "^-[0-9]*"),
+                   NA_character_, end_year))
+```
+
+3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = str_replace(end_year, "<|>|\\?", ""))
+```
+
+4. When a full date is available, parse it to ISO 8601 date format:
+
+```{r}
+full_date_indices <- str_detect(distribution$end_year, 
+                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$end_year)
+parsed_dates <- parse_date_time(distribution$end_year[full_date_indices], orders = "dmy")
+parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
+distribution$end_year[full_date_indices] <- parsed_dates_char
+```
+
+5. When textwise containing a single or multiple years, exrtact the first year in the text:
+
+```{r}
+# ignore already parsed dates for this replacement
+not_date_indices <- !str_detect(distribution$end_year, 
+                               "[0-9]{4}-[0-9]{2}-[0-9]{2}") & !is.na(distribution$end_year)
+records_to_parse <- distribution$end_year[not_date_indices]
+extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
+                           records_to_parse,
+                           str_extract(records_to_parse, "[0-9]{4}"))
+distribution$end_year[not_date_indices] <- extracted_years
+```
+
+5. Replace some specials still present:
+
+First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
+
+```{r}
+distribution  %>%
+  select(end_year) %>%
+  filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+```
+
+and replace those values:
+
+```{r}
+distribution %<>% 
+  mutate(end_year = replace(end_year, end_year == "19th century", "1800")) %>%
+  mutate(end_year = replace(end_year, end_year == "1950's", "1950"))
+```
+
+recheck cleanup action:
+
+```{r}
+distribution  %>%
+  select(end_year) %>%
+  filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+```
+
+Show content:
+
+```{r}
+distribution %>% 
+  group_by(end_year) %>% 
+  summarize(records = n())
+```
+
+Inspect all combinations for `start_year` and `end_year`:
+
+```{r}
+distribution %>% group_by(start_year, end_year) %>% summarize(records = n())
+```
+
+Inspect which `end_year` falls before `start_year`:
+
+```{r}
+distribution %>% 
+  mutate(end_year = as.numeric(end_year)) %>% 
+  mutate(start_year = as.numeric(start_year)) %>% 
+  filter(end_year < start_year) %>% 
+  select(idspecies, end_year, start_year)
+```
+
+Create eventDate:
+
+```{r}
+distribution %<>% mutate(dwc_eventDate = case_when(
+  is.na(start_year) & is.na(end_year) ~ "",
+  is.na(start_year) & !is.na(end_year) ~ end_year,
+  !is.na(start_year) & is.na(end_year) ~ start_year,
+  !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep="/")
+))
+```
+
+## occurrenceRemarks
+
+In this field we will gather all the extra information related to a distribution. The syntax we will use is: `field: value | field: value`. Even if a column does not contain information, it will be included as `field: NA` which will make it easier for end users to separate the `occurrenceRemarks` field back into multiple columns. Note that `input_pathways` and `input_impact` have a `sourceid` column that will be ignored in this mapping (it is very seldom populated).
+
+First, we clean `region_of_first_record` information by removing trailing `;`
+
+```{r}
+distribution %<>% mutate(region_of_first_record = str_remove(region_of_first_record, ";$"))
+```
+
+Map `dwc_occurrenceRemarks`:
+
+```{r}
+distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
+  "distribution_id: ", id_sp_region,
+  " | population_status: ", str_to_lower(population_status),
+  " | region_of_first_record: ", str_replace(region_of_first_record, "Unknown", "unknown"),
+  " | current_distribution: ", str_replace(current_distribution, "Unknown", "unknown"),
+  " | donor_region: ", str_replace(region, "Unknown", "unknown"),
+  " | pathway: ", str_to_lower(pathway),
+  " | vector: ", str_to_lower(vector),
+  " | impact_on_ecology: ", str_to_lower(category_ecology),
+  " | impact_on_use: ", str_to_lower(category_uses)
+))
+```
+
+## source
+
+There's no `sourceid` to link the sources in `literature_references` with the distribution extension. For this, we need the file `distribution_sources`, generated earlier. 
+
+Thus, we need to match `distribution_sources`
+
+id_sp_region | field_name | source
+--- | --- | ---
+1 | property_A | source_1
+1 | property_B | source_2 
+2 | property_A | source_3
+2 | property_B | source_4
+3 | property_A | source_5
+3 | property_B | source_6
+
+with `distribution`
+
+id_sp_region | property_A | property_B
+--- | --- | ---
+1 | A1 | B1 
+2 | A2 | B2
+3 | A3 | B2
+
+To generate:
+
+id_sp_region | property_A | property_B | source
+--- | --- | ---
+1 | A1 | B1 | source_1/source_2
+2 | A2 | B2 | source_3/source_4
+3 | A3 | B2 | source_5/source_6
+
+To link both datasets, we use `id_sp_region`
+
+1. Transform `distribution_sources` from a long to a wide dataset: 
+
+```{r}
+distribution_sources %<>% spread(field_name, source)
+```
+
+2. Clean column names in `distribution_sources`:
+
+```{r}
+distribution_sources %<>% clean_names() 
+```
+
+3. Inspect column names:
+
+```{r}
+distribution_sources %>% 
+  select(-id_sp_region, -sourceid) %>% 
+  colnames()
+```
+
+Some remarks:
+- Some field names are linked to variables in `distribution`
+  - `distribution`,
+  - `general_references`,
+  - `introduction_dates`,
+  - `introduction_history`
+- Some field names are linked to variables to be included in `description`
+  - `current_distrib`,
+  - `current_distribution`,
+  - `ecoimpact_id`,
+  - `ecological_impact`,
+  - `first_observation`
+  - `impact_on_uses`,
+  - `status`
+  - `useimpact_id`
+
+4. Map source information for `distribution` using ´|´ as a separator
+
+```{r}
+distribution_sources %<>% mutate(source = paste(
+  distribution, 
+  general_references, 
+  introduction_dates, 
+  introduction_history, 
+  sep = "|")) 
+```
+
+5. Remove `|NA`:
+
+```{r}
+distribution_sources %<>% mutate(source = str_replace_all(source, "(\\|NA)|(^NA\\|)|(NA)", ""))
+```
+
+
+```{r}
+distribution_sources %<>% mutate(source = str_remove(source, "^\\|")) 
+```
+
+6. Add source information to `distribution` using `id_sp_region`:
+
+```{r}
+distribution %<>% left_join(
+  select(distribution_sources, id_sp_region, source),
+  by = "id_sp_region")
+```
+
+7. Rename `source`:
+
+```{r}
+distribution %<>% rename("dwc_source" = "source")
+```
+
+# Post-processing
+
+1. Only keep the Darwin Core columns
+
+```{r}
+distribution %<>% select(starts_with("dwc_"))
+```
+
+2. Drop the `dwc_` prefix
+
+```{r}
+colnames(distribution) <- str_replace(colnames(distribution), "dwc_", "")
+```
+
+3. Preview data
+
+```{r}
+distribution %>% head()
+```
+
+4. Save to CSV
+
+```{r}
+write_csv(distribution, here::here("data", "processed", "distribution.csv"), na = "")
+```
