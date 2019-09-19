@@ -787,6 +787,11 @@ distribution_sources %<>% mutate(source = paste(
 distribution_sources %<>% mutate(source = str_replace_all(source, "(\\|NA)|(^NA\\|)|(NA)", ""))
 ```
 
+
+```{r}
+distribution_sources %<>% mutate(source = str_remove(source, "^\\|")) 
+```
+
 6. Add source information to `distribution` using `id_sp_region`:
 
 ```{r}
