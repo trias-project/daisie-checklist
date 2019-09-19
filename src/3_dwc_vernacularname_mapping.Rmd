@@ -91,7 +91,7 @@ vernacular_names %>% filter(idspecies %in% remove_taxa$idspecies)
 2. Map taxonID
 
 ```{r}
-vernacular_names %<>% mutate(dwc_taxonID = idspecies) 
+vernacular_names %<>% mutate(dwc_taxonID = as.numeric(idspecies)) 
 ```
 
 ## vernacularName
