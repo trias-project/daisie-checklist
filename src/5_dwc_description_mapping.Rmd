@@ -174,30 +174,17 @@ remove_taxa <- read_delim(
 # Create transformation functions
 
 The description extension will be a combination of the following descriptors:
-
-Descriptors linked to a taxon (no regional information):
 - habitat
 - native range
 - ecofunctional group
-
-Descriptors linked to a taxon in a specific region:
-- pathways
-- vector
-- donor area
-- impact
-- vector
-- current distribution
-- population status
-- region of first record
 
 Each descriptor is imported as a separate dataset. We need to imply the same transformation steps to each dataset:
 
 1. Remove all empty values (if applicable)
 2. Keep distinct vaules only (if applicable)
-3. Join with locality information (only for species in region information)
-4. Map `description`
-5. Map `type`
-6. Select relevant columns
+3. Map `description`
+4. Map `type`
+5. Select relevant columns
 
 As these steps are repeated for each of the description datasets, we write a function here.
 
@@ -224,39 +211,7 @@ map_to_description <- function(data_frame, column_name, descriptor){
 } 
 ```
 
-For species with locality information, we need to adapt this function:
-
-```{r}
-map_to_description_with_locality <- function(data_frame, column_name, descriptor){
-    data_frame %>% 
-    
-    # Remove empty values
-    filter(
-      (!!as.symbol(column_name)) != "" | 
-        !is.na(!!as.symbol(column_name))) %>% 
-
-    # keep distinct values only
-    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
-    
-    # Join with locality information
-    left_join(
-      select(sp_in_region_with_location, id_sp_region, dwc_locationID),
-      by = c("id_sp_region"))    %>% 
-    
-    # Map description
-    mutate(description = paste(dwc_locationID, (!!as.symbol(column_name)), sep = " - ")) %>% 
-
-    # Map `type`:
-    mutate(type = descriptor) %>% 
-  
-    # Keep only `idspecies`, `id_sp_region`,`description`, `type` and `source`:
-    select(idspecies, id_sp_region, description, type, sourceid)
-} 
-```
-
-# Descriptors linked to taxon
-
-## Habitat
+# Habitat
 
 Generate `eunis_habitat`
 
@@ -277,7 +232,7 @@ habitat <-
     descriptor = "eunis habitat")
 ```
 
-## Native range
+# Native range
 
 ```{r}
 native_range <- 
@@ -288,7 +243,7 @@ native_range <-
     )
 ```
 
-## Ecofunctional group
+# Ecofunctional group
 
 ```{r}
 ecofunctional_group <- 
@@ -299,232 +254,33 @@ ecofunctional_group <-
     )
 ```
 
-## Combine descriptors
+# Descriptors extention mapping
 
 1. Combine `habitat`, `native_range` and `ecofunctional_group`
 
 ```{r}
-descriptors_for_taxon <-
-  bind_rows(habitat, native_range, ecofunctional_group)
+description <- bind_rows(habitat, native_range, ecofunctional_group)
 ```
 
 2. Link with `sourceid` from `literature_references`
 
 ```{r}
-descriptors_for_taxon %<>% 
+description %<>% 
   left_join(
     select(literature_references, sourceid, source),
     by = "sourceid")
 ```
 
 3. Keep column names for description extension only and rename
-
-```{r}
-descriptors_for_taxon <- 
-  descriptors_for_taxon %>% 
-    select(idspecies, description, type, source) %>% 
-    rename("taxonID" = "idspecies")
-```
-
-# Descriptors linked to taxon in a region (with sourceid in raw file)
-
-## Pathways
-
-```{r}
-pathways <- 
-  map_to_description_with_locality(
-    data_frame = pathways, 
-    column_name = "pathway", 
-    descriptor = "pathway")
-```
-
-## Vector
-
-```{r}
-vectors <-
-  map_to_description_with_locality(
-    data_frame = vectors, 
-    column_name = "vector2", 
-    descriptor = "vector")
-```
-
-## Donor area
-
-```{r}
-donor_area <- 
-  map_to_description_with_locality(
-    data_frame = donor_area, 
-    column_name = "region", 
-    descriptor = "donor area")
-```
-
-## Region of first record
-
-```{r}
-region_of_first_record <-
-  map_to_description_with_locality(
-    data_frame = region_of_first_record,
-    column_name = "region_of_first_record",
-    descriptor = "region of first record"
-)
-```
-
-## Combine descriptors
-
-1. Combine `pathways`, `vectors` and `donor_area` and `region_of_first_record`
-
-```{r}
-descriptors_for_taxon_in_region_with_source <-
-  bind_rows(pathways, vectors, donor_area, region_of_first_record)
-```
-
-2. Link with `sourceid` from `literature_references`
-
-```{r}
-descriptors_for_taxon_in_region_with_source %<>% 
-  left_join(
-    select(literature_references, sourceid, source),
-    by = "sourceid")
-```
-
-3. Keep column names for description extension only and rename
-
-```{r}
-descriptors_for_taxon_in_region_with_source <- 
-  descriptors_for_taxon_in_region_with_source %>% 
-    select(idspecies, description, type, source) %>% 
-    rename("taxonID" = "idspecies")
-```
-
-
-# Descriptors linked to taxon in a region (without sourceid in raw file)
-
-## Current distribution
-
-```{r}
-current_distribution <-
-  map_to_description_with_locality(
-    data_frame = current_distribution,
-    column_name = "current_distribution",
-    descriptor = "current distribution"
-)
-```
-
-Add source information from `distribution_sources` (in `current_distrib` and `current_distribution`):
-
-```{r}
-current_distribution %<>% 
-  left_join(
-    select(
-      filter(distribution_sources, field_name == "current_distrib" | field_name == "current_distribution"),
-      id_sp_region, source),
-    by = "id_sp_region")
-```
-
-## Population status
-
-```{r}
-population_status <- 
-  map_to_description_with_locality(
-    data_frame = population_status,
-    column_name = "population_status",
-    descriptor = "degree of establishment"
-  )
-```
-
-Add source information from `distribution_sources` (in `status`):
-
-```{r}
-population_status %<>% 
-  left_join(
-    select(filter(distribution_sources, field_name == "status"), id_sp_region, source),
-  by = "id_sp_region")
-```
-
-## Impact
-
-### Impact on use
-
-1. Add empty column for `sourceid` (otherwise the function `map_to_description_with_locality` will not work)
-
-```{r}
-impact %<>% mutate(sourceid = "") 
-```
-
-2. Map to description 
-
-```{r}
-impact_on_use <-
-  map_to_description_with_locality(
-    data_frame = impact,
-    column_name = "category_uses",
-    descriptor = "impact on use")
-```
-
-3. Add source information from distribution_references:
-
-```{r}
-impact_on_use %<>% 
-  left_join(
-    select(
-      filter(distribution_sources, field_name == "useimpact_id"| field_name == "impact on uses"), 
-      id_sp_region, source),
-    by = "id_sp_region")
-```
-
-### Impact on ecology
-
-1. Map to description 
-
-```{r}
-impact_on_ecology <-
-  map_to_description_with_locality(
-    data_frame = impact,
-    column_name = "category_ecology",
-    descriptor = "impact on ecology")
-```
-
-2. Add source information from `distribution_sources`:
-
-```{r}
-impact_on_ecology %<>% 
-  left_join(
-    select(
-      filter(distribution_sources, field_name == "ecoimpact_id"| field_name == "ecological_impact"), 
-      id_sp_region, source),
-    by = "id_sp_region")
-```
-
-## Combine descriptors
-
-1. Combine `current_distribution`, `population_status` and `impact_on_use` and `impact_on_ecology`
-
-```{r}
-descriptors_for_taxon_in_region_without_source <-
-  bind_rows(current_distribution, population_status, impact_on_use, impact_on_ecology)
-```
-
-2. Keep column names for description extension only and rename
-
-```{r}
-descriptors_for_taxon_in_region_without_source <- 
-  descriptors_for_taxon_in_region_without_source %>% 
-    select(idspecies, description, type, source) %>% 
-    rename("taxonID" = "idspecies")
-```
-
-# Combine all descriptors and export distribution extension
-
-1. Combine `descriptors_for_taxon`, `descriptors_for_taxon_with_source` and `descriptors_for_taxon_without_source`
 
 ```{r}
 description <- 
-  bind_rows(descriptors_for_taxon,
-            descriptors_for_taxon_in_region_with_source,
-            descriptors_for_taxon_in_region_without_source)
+  description %>% 
+    select(idspecies, description, type, source) %>% 
+    rename("taxonID" = "idspecies")
 ```
 
-2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+4. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
 taxonID_to_replace <- 
@@ -535,7 +291,7 @@ taxonID_to_replace <-
 taxonID_to_replace
 ```
 
-2. Show replacement values:
+5. Show replacement values:
 
 ```{r}
 remove_taxa %>% 
@@ -543,7 +299,7 @@ remove_taxa %>%
   select(idspecies, replacement_idspecies)
 ```
 
-2. Replace these values with the correct taxonID
+6. Replace these values with the correct taxonID
 
 ```{r}
 description %<>% 
@@ -559,13 +315,13 @@ description %<>%
 )
 ```
 
-3. Sort on `taxonid`
+7. Sort on `taxonid`
 
 ```{r}
 description %<>% arrange(taxonID)
 ```
 
-4. Preview data:
+8. Preview data:
 
 ```{r}
 head(description, n=10)
@@ -574,6 +330,8 @@ head(description, n=10)
 5. Export as .csv
 
 ```{r}
-write_csv(description, "../data/processed/description.csv", na = "")
+write_csv(description, 
+          here::here("data","processed","description.csv"), 
+          na = "")
 ```
 
