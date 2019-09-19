@@ -197,6 +197,6 @@ vernacular_names %<>% arrange(taxonID)
 
 ```{r}
 write_csv(vernacular_names,
-          here::here("data","processed","vernacular_names.csv"),
-          fna = "")
+          here::here("data","processed","vernacularname.csv"),
+          na = "")
 ```
