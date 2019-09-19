@@ -90,6 +90,14 @@ remove_taxa <- read_delim(
   col_types = col_types)
 ```
 
+4. Read `core_taxa`
+
+```{r}
+core_taxa <-
+  read_csv(here::here("data", "interim", "core_taxa.csv"), col_types = col_types)
+```
+
+
 # Create transformation functions
 
 The description extension will be a combination of the following descriptors:
@@ -199,6 +207,12 @@ description <-
     rename("taxonID" = "idspecies")
 ```
 
+4. Remove all taxonID's that are not included in the taxon core
+
+```{r}
+description %<>% filter(taxonID %in% core_taxa$taxonID)
+```
+
 4. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
@@ -210,49 +224,25 @@ taxonID_to_replace <-
 taxonID_to_replace
 ```
 
-5. Show replacement values:
-
-```{r}
-remove_taxa %>% 
-  filter(idspecies %in% taxonID_to_replace$taxonID) %>% 
-  select(idspecies, replacement_idspecies)
-```
-
-6. Replace these values with the correct taxonID
-
-```{r}
-description %<>% 
-  mutate(taxonID = 
-           recode(taxonID,
-                 "52845" = "52831",
-                 "900966" = "900975",
-                 "900977" = "52847",
-                 "900984" = "52858",
-                 "900995" = "52877",
-                 "900997" = "52878",
-                 "901002" = "52889")
-)
-```
-
-7. Change data type of `taxonid` to numeric:
+5. Change data type of `taxonid` to numeric:
 
 ```{r}
 description %<>% mutate(taxonID = as.numeric(taxonID))  
 ```
 
-7. Sort on `taxonid`
+6. Sort on `taxonid`
 
 ```{r}
 description %<>% arrange(taxonID)
 ```
 
-8. Preview data:
+7. Preview data:
 
 ```{r}
 head(description, n=10)
 ```
 
-5. Export as .csv
+8. Export as .csv
 
 ```{r}
 write_csv(description, 
