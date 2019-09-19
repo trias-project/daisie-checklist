@@ -119,9 +119,15 @@ taxon %<>% mutate(dwc_taxonID = idspecies)
 
 ## scientificName
 
-The information in `scientificName` will be a compilation of several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`.
+The information in `scientificName` will be a compilation of several fields: `sp_genus`, `sp_species`, `sp_authority`, `sp_subtaxon` and `sp_subtaxon_authority`. We paste this information together to generate the field `dwc_scientificName`. Before we concatenate this information, we clean the authorship information a bit:
 
-1. Paste information together
+1. Clean authorships:
+
+```{r}
+taxon %<>% mutate(authority = str_replace_all(authority, pattern = '"', replacement = ''))
+```
+
+2. Paste information together
 
 ```{r}
 taxon %<>% mutate(
@@ -134,7 +140,7 @@ taxon %<>% mutate(
 )
 ```
 
-2. Remove all `NA`
+3. Remove all `NA`
 
 ```{r}
 taxon <-
@@ -144,7 +150,7 @@ taxon <-
     mutate(dwc_scientificName = trimws(dwc_scientificName))
 ```
 
-3. We use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist.
+4. We use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist.
 
 ```{r}
 parsed_names <- 
@@ -154,7 +160,7 @@ parsed_names <-
     parsenames() # An rgbif function
 ```
 
-4. Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed (`parsed = TRUE` and `parsedpartially` = `FALSE`. Note: these are not necessarily incorrect):
+5. Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed (`parsed = TRUE` and `parsedpartially` = `FALSE`. Note: these are not necessarily incorrect):
 
 ```{r}
 parsed_names %>%
@@ -163,7 +169,7 @@ parsed_names %>%
   head(n=10)
 ```
 
-5. Total Amount of scientific names with nomenclatural issues:
+6. Total Amount of scientific names with nomenclatural issues:
 
 ```{r}
 parsed_names %>%
@@ -181,7 +187,7 @@ taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName,"sp."))
 Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
 
 
-6. All taxa should be unique. We here scan for duplicated taxa:
+7. All taxa should be unique. We here scan for duplicated taxa:
 
 ```{r}
 taxon %>% 
@@ -189,7 +195,7 @@ taxon %>%
   select(dwc_scientificName, idspecies, ordo, family, genus) 
 ```
 
-7. Specify the scientificnames and associated values of `idspecies` to be removed from the taxon core
+8. Specify the scientificnames and associated values of `idspecies` to be removed from the taxon core
 
 ```{r}
 # Define idspecies to select on:
@@ -202,7 +208,7 @@ remove_taxa <-
     select(dwc_scientificName, idspecies)
 ```
 
-8. Link those with the replacement values for `idspecies`
+9. Link those with the replacement values for `idspecies`
 
 ```{r}
 # identify replacement idspecies:
@@ -211,13 +217,13 @@ replacement_idspecies <- c("52831","900975","52847","52858","52877","52878","528
 remove_taxa %<>% mutate(replacement_idspecies = replacement_idspecies)
 ```
 
-8. Remove duplicated taxa from taxon core:
+10. Remove duplicated taxa from taxon core:
 
 ```{r}
 taxon %<>% filter(!(idspecies %in% remove_idspecies))
 ```
 
-9. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
+11. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
 
 ```{r}
 write_csv(remove_taxa, "../data/interim/remove_taxa.csv")
