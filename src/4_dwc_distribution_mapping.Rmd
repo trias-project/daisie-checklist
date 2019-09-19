@@ -685,7 +685,7 @@ First, we clean `region_of_first_record` information by removing trailing `;`
 distribution %<>% mutate(region_of_first_record = str_remove(region_of_first_record, ";$"))
 ```
 
-Map `dwc_occurrenceRemarks
+Map `dwc_occurrenceRemarks`:
 
 ```{r}
 distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
