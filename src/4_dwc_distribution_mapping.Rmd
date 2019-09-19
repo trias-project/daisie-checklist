@@ -116,7 +116,7 @@ distribution %<>%
 3. Map `taxonID`
 
 ```{r}
-distribution %<>% mutate(dwc_taxonID = idspecies) 
+distribution %<>% mutate(dwc_taxonID = as.numeric(idspecies)) 
 ```
 
 ## locationID and locality
