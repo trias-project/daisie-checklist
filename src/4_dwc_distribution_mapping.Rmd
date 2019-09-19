@@ -180,7 +180,9 @@ sp_in_region_with_location <-
 4. Export `sp_in_region_with_location` as .csv
 
 ```{r}
-write_csv(sp_in_region_with_location, "../data/interim/sp_in_region_with_location.csv",  na = "")
+write_csv(sp_in_region_with_location,
+          here::here("data","interim","sp_in_region_with_location.csv"),
+          na = "")
 ```
 
 ## countryCode
