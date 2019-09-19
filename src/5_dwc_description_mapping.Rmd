@@ -136,7 +136,7 @@ Generate `eunis_habitat`
 
 ```{r}
 habitat %<>% mutate(eunis_habitat = case_when(
-  !is.na(habitat) ~ paste(ideunis, "level", level, "-", habitat),
+  !is.na(habitat) ~ paste0(habitat, " (", ideunis, " level ", level, ")"),
   TRUE ~ ideunis)
 )
 ```
