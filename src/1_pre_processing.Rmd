@@ -321,9 +321,7 @@ write_csv(interim_literature_references, "../data/interim/interim_literature_ref
 
 # Generate additional files for description extension
 
-## From input_taxon
-
-`input_taxon` has one fields that can't be used for mapping of the Taxon Core:
+`input_taxon` has one field that can't be used for mapping of the Taxon Core:
  - `ecofunct_group`
 
 We will integrate this information in the description extension. 
@@ -347,95 +345,5 @@ ecofunctional_group %<>% filter(!is.na(ecofunct_group))
 
 ```{r}
 write_csv(ecofunctional_group, "../data/interim/ecofunctional_group.csv", na = "")
-```
-
-## From input_distribution
-
-`input_distribution` has several fields that can't be used for mapping of the Distribution Extension:
-- `population_status`
-- `current_distribution`
-- `region_of_first_record`
-
-We will integrate this information in the description extension. 
-
-1. Save information on population status
-
-```{r}
-population_status <- 
-  distribution %>% 
-    select(idspecies, id_sp_region, population_status) %>% 
-    distinct(id_sp_region, .keep_all = TRUE)
-```
-
-2. Remove records for which `population_status` is empty:
-
-```{r}
-population_status %<>% filter(!is.na(population_status))
-```
-
-3. Add `sourceid` (which is empty, but required field for mapping description extension)
-
-```{r}
-population_status %<>% mutate(sourceid = "") 
-```
-
-4. Export as `population_status`
-
-```{r}
-write_csv(population_status, "../data/interim/population_status.csv", na = "")
-```
-
-5. Save information on current distribution
-
-```{r}
-current_distribution <- 
-  distribution %>% 
-    select(idspecies, id_sp_region, current_distribution) %>% 
-    distinct(id_sp_region, .keep_all = TRUE)
-```
-
-6. Remove records for which `current_distribution` is empty:
-
-```{r}
-current_distribution %<>% filter(!is.na(current_distribution))
-```
-
-7. Add `sourceid` (which is empty, but required field for mapping description extension)
-
-```{r}
-current_distribution %<>% mutate(sourceid = "") 
-```
-
-8. Export as `current_distribution`
-
-```{r}
-write_csv(current_distribution, "../data/interim/current_distribution.csv", na = "")
-```
-
-9. Save information on region of first record:
-
-```{r}
-region_of_first_record <- 
-  distribution %>% 
-    select(idspecies, id_sp_region, region_of_first_record) %>% 
-    distinct(id_sp_region, .keep_all = TRUE)
-```
-
-10. Remove records for which `region_of_first_record` is empty:
-
-```{r}
-region_of_first_record %<>% filter(!is.na(region_of_first_record))
-```
-
-11. Add `sourceid` (which is empty, but required field for mapping description extension)
-
-```{r}
-region_of_first_record %<>% mutate(sourceid = "") 
-```
-
-12. Export as `region_of_first_record`
-
-```{r}
-write_csv(region_of_first_record, "../data/interim/region_of_first_record.csv", na = "")
 ```
 
