@@ -679,6 +679,14 @@ distribution %<>% mutate(dwc_eventDate = case_when(
 
 In this field we will gather all the extra information related to a distribution. The syntax we will use is: `field: value | field: value`. Even if a column does not contain information, it will be included as `field: NA` which will make it easier for end users to separate the `occurrenceRemarks` field back into multiple columns. Note that `input_pathways` and `input_impact` have a `sourceid` column that will be ignored in this mapping (it is very seldom populated).
 
+First, we clean `region_of_first_record` information by removing trailing `;`
+
+```{r}
+distribution %<>% mutate(region_of_first_record = str_remove(region_of_first_record, ";$"))
+```
+
+Map `dwc_occurrenceRemarks
+
 ```{r}
 distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
   "distribution_id: ", id_sp_region,
