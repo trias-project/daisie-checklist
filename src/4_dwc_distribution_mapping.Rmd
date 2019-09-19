@@ -157,7 +157,7 @@ distribution %<>% mutate(
 distribution %<>% mutate(
   dwc_locality = case_when(
     is.na(region_coast)  ~ paste(region_country),
-    !is.na(region_coast) ~ paste(region_country, region_coast, sep = "|")
+    !is.na(region_coast) ~ paste(region_country, region_coast, sep = " | ")
 ))
 ```
 
@@ -173,7 +173,8 @@ We here save the link between `id_sp_region` and `locationID` in a separate data
 ```{r}
 sp_in_region_with_location <- 
   distribution %>% 
-    select(idspecies, id_sp_region, dwc_locationID)
+    select(idspecies, id_sp_region, dwc_locationID) %>% 
+    distinct()  # Remove all duplicates
 ```
 
 4. Export `sp_in_region_with_location` as .csv
