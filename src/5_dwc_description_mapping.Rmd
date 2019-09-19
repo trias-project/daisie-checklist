@@ -72,79 +72,7 @@ ecofunctional_group <- read_delim(
   col_types = col_types)
 ```
 
-5. Read `pathways` (raw)
-
-```{r}
-pathways <- read_delim(
-  file = "../data/raw/input_pathways.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-6. Read vector (raw)
-
-```{r}
-vectors  <- read_delim(
-  file = "../data/raw/input_vectors.csv", 
-  delim = ",", 
-  col_types = col_types)
-```
-
-7. Read donor area (raw)
-
-```{r}
-donor_area <- read_delim(
-  file = "../data/raw/input_donor_area.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-8. Read impact (raw)
-
-```{r}
-impact <- read_delim(
-  file = "../data/raw/input_impact.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-10. Read current distribution (interim)
-
-```{r}
-current_distribution <- read_delim(
-  file = "../data/interim/current_distribution.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-11. Read population status (interim)
-
-```{r}
-population_status <- read_delim(
-  file = "../data/interim/population_status.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-12. Read region of first record (interim)
-
-```{r}
-region_of_first_record <- read_delim(
-  file = "../data/interim/region_of_first_record.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-13. Read `sp_in_region_with_location` (interim)
-
-```{r}
-sp_in_region_with_location <- read_delim(
-  file = "../data/interim/sp_in_region_with_location.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-14. Read `interim_literature_references` (interim)
+5. Read `interim_literature_references` (interim)
 
 ```{r}
 literature_references <- read_delim(
@@ -153,16 +81,7 @@ literature_references <- read_delim(
   col_types = col_types)
 ```
 
-15. Read `distribution_sources` (interim)
-
-```{r}
-distribution_sources <- read_delim(
-  file = "../data/interim/distribution_sources.csv", 
-  delim = ",",
-  col_types = col_types)
-```
-
-15. Read `remove_taxa` (interim)
+6. Read `remove_taxa` (interim)
 
 ```{r}
 remove_taxa <- read_delim(
