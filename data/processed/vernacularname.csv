@@ -11,7 +11,6 @@ taxonID,vernacularName,source,language
 36,Cape Thread-moss,,en
 42,Toothed Clear-leaf Moss,,en
 43,Southern Hookeria,,en
-44,Vectis-moss,,en
 46,Short Pottia,,en
 48,Stanford Screw-moss,,en
 51,Clay Screw-moss,,en
@@ -757,9 +756,6 @@ taxonID,vernacularName,source,language
 1198,Kiebitzei,,de
 1198,řeb,,cs
 1198,rūtain,,lv
-1201,Acker-Gelbstern,,de
-1201,Dirvinė vištapienė,,lt
-1201,křivatec rolní,,cs
 1211,punakas kuldtäht,,et
 1214,ida-kuldtäht,,et
 1223,Raudonoji lelija,,lt
@@ -3020,7 +3016,6 @@ taxonID,vernacularName,source,language
 5985,zöld hunyor,,hu
 5987,Liverleaf,,en
 5990,Kleines Mäuseschwänzchen,,de
-5992,Acker-Schwarzkümmel,,de
 5995,barbas-de-velho,,pt
 5995,barbas-de-velho,,es
 5995,damas-entre-verde,,pt
@@ -3718,22 +3713,6 @@ taxonID,vernacularName,source,language
 6971,Siauralapis drugialaišis,,lt
 6971,velbloudník tenkokřídlý,,cs
 6971,Wrzosowiec cienkoskrzydełkowy,,pl
-6978,amarant,,es
-6978,amaranto,,es
-6978,Aufsteigender Fuchsschwanz,,de
-6978,Ausgerandeter Fuchsschwanz,,de
-6978,bledo,,es
-6978,blet,,es
-6978,blet punxent,,es
-6978,Guernsey Pigweed,,en
-6978,laskavec hrubozel,,cs
-6978,marxant,,es
-6978,Szarłat tępolistny,,pl
-6978,tõusev rebashein,,et
-6978,Uoginis burnotis,,lt
-6978,Yarbuz mavrik,,he
-6978,zilgan,,lv
-6978,ירבוז מבריק,,he
 7007,Breed vlieszaad,,nl
 7007,Grauer Wanzensame,,de
 7010,amarant,,es
@@ -4487,7 +4466,6 @@ taxonID,vernacularName,source,language
 8509,Patience à crêtes,,fr
 8520,Aegean Dock,,en
 8520,Rumex,,fr
-8522,Halácsy-lórom,,hu
 8524,Argentine Dock,,en
 8524,Rumex,,fr
 8530,Kerner-Ampfer,,de
@@ -6343,10 +6321,6 @@ taxonID,vernacularName,source,language
 11895,ervilheira,,pt
 11895,mpizeli,,el
 11895,Piželli,,mt
-11921,Kopoubohne,,de
-11921,Kudzu,,en
-11921,Puéraire hérissée,,fr
-11921,Pueraria irsuta,,it
 11924,Rétama à une graine,,fr
 11926,chinastra,,es
 11926,escoba alta,,es
@@ -10106,10 +10080,6 @@ taxonID,vernacularName,source,language
 17530,kail,,lv
 17530,skropstain,,lv
 17531,skropstain,,lv
-17544,False Cleavers,,en
-17544,Grünblütiges Labkraut,,de
-17544,lipkavec pochybný,,cs
-17544,svízel pochybný,,cs
 17564,heverő galaj,,hu
 17567,Kleinblütiges Wiesen-Labkraut,,de
 17579,Pariser Labkraut,,de
@@ -10408,22 +10378,6 @@ taxonID,vernacularName,source,language
 17896,Keltasormustinkukka,,fi
 17896,pomněnkovec velkolistý,,cs
 17896,Stambialapė brunera,,lt
-17906,Acker-Steinsame,,de
-17906,Äkta pimpinell,,sv
-17906,Bibernelle,,da
-17906,"Bibernelle, Vingefrøet Bibernelle",,da
-17906,Field Gromwell,,en
-17906,Gaffelmure,,no
-17906,Kaksiliuskahanhikki ,,fi
-17906,kamienkovec rolný,,cs
-17906,Pihlaja-angervo,,fi
-17906,Pikkuluppio,,fi
-17906,Pimpernell,,no
-17906,Rognspirea,,no
-17906,Rönnspirea,,sv
-17906,Spetsfingerört,,sv
-17906,Tusindtop,,da
-17906,Vingpimpinell,,sv
 17925,liel,,lv
 17926,Kleine Wachsblume,,de
 17926,maz,,lv
@@ -11360,8 +11314,6 @@ taxonID,vernacularName,source,language
 19525,pušti,,cs
 19525,rövidkocsányú iszapfű,,hu
 19525,Vandellia delle risie,,it
-19540,Lindernie couchée,,fr
-19540,Lindernie rampante,,fr
 19554,Glandular Plantain,,en
 19554,jitrocel blešníkový,,cs
 19560,jitrocel alpínský,,cs
@@ -15001,14 +14953,6 @@ taxonID,vernacularName,source,language
 22875,Smaltimian,,no
 22875,Tarha-ajuruoho,,fi
 22875,Vibeæg,,da
-22885,Behaartes Knopfkraut,,de
-22885,Bewimpertes Knopfkraut,,de
-22885,Borstiges Franzosenkraut,,de
-22885,Galingosa cilié,,fr
-22885,Galinsoga ispida,,it
-22885,Galinsoga velu,,fr
-22885,Hairy galinsoga,,en
-22885,Żółtlica włochata,,pl
 22902,Cotonnière d'Amérique,,fr
 22909,Cotonnière en faux,,fr
 22913,Canapicchia pensilvanica,,it
@@ -15912,7 +15856,6 @@ taxonID,vernacularName,source,language
 23728,Vippskräppa,,sv
 23733,Mexikanisches Eichenblatt,,de
 23733,vízi tölgylevél,,hu
-23736,Siegesbeckia,,it
 23737,Eastern St Paul's-wort,,en
 23746,Herzblättrige Siegesbeckie,,de
 23746,nyugati Szent Pál-virág*,,hu
@@ -16648,7 +16591,6 @@ taxonID,vernacularName,source,language
 50227,parasitic copepod,,en
 50232,Pink Salmon (Gorbuscha Salmon),,en
 50233,Rainbow Trout,,en
-50244,bladder snail,,en
 50245,bladder snail,,en
 50263,Jap weed,,en
 50263,wireweed,,en
@@ -16726,7 +16668,6 @@ taxonID,vernacularName,source,language
 50791,Citrus leaf miner,Lopez-Vaamonde C et al. (2010) Lepidoptera. Chapter 11. In: Roques A et al. (Eds) Alien terrestrial arthropods of Europe. BioRisk 4(2): 603–668.,en
 50809,black field earwig,"Albouy V & Caussanel C., 1990",en
 50814,Geranium bronze,"Troukens, W. 1991. Cacyreus marshalli Butler, 1898 aangetroffen in België (Lepidoptera: Lycaenidae). — Phegea 19: 129–131.",en
-50828,Fourmi du liège,,en
 50829,Colorado potato beetle,,en
 50833,shiny spider beetle,"Audisio P., Gobbi G., Liberti G., Nardi G.,   1995 - Coleoptera Polyphaga IX (Bostrichoidea, Cleroidea, Lymexyloidea) In: Minelli A., Ruffo S., La Posta (eds.), Check list delle specie della fauna italiana, 54, Calderini, Bologna, 27pp",en
 50841,Eucalyptus Longhorned Borer,Cerný (2002),en
@@ -17034,7 +16975,6 @@ taxonID,vernacularName,source,language
 53365,"Sunbleak (Motherless Minnow, Belica)",,en
 53382,Trumpet Ram's-horn,,en
 53388,Largemouth Bass (Black Bass),,en
-53392,Oblong Orb Mussel,,en
 53415,Signal Crayfish,,en
 53439,Guppy,,en
 53448,Jenkin's spire shell,,en
@@ -17045,18 +16985,14 @@ taxonID,vernacularName,source,language
 53470,American Lake Charr,,en
 53471,Pikeperch (Zander),,en
 53505,European Mudminnow,,en
-53517,Siberian Sturgeon,,en
 53518,Rock Bass,,en
 53520,Common White Sucker,,en
 53521,Walking Catfish,,en
 53522,Lake Whitefish,,en
-53523,Chinese Grass Carp,,en
-53524,Bighead Carp,,en
 53525,Ide (Orfe),,en
 53526,Zebrafish species,,en
 53528,European Weatherfish (Pond Loach),,en
 53529,Chinese Weatherfish,,en
-53530,Cutthroat trout,,en
 53531,Fathead Minnow (Rosy Reds),,en
 53533,Dolly Varden Charr,,en
 53535,Redbelly Tilapia,,en
@@ -17088,7 +17024,6 @@ taxonID,vernacularName,source,language
 53570,Taylor's Spire Snail,,en
 53574,stagnalis,,en
 53576,river lamprey,,en
-53578,Great ram's-horn,,en
 53583,Leach's bithynia,,en
 105410,privet bud mite,"Witters et al., 2003. Parasitica. 59, 107-111",en
 105411,artichoke mite,Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192.,en
