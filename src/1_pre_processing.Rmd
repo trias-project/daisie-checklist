@@ -48,7 +48,7 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 literature_references <- read_delim(
-  file = "../data/raw/input_literature_references.csv", 
+  file = here::here("data","raw","input_literature_references.csv"), 
   delim = ",",
   col_types = col_types)
 ```
@@ -57,7 +57,7 @@ literature_references <- read_delim(
 
 ```{r}
 taxon <- read_delim(
-  file = "../data/raw/input_taxon.csv", 
+  file = here::here("data","raw","input_taxon.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
@@ -66,7 +66,7 @@ taxon <- read_delim(
 
 ```{r}
 distribution <- read_delim(
-  file = "../data/raw/input_distribution.csv", 
+  file = here::here("data","raw","input_distribution.csv"), 
   delim = ",",
   col_types = col_types) 
 ```
