@@ -65,6 +65,10 @@ distribution_sources <-
 
 remove_taxa <- 
   read_csv(here::here("data", "interim", "remove_taxa.csv"), col_types = col_types)
+
+core_taxa <-
+  read_csv(here::here("data", "interim", "core_taxa.csv"), col_types = col_types)
+
 ```
 
 3. Merge source data:
@@ -87,30 +91,19 @@ distribution %>% head(n = 5)
 
 ## taxonID
 
-1. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+1. Remove all taxonID's that are not included in the taxon core
+
+```{r}
+distribution %<>% filter(idspecies %in% core_taxa$taxonID)
+```
+
+2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
 distribution %>% 
   filter(idspecies %in% remove_taxa$idspecies) %>% 
   select(idspecies) %>% 
   unique()
-```
-
-2. Show replacement value:
-
-```{r}
-remove_taxa %>% 
-  filter(idspecies == "52845") %>% 
-  select(replacement_idspecies)
-```
-
-2. Replace these values with the correct taxonID
-
-```{r}
-distribution %<>% 
-  mutate(idspecies = 
-           recode(idspecies,"52845" = "52831")
-)
 ```
 
 3. Map `taxonID`
