@@ -114,7 +114,7 @@ The following terms contain information about the taxon:
 ## taxonID
 
 ```{r}
-taxon %<>% mutate(dwc_taxonID = idspecies)
+taxon %<>% mutate(dwc_taxonID = as.numeric(idspecies))
 ```
 
 ## scientificName
