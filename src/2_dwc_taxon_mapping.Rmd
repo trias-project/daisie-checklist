@@ -532,13 +532,25 @@ colnames(taxon) <- str_replace(colnames(taxon), "dwc_", "")
 taxon %<>% arrange(taxonID)
 ```
 
-4. Preview data
+4. Export all taxonID's (required for filtering the records in the extensions):
+
+```{r}
+core_taxa <- taxon %>% pull(taxonID) %>% tibble(.name_repair = ~ c("taxonID"))
+```
+
+5. Export `core_taxa`:
+
+```{r}
+write_csv(core_taxa, here::here("data","interim","core_taxa.csv"), na = "")
+```
+
+6. Preview data
 
 ```{r}
 taxon %>% head()
 ```
 
-5.Save to CSV:
+7.Save to CSV:
 
 ```{r}
 write_csv(taxon, here::here("data","processed","taxon.csv"), na = "")
