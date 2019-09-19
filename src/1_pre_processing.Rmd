@@ -299,7 +299,9 @@ distribution_sources <-
 2. Export as `distribution_sources`
 
 ```{r}
-write_csv(distribution_sources, "../data/interim/distribution_sources.csv", na = "")
+write_csv(distribution_sources, 
+          here::here("data","interim","distribution_sources.csv"),
+          na = "")
 ```
 
 ## Generate interim_literature_references
@@ -316,7 +318,9 @@ interim_literature_references <-
 2. Export as `interim_literature_references`:
 
 ```{r}
-write_csv(interim_literature_references, "../data/interim/interim_literature_references.csv", na = "")
+write_csv(interim_literature_references, 
+          here::here("data","interim","interim_literature_references.csv"),
+          na = "")
 ```
 
 # Generate additional files for description extension
@@ -344,6 +348,8 @@ ecofunctional_group %<>% filter(!is.na(ecofunct_group))
 3. Export as `ecofunctional_group`
 
 ```{r}
-write_csv(ecofunctional_group, "../data/interim/ecofunctional_group.csv", na = "")
+write_csv(ecofunctional_group, 
+          here::here("data","interim","ecofunctional_group.csv"),
+          na = "")
 ```
 
