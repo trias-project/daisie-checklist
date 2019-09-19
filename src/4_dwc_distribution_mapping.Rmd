@@ -457,7 +457,7 @@ distribution %<>%
 full_date_indices <- str_detect(distribution$start_year, 
                                 "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$start_year)
 parsed_dates <- parse_date_time(distribution$start_year[full_date_indices], orders = "dmy")
-parsed_dates_char <- strftime(parsed_dates, "%d-%m-%Y")
+parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
 distribution$start_year[full_date_indices] <- parsed_dates_char
 ```
 
@@ -466,7 +466,7 @@ distribution$start_year[full_date_indices] <- parsed_dates_char
 ```{r}
 # ignore already parsed dates for this replacement
 not_date_indices <- !str_detect(distribution$start_year, 
-                               "[0-9]{2}-[0-9]{2}-[0-9]{4}") & !is.na(distribution$start_year)
+                               "[0-9]{4}-[0-9]{2}-[0-9]{2}") & !is.na(distribution$start_year)
 records_to_parse <- distribution$start_year[not_date_indices]
 extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
                            records_to_parse,
@@ -481,7 +481,7 @@ First have a look at the specials remaining, not being a integer year (1 or more
 ```{r}
 distribution  %>%
   select(start_year) %>%
-  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
 
 and replace those values:
@@ -489,7 +489,7 @@ and replace those values:
 ```{r}
 distribution %<>% 
   mutate(start_year = replace(start_year, start_year == "20. century", "1900")) %>%
-  mutate(start_year = replace(start_year, start_year == "90`s ", "1990"))
+  mutate(start_year = replace(start_year, start_year == "90` s ", "1990"))
 ```
 
 recheck cleanup action:
@@ -497,7 +497,7 @@ recheck cleanup action:
 ```{r}
 distribution  %>%
   select(start_year) %>%
-  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{2}-[0-9]{2}-[0-9]{4}$"))
+  filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
 
 Show content:
