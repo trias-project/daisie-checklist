@@ -1,5 +1,6 @@
 name: "DAISIE - Inventory of alien invasive species in Europe"
 output_dir: "../docs"
+include: ["static/"]
 navbar:
   title: "daisie-checklist"
   left:
@@ -15,7 +16,7 @@ navbar:
       - text: "Map distribution extension"
         href: 4_dwc_distribution_mapping.html
       - text: "Map description extension"
-        href: 5_dwc_description_extension
+        href: 5_dwc_description_extension.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/trias-project/daisie-checklist
@@ -23,3 +24,4 @@ output:
   html_document:
     theme: yeti
     df_print: paged
+    css: "static/css/trias.css"
