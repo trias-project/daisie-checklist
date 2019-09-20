@@ -697,7 +697,10 @@ distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
 Some records in `occurrenceRemarks` contain a carriage return. We remove these here:
 
 ```{r}
-distribution %<>% mutate(dwc_occurrenceRemarks = str_remove(dwc_occurrenceRemarks, "\r")) 
+distribution <-
+  distribution %>% 
+    mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\r", ", ")) %>%
+    mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\n", "")) 
 ```
 
 ## source
