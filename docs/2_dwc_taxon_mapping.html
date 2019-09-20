@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Lien Reyserhove" />
+<meta name="author" content="David Roy" />
+
+<meta name="date" content="2019-09-20" />
+
+<title>Darwin Core mapping script for Taxon Core</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">daisie-checklist</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Workflow
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_pre_processing.html">Prepare datasets for processing</a>
+    </li>
+    <li>
+      <a href="2_dwc_taxon_mapping.html">Map taxon core</a>
+    </li>
+    <li>
+      <a href="3_dwc_vernacularname_mapping.html">Map vernacular name extension</a>
+    </li>
+    <li>
+      <a href="4_dwc_distribution_mapping.html">Map distribution extension</a>
+    </li>
+    <li>
+      <a href="5_dwc_description_extension">Map description extension</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trias-project/daisie-checklist">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Darwin Core mapping script for Taxon Core</h1>
+<h3 class="subtitle"><em>For: Inventory of alien species in Europe (DAISIE)</em></h3>
+<h4 class="author"><em>Lien Reyserhove</em></h4>
+<h4 class="author"><em>David Roy</em></h4>
+<h4 class="date"><em>2019-09-20</em></h4>
+
+</div>
+
+
+<p>This file describes the steps required to map the data to <a href="http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml">Darwin Core Taxon</a>.</p>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<p>Load libraries:</p>
+</div>
+<div id="read-data" class="section level1">
+<h1><span class="header-section-number">2</span> Read data</h1>
+<ol style="list-style-type: decimal">
+<li><p>Define data types</p></li>
+<li><p>Read taxon data</p></li>
+<li><p>Read literature references</p></li>
+</ol>
+</div>
+<div id="map-taxon-core" class="section level1">
+<h1><span class="header-section-number">3</span> Map taxon core</h1>
+<p>Preview of the data:</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["idspecies"],"name":[1],"type":["chr"],"align":["left"]},{"label":["genus"],"name":[2],"type":["chr"],"align":["left"]},{"label":["species"],"name":[3],"type":["chr"],"align":["left"]},{"label":["authority"],"name":[4],"type":["chr"],"align":["left"]},{"label":["subtaxon"],"name":[5],"type":["chr"],"align":["left"]},{"label":["subtaxon_rank"],"name":[6],"type":["chr"],"align":["left"]},{"label":["subtaxon_authority"],"name":[7],"type":["chr"],"align":["left"]},{"label":["taxon_group"],"name":[8],"type":["chr"],"align":["left"]},{"label":["phylum"],"name":[9],"type":["chr"],"align":["left"]},{"label":["class"],"name":[10],"type":["chr"],"align":["left"]},{"label":["ordo"],"name":[11],"type":["chr"],"align":["left"]},{"label":["family"],"name":[12],"type":["chr"],"align":["left"]},{"label":["ecofunct_group"],"name":[13],"type":["chr"],"align":["left"]},{"label":["sourceid"],"name":[14],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Telaranea","3":"murphyae","4":"Paton","5":"NA","6":"NA","7":"NA","8":"Bryophyta","9":"Marchantiophyta","10":"Jungermanniopsida","11":"Jungermanniales","12":"Lepidoziaceae","13":"NA","14":"6"},{"1":"6","2":"Telaranea","3":"tetradactyla","4":"NA","5":"NA","6":"NA","7":"NA","8":"Bryophyta","9":"Marchantiophyta","10":"Jungermanniopsida","11":"Jungermanniales","12":"Lepidoziaceae","13":"NA","14":"17500"},{"1":"7","2":"Lophocolea","3":"bispinosa","4":"(Hook. f. & Taylor) Gottsche et al.","5":"NA","6":"NA","7":"NA","8":"Bryophyta","9":"Marchantiophyta","10":"Jungermanniopsida","11":"Jungermanniales","12":"Geocalycaceae","13":"NA","14":"17500"},{"1":"8","2":"Lophocolea","3":"semiteres","4":"(Lehm.) Mitt.","5":"NA","6":"NA","7":"NA","8":"Bryophyta","9":"Marchantiophyta","10":"Jungermanniopsida","11":"Jungermanniales","12":"Geocalycaceae","13":"NA","14":"65"},{"1":"9","2":"Sphaerocarpos","3":"michelii","4":"Bellardi","5":"NA","6":"NA","7":"NA","8":"Bryophyta","9":"Marchantiophyta","10":"Marchantiopsida","11":"Sphaerocarpales","12":"Sphaerocarpaceae","13":"NA","14":"26"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Start with record-level terms which contain metadata about the dataset (which is generally the same for all records).</p>
+<div id="language" class="section level2">
+<h2><span class="header-section-number">3.1</span> language</h2>
+</div>
+<div id="license" class="section level2">
+<h2><span class="header-section-number">3.2</span> license</h2>
+</div>
+<div id="rightsholder" class="section level2">
+<h2><span class="header-section-number">3.3</span> rightsHolder</h2>
+</div>
+<div id="datasetid" class="section level2">
+<h2><span class="header-section-number">3.4</span> datasetID</h2>
+</div>
+<div id="institutioncode" class="section level2">
+<h2><span class="header-section-number">3.5</span> institutionCode</h2>
+</div>
+<div id="datasetname" class="section level2">
+<h2><span class="header-section-number">3.6</span> datasetName</h2>
+<p>The following terms contain information about the taxon:</p>
+</div>
+<div id="taxonid" class="section level2">
+<h2><span class="header-section-number">3.7</span> taxonID</h2>
+</div>
+<div id="scientificname" class="section level2">
+<h2><span class="header-section-number">3.8</span> scientificName</h2>
+<p>The information in <code>scientificName</code> will be a compilation of several fields: <code>sp_genus</code>, <code>sp_species</code>, <code>sp_authority</code>, <code>sp_subtaxon</code> and <code>sp_subtaxon_authority</code>. We paste this information together to generate the field <code>dwc_scientificName</code>. Before we concatenate this information, we clean the authorship information a bit:</p>
+<ol style="list-style-type: decimal">
+<li><p>Clean authorships:</p></li>
+<li><p>Paste information together</p></li>
+<li><p>Remove all <code>NA</code></p></li>
+<li><p>We use the <a href="https://www.gbif.org/tools/name-parser">GBIF nameparser</a> to retrieve nomenclatural information for the scientific names in the checklist.</p></li>
+<li><p>Show scientific names with nomenclatural issues, i.e. not of <code>type = SCIENTIFIC</code> or that could not be fully parsed (<code>parsed = TRUE</code> and <code>parsedpartially</code> = <code>FALSE</code>. Note: these are not necessarily incorrect):</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["scientificname"],"name":[1],"type":["chr"],"align":["left"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["parsed"],"name":[3],"type":["lgl"],"align":["right"]},{"label":["parsedpartially"],"name":[4],"type":["lgl"],"align":["right"]},{"label":["rankmarker"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"Hennediella macrophylla (R. Br. bis) Paris","2":"SCIENTIFIC","3":"TRUE","4":"TRUE","5":"infrasp.","_rn_":"1"},{"1":"Asplenium foreziense Legrand [in Sched.]","2":"SCIENTIFIC","3":"TRUE","4":"TRUE","5":"sp.","_rn_":"2"},{"1":"Nymphaea x marliacea hort.","2":"CULTIVAR","3":"TRUE","4":"FALSE","5":"cv.","_rn_":"3"},{"1":"Lysichiton americanus x camtschatcensis","2":"HYBRID","3":"FALSE","4":"FALSE","5":"NA","_rn_":"4"},{"1":"Picea abies (L.) H.Karst. obovata (Ledeb.) HultÃƒÂ©n","2":"DOUBTFUL","3":"TRUE","4":"TRUE","5":"strain","_rn_":"5"},{"1":"Crocus tommasinianus x vernus","2":"HYBRID","3":"FALSE","4":"FALSE","5":"NA","_rn_":"6"},{"1":"Iris x hollandica hort.","2":"CULTIVAR","3":"TRUE","4":"FALSE","5":"cv.","_rn_":"7"},{"1":"Galanthus elwesii x nivalis","2":"HYBRID","3":"FALSE","4":"FALSE","5":"NA","_rn_":"8"},{"1":"Galanthus elwesii x plicatus","2":"HYBRID","3":"FALSE","4":"FALSE","5":"NA","_rn_":"9"},{"1":"Galanthus nivalis x plicatus","2":"HYBRID","3":"FALSE","4":"FALSE","5":"NA","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol start="6" style="list-style-type: decimal">
+<li>Total Amount of scientific names with nomenclatural issues:</li>
+</ol>
+<pre><code>## [1] 439</code></pre>
+<p>Cleaning of taxa with nomenclatural issues is not within the scope of this mapping. However, we can perform some rough cleaning to eliminate the <code>INFORMAL</code> taxa, by removing `sp.:</p>
+<p>Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)</p>
+<ol start="7" style="list-style-type: decimal">
+<li>All taxa should be unique. We here scan for duplicated taxa:</li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["dwc_scientificName"],"name":[1],"type":["chr"],"align":["left"]},{"label":["idspecies"],"name":[2],"type":["chr"],"align":["left"]},{"label":["ordo"],"name":[3],"type":["chr"],"align":["left"]},{"label":["family"],"name":[4],"type":["chr"],"align":["left"]},{"label":["genus"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"Cavia porcellus (Linnaeus 1758)","2":"52831","3":"Rodentia","4":"Caviidae","5":"Cavia"},{"1":"Cavia porcellus (Linnaeus 1758)","2":"900966","3":"NA","4":"Caviidae","5":"Cavia"},{"1":"Civettictis civetta (Schreber, 1776)","2":"52836","3":"Carnivora","4":"Viverridae","5":"Civettictis"},{"1":"Civettictis civetta (Schreber, 1776)","2":"900968","3":"NA","4":"Viverridae","5":"Civettictis"},{"1":"Cuon alpinus (Pallas, 1811)","2":"52840","3":"Carnivora","4":"Canidae","5":"Cuon"},{"1":"Cuon alpinus (Pallas, 1811)","2":"900971","3":"NA","4":"Canidae","5":"Cuon"},{"1":"Dasypus novemcinctus Linnaeus, 1758","2":"52842","3":"Xenarthra","4":"Dasypodidae","5":"Dasypus"},{"1":"Dasypus novemcinctus Linnaeus, 1758","2":"900973","3":"NA","4":"Dasypodidae","5":"Dasypus"},{"1":"Delphinapterus leucas (Pallas, 1776)","2":"52843","3":"Cetacea","4":"Monodontidae","5":"Delphinapterus"},{"1":"Delphinapterus leucas (Pallas, 1776)","2":"900974","3":"Cetacea","4":"Monodontidae","5":"Delphinapterus"},{"1":"Eliomys quercinus (Linnaeus 1766)","2":"52845","3":"Rodentia","4":"Myoxidae","5":"Eliomys"},{"1":"Eliomys quercinus (Linnaeus 1766)","2":"900975","3":"Rodentia","4":"Gliridae","5":"Eliomys"},{"1":"Erinaceus europaeus Linnaeus 1758","2":"52847","3":"Insectivora","4":"Erinaceidae","5":"Erinaceus"},{"1":"Erinaceus europaeus Linnaeus 1758","2":"900977","3":"Insectivora","4":"Erinaceidae","5":"Erinaceus"},{"1":"Galago senegalensis (Geoffroy, 1796)","2":"52849","3":"Primates","4":"Galagonidae","5":"Galago"},{"1":"Galago senegalensis (Geoffroy, 1796)","2":"900980","3":"NA","4":"Galagonidae","5":"Galago"},{"1":"Hystrix brachyura Linnaeus, 1758","2":"52857","3":"Rodentia","4":"Istricidae","5":"Hystrix"},{"1":"Hystrix brachyura Linnaeus, 1758","2":"900983","3":"Cyperales","4":"Istricidae","5":"Hystrix"},{"1":"Hystrix cristata Linnaeus 1758","2":"52858","3":"Rodentia","4":"Istricidae","5":"Hystrix"},{"1":"Hystrix cristata Linnaeus 1758","2":"900984","3":"Cyperales","4":"Istricidae","5":"Hystrix"},{"1":"Macaca mulatta (Zimmermann, 1780)","2":"52864","3":"Primates","4":"Cercopithecidae","5":"Macaca"},{"1":"Macaca mulatta (Zimmermann, 1780)","2":"900986","3":"Primates","4":"Cercopithecidae","5":"Macaca"},{"1":"Marmota marmota (Linnaeus, 1758)","2":"52868","3":"Rodentia","4":"Sciuridae","5":"Marmota"},{"1":"Marmota marmota (Linnaeus, 1758)","2":"900988","3":"Rodentia","4":"Sciuridae","5":"Marmota"},{"1":"Muntiacus muntjak Zimmermann, 1780","2":"52875","3":"Artiodactyla","4":"Cervidae","5":"Muntiacus"},{"1":"Muntiacus muntjak Zimmermann, 1780","2":"900994","3":"Artiodactyla","4":"Cervidae","5":"Muntiacus"},{"1":"Mus musculus Linnaeus 1758","2":"52877","3":"Rodentia","4":"Muridae","5":"Mus"},{"1":"Mus musculus Linnaeus 1758","2":"900995","3":"Rodentia","4":"Muridae","5":"Mus"},{"1":"Mustela lutreola","2":"52878","3":"Carnivora","4":"Mustelidae","5":"Mustela"},{"1":"Mustela lutreola","2":"900997","3":"Carnivora","4":"Mustelidae","5":"Mustela"},{"1":"Pecari tajacu (Linnaeus 1758)","2":"52889","3":"Artiodactyla","4":"Tayassuidae","5":"Pecari"},{"1":"Pecari tajacu (Linnaeus 1758)","2":"901002","3":"NA","4":"Tayassuidae","5":"Pecari"},{"1":"Potos flavus (Schreber, 1774)","2":"52891","3":"Carnivora","4":"Procyonidae","5":"Potos"},{"1":"Potos flavus (Schreber, 1774)","2":"901005","3":"Carnivora","4":"Procyonidae","5":"Potos"},{"1":"Sylvilagus transitionalis (Bangs, 1895)","2":"52905","3":"Lagomorpha","4":"Leporidae","5":"Sylvilagus"},{"1":"Sylvilagus transitionalis (Bangs, 1895)","2":"901009","3":"NA","4":"Leporidae","5":"Sylvilagus"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol start="8" style="list-style-type: decimal">
+<li><p>Specify the scientificnames and associated values of <code>idspecies</code> to be removed from the taxon core</p></li>
+<li><p>Link those with the replacement values for <code>idspecies</code></p></li>
+<li><p>Remove duplicated taxa from taxon core:</p></li>
+<li><p>Save <code>remove_taxa</code> to scan other extension files for the presence of duplicated taxa</p></li>
+</ol>
+</div>
+<div id="kingdom" class="section level2">
+<h2><span class="header-section-number">3.9</span> kingdom</h2>
+<p>No kingdom information is provided. This is not an obligatory field but strongly recommended. It can easily be derived from information in <code>phylum</code>:</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["phylum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"389"},{"1":"Acanthocephala","2":"3"},{"1":"Annelida","2":"132"},{"1":"Anthocerotophyta","2":"1"},{"1":"Arthropoda","2":"2544"},{"1":"Ascomycota","2":"361"},{"1":"Ascomycota","2":"7"},{"1":"Bacteria","2":"12"},{"1":"Bacteroidetes","2":"2"},{"1":"Basidiomycota","2":"312"},{"1":"Basidiomycota","2":"4"},{"1":"Bryophyta","2":"40"},{"1":"Bryozoa","2":"34"},{"1":"Cercozoa","2":"4"},{"1":"Chaetognatha","2":"1"},{"1":"Chlorophyta","2":"32"},{"1":"Choradata","2":"3"},{"1":"Chordata","2":"706"},{"1":"Chytridiomycota","2":"4"},{"1":"Ciliophora","2":"9"},{"1":"Cnidaria","2":"37"},{"1":"Cryptophyta","2":"1"},{"1":"Ctenophora","2":"2"},{"1":"Cyanobacteria","2":"1"},{"1":"Cycadophyta","2":"4"},{"1":"Dinozoa","2":"32"},{"1":"Echinodermata","2":"7"},{"1":"Entoprocta","2":"2"},{"1":"Equisetophyta","2":"4"},{"1":"Firmicutes","2":"1"},{"1":"Foraminifera","2":"1"},{"1":"Fungi","2":"4"},{"1":"Ginkgoophyta","2":"1"},{"1":"Gnetophyta","2":"2"},{"1":"Haptophyta","2":"2"},{"1":"Heterokontophyta","2":"69"},{"1":"Labyrinthista","2":"1"},{"1":"Labyrinthulomycota","2":"1"},{"1":"Lycopodiophyta","2":"3"},{"1":"Magnoliophyta","2":"6439"},{"1":"Marchantiophyta","2":"17"},{"1":"Mollusca","2":"380"},{"1":"Monocotyledonae","2":"1"},{"1":"Myxozoa","2":"1"},{"1":"Nematoda","2":"63"},{"1":"Nemertea","2":"3"},{"1":"Oomycota","2":"106"},{"1":"Oomycota","2":"2"},{"1":"Phoronida","2":"3"},{"1":"Pinophyta","2":"98"},{"1":"Platyhelminthes","2":"63"},{"1":"Polypodiophyta","2":"54"},{"1":"Porifera","2":"7"},{"1":"Proteobacteria","2":"2"},{"1":"Rhodophyta","2":"98"},{"1":"Rotifera","2":"2"},{"1":"Sipunculida","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>However, for 389 taxa have no phylum, there’s no information available. For these records, we try to derive phylum and kingdom information from <code>class</code>:</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["class"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"acari","2":"6"},{"1":"annelida","2":"1"},{"1":"aranea","2":"5"},{"1":"chilopoda","2":"16"},{"1":"crustacea","2":"10"},{"1":"diplopoda","2":"12"},{"1":"insecta","2":"317"},{"1":"mollusca","2":"6"},{"1":"nematoda","2":"4"},{"1":"pauropoda","2":"1"},{"1":"platyhelminthes","2":"8"},{"1":"symphila","2":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol style="list-style-type: decimal">
+<li>we complete phylum information</li>
+</ol>
+<p>Some of these classes are not correct, e.g. <code>Nematoda</code> is a phylum, not a class. Cleaning this information is not within the scope of this mapping.</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["phylum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["phylum_complete"],"name":[2],"type":["chr"],"align":["left"]},{"label":["records"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"Annelida","3":"1"},{"1":"NA","2":"Arthropoda","3":"370"},{"1":"NA","2":"Mollusca","3":"6"},{"1":"NA","2":"Nematoda","3":"4"},{"1":"NA","2":"Platyhelminthes","3":"8"},{"1":"Acanthocephala","2":"Acanthocephala","3":"3"},{"1":"Annelida","2":"Annelida","3":"132"},{"1":"Anthocerotophyta","2":"Anthocerotophyta","3":"1"},{"1":"Arthropoda","2":"Arthropoda","3":"2544"},{"1":"Ascomycota","2":"Ascomycota","3":"361"},{"1":"Ascomycota","2":"Ascomycota","3":"7"},{"1":"Bacteria","2":"Bacteria","3":"12"},{"1":"Bacteroidetes","2":"Bacteroidetes","3":"2"},{"1":"Basidiomycota","2":"Basidiomycota","3":"312"},{"1":"Basidiomycota","2":"Basidiomycota","3":"4"},{"1":"Bryophyta","2":"Bryophyta","3":"40"},{"1":"Bryozoa","2":"Bryozoa","3":"34"},{"1":"Cercozoa","2":"Cercozoa","3":"4"},{"1":"Chaetognatha","2":"Chaetognatha","3":"1"},{"1":"Chlorophyta","2":"Chlorophyta","3":"32"},{"1":"Choradata","2":"Choradata","3":"3"},{"1":"Chordata","2":"Chordata","3":"706"},{"1":"Chytridiomycota","2":"Chytridiomycota","3":"4"},{"1":"Ciliophora","2":"Ciliophora","3":"9"},{"1":"Cnidaria","2":"Cnidaria","3":"37"},{"1":"Cryptophyta","2":"Cryptophyta","3":"1"},{"1":"Ctenophora","2":"Ctenophora","3":"2"},{"1":"Cyanobacteria","2":"Cyanobacteria","3":"1"},{"1":"Cycadophyta","2":"Cycadophyta","3":"4"},{"1":"Dinozoa","2":"Dinozoa","3":"32"},{"1":"Echinodermata","2":"Echinodermata","3":"7"},{"1":"Entoprocta","2":"Entoprocta","3":"2"},{"1":"Equisetophyta","2":"Equisetophyta","3":"4"},{"1":"Firmicutes","2":"Firmicutes","3":"1"},{"1":"Foraminifera","2":"Foraminifera","3":"1"},{"1":"Fungi","2":"Fungi","3":"4"},{"1":"Ginkgoophyta","2":"Ginkgoophyta","3":"1"},{"1":"Gnetophyta","2":"Gnetophyta","3":"2"},{"1":"Haptophyta","2":"Haptophyta","3":"2"},{"1":"Heterokontophyta","2":"Heterokontophyta","3":"69"},{"1":"Labyrinthista","2":"Labyrinthista","3":"1"},{"1":"Labyrinthulomycota","2":"Labyrinthulomycota","3":"1"},{"1":"Lycopodiophyta","2":"Lycopodiophyta","3":"3"},{"1":"Magnoliophyta","2":"Magnoliophyta","3":"6439"},{"1":"Marchantiophyta","2":"Marchantiophyta","3":"17"},{"1":"Mollusca","2":"Mollusca","3":"380"},{"1":"Monocotyledonae","2":"Monocotyledonae","3":"1"},{"1":"Myxozoa","2":"Myxozoa","3":"1"},{"1":"Nematoda","2":"Nematoda","3":"63"},{"1":"Nemertea","2":"Nemertea","3":"3"},{"1":"Oomycota","2":"Oomycota","3":"106"},{"1":"Oomycota","2":"Oomycota","3":"2"},{"1":"Phoronida","2":"Phoronida","3":"3"},{"1":"Pinophyta","2":"Pinophyta","3":"98"},{"1":"Platyhelminthes","2":"Platyhelminthes","3":"63"},{"1":"Polypodiophyta","2":"Polypodiophyta","3":"54"},{"1":"Porifera","2":"Porifera","3":"7"},{"1":"Proteobacteria","2":"Proteobacteria","3":"2"},{"1":"Rhodophyta","2":"Rhodophyta","3":"98"},{"1":"Rotifera","2":"Rotifera","3":"2"},{"1":"Sipunculida","2":"Sipunculida","3":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Not all phylum information is correct, e.g. <code>Bacteria</code> is a kingdom, not a phylum.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Trim whitespaces in <code>phylum_complete</code></p></li>
+<li><p>Phylum <code>Labyrinthista</code> does not exist. This should be phylum <code>Bigyra</code> (for <em>Labyrinthula zosterae</em>)</p></li>
+<li><p>Based on this information, map <code>kingdom</code>:</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["dwc_kingdom"],"name":[1],"type":["chr"],"align":["left"]},{"label":["phylum_complete"],"name":[2],"type":["chr"],"align":["left"]},{"label":["records"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"Animalia","2":"Acanthocephala","3":"3"},{"1":"Animalia","2":"Annelida","3":"133"},{"1":"Animalia","2":"Arthropoda","3":"2914"},{"1":"Animalia","2":"Bryozoa","3":"34"},{"1":"Animalia","2":"Chaetognatha","3":"1"},{"1":"Animalia","2":"Choradata","3":"3"},{"1":"Animalia","2":"Chordata","3":"706"},{"1":"Animalia","2":"Cnidaria","3":"37"},{"1":"Animalia","2":"Ctenophora","3":"2"},{"1":"Animalia","2":"Echinodermata","3":"7"},{"1":"Animalia","2":"Entoprocta","3":"2"},{"1":"Animalia","2":"Mollusca","3":"386"},{"1":"Animalia","2":"Myxozoa","3":"1"},{"1":"Animalia","2":"Nematoda","3":"67"},{"1":"Animalia","2":"Nemertea","3":"3"},{"1":"Animalia","2":"Phoronida","3":"3"},{"1":"Animalia","2":"Platyhelminthes","3":"71"},{"1":"Animalia","2":"Porifera","3":"7"},{"1":"Animalia","2":"Rotifera","3":"2"},{"1":"Animalia","2":"Sipunculida","3":"1"},{"1":"Bacteria","2":"Bacteria","3":"12"},{"1":"Bacteria","2":"Bacteroidetes","3":"2"},{"1":"Bacteria","2":"Cyanobacteria","3":"1"},{"1":"Bacteria","2":"Firmicutes","3":"1"},{"1":"Bacteria","2":"Proteobacteria","3":"2"},{"1":"Chromista","2":"Bigyra","3":"1"},{"1":"Chromista","2":"Cercozoa","3":"4"},{"1":"Chromista","2":"Ciliophora","3":"9"},{"1":"Chromista","2":"Cryptophyta","3":"1"},{"1":"Chromista","2":"Dinozoa","3":"32"},{"1":"Chromista","2":"Foraminifera","3":"1"},{"1":"Chromista","2":"Haptophyta","3":"2"},{"1":"Chromista","2":"Heterokontophyta","3":"69"},{"1":"Chromista","2":"Labyrinthulomycota","3":"1"},{"1":"Fungi","2":"Ascomycota","3":"368"},{"1":"Fungi","2":"Basidiomycota","3":"316"},{"1":"Fungi","2":"Chytridiomycota","3":"4"},{"1":"Fungi","2":"Fungi","3":"4"},{"1":"Fungi","2":"Oomycota","3":"108"},{"1":"Plantae","2":"Anthocerotophyta","3":"1"},{"1":"Plantae","2":"Bryophyta","3":"40"},{"1":"Plantae","2":"Chlorophyta","3":"32"},{"1":"Plantae","2":"Cycadophyta","3":"4"},{"1":"Plantae","2":"Equisetophyta","3":"4"},{"1":"Plantae","2":"Ginkgoophyta","3":"1"},{"1":"Plantae","2":"Gnetophyta","3":"2"},{"1":"Plantae","2":"Lycopodiophyta","3":"3"},{"1":"Plantae","2":"Magnoliophyta","3":"6439"},{"1":"Plantae","2":"Marchantiophyta","3":"17"},{"1":"Plantae","2":"Monocotyledonae","3":"1"},{"1":"Plantae","2":"Pinophyta","3":"98"},{"1":"Plantae","2":"Polypodiophyta","3":"54"},{"1":"Plantae","2":"Rhodophyta","3":"98"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="phylum" class="section level2">
+<h2><span class="header-section-number">3.10</span> phylum</h2>
+</div>
+<div id="class" class="section level2">
+<h2><span class="header-section-number">3.11</span> class</h2>
+</div>
+<div id="order" class="section level2">
+<h2><span class="header-section-number">3.12</span> order</h2>
+</div>
+<div id="family" class="section level2">
+<h2><span class="header-section-number">3.13</span> family</h2>
+</div>
+<div id="genus" class="section level2">
+<h2><span class="header-section-number">3.14</span> genus</h2>
+</div>
+<div id="specificepithet" class="section level2">
+<h2><span class="header-section-number">3.15</span> specificEpithet</h2>
+</div>
+<div id="infraspecificepithet" class="section level2">
+<h2><span class="header-section-number">3.16</span> infraspecificEpithet</h2>
+</div>
+<div id="taxonrank" class="section level2">
+<h2><span class="header-section-number">3.17</span> taxonRank</h2>
+<p>Information for <code>taxonRank</code> is provided in the field <code>subtaxon_rank</code>, but is only given for varieties, aggregates, hybrids, subspecies or forms. Taxon rank information can also be retrieved by the GBIF nameparser function. This information was retrievd earlier in this script, in the dataframe <code>parsed_names</code>. We add the information to <code>taxon</code>.</p>
+<ol style="list-style-type: decimal">
+<li>Inspect <code>rankmarker</code> values generated by the GBIF nameparser and and compare with <code>subtaxon_rank</code> information from the DAISIE checklist:</li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["rankmarker"],"name":[1],"type":["chr"],"align":["left"]},{"label":["subtaxon_rank"],"name":[2],"type":["chr"],"align":["left"]},{"label":["records"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"sp.","2":"NA","3":"10193"},{"1":"NA","2":"NA","3":"641"},{"1":"infrasp.","2":"subsp.","3":"494"},{"1":"sp.","2":"hyb.","3":"323"},{"1":"infrasp.","2":"var.","3":"135"},{"1":"infrasp.","2":"NA","3":"107"},{"1":"NA","2":"hyb.","3":"60"},{"1":"NA","2":"subsp.","3":"28"},{"1":"morph","2":"NA","3":"18"},{"1":"sp.","2":"var.","3":"18"},{"1":"NA","2":"agg.","3":"14"},{"1":"morph","2":"subsp.","3":"11"},{"1":"cv.","2":"hyb.","3":"10"},{"1":"NA","2":"var.","3":"7"},{"1":"sp.","2":"agg.","3":"6"},{"1":"pv.","2":"NA","3":"4"},{"1":"sp.","2":"","3":"4"},{"1":"sp.","2":"subsp.","3":"4"},{"1":"var.","2":"var.","3":"4"},{"1":"NA","2":"f. sp.","3":"3"},{"1":"cv.","2":"NA","3":"3"},{"1":"infrasp.","2":"x","3":"3"},{"1":"var.","2":"subsp.","3":"3"},{"1":"infrasp.","2":"f.","3":"2"},{"1":"infrasp.","2":"f. sp.","3":"2"},{"1":"infrasubsp.","2":"NA","3":"2"},{"1":"strain","2":"subsp.","3":"2"},{"1":"var.","2":"NA","3":"2"},{"1":"NA","2":"","3":"1"},{"1":"NA","2":"Crous","3":"1"},{"1":"NA","2":"Cytosporina sp.","3":"1"},{"1":"f.","2":"var.","3":"1"},{"1":"infrasp.","2":"agg.","3":"1"},{"1":"infrasp.","2":"subspecies","3":"1"},{"1":"infrasp.","2":"var","3":"1"},{"1":"infrasubsp.","2":"hyb.","3":"1"},{"1":"morph","2":"var.","3":"1"},{"1":"sp.","2":"sp.","3":"1"},{"1":"subf.","2":"var.","3":"1"},{"1":"subvar.","2":"subsp.","3":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We decided to use the information contained in <code>rankmarker</code> because GBIF rankmarker will provide cleaner information than <code>subtaxon_rank</code>, even if there might be some loss of information. However, rankmarker also contains <code>NA</code>. We inspect <code>dwc_scientificName</code> and <code>subtaxon_rank</code> for these values:</p>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["dwc_scientificName"],"name":[1],"type":["chr"],"align":["left"]},{"label":["subtaxon_rank"],"name":[2],"type":["chr"],"align":["left"]},{"label":["records"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"Ephemerum nulosum","2":"","3":"1"},{"1":"Acmella L.C. Rich. ex Pers.","2":"agg.","3":"1"},{"1":"Aster [N. American ]","2":"agg.","3":"1"},{"1":"Helianthemum","2":"agg.","3":"1"},{"1":"Hosta Tratt.","2":"agg.","3":"1"},{"1":"Ipomoea L.","2":"agg.","3":"1"},{"1":"Mimulus","2":"agg.","3":"1"},{"1":"Oenothera L.","2":"agg.","3":"1"},{"1":"Osteormum L.","2":"agg.","3":"1"},{"1":"Parthenocissus Planchon","2":"agg.","3":"1"},{"1":"Pelargonium L.","2":"agg.","3":"1"},{"1":"Phyllostachys Sieb. & Zucc.","2":"agg.","3":"1"},{"1":"Plagiobothrys","2":"agg.","3":"1"},{"1":"Ptilotus","2":"agg.","3":"1"},{"1":"Spiraea","2":"agg.","3":"1"},{"1":"Mycoaerella nubilosa Cooke Hansf. (1965) Uwebraunia juvenis Wingf.","2":"Crous","3":"1"},{"1":"Eutypella parasitica R.W. Davidson & R.C. Lorenz (1938) Libertella ,","2":"Cytosporina sp.","3":"1"},{"1":"Peronora farinosa betae","2":"f. sp.","3":"1"},{"1":"Peronora hyoscyami Skalický (1964) tabacina","2":"f. sp.","3":"1"},{"1":"Peronora viciae pisi","2":"f. sp.","3":"1"},{"1":"Agrostis gigantea x stolonifera","2":"hyb.","3":"1"},{"1":"Amaranthus quitensis x tuberculatus","2":"hyb.","3":"1"},{"1":"Artemisia verlotiorum x vulgaris","2":"hyb.","3":"1"},{"1":"Aster dumosus x novi-belgii","2":"hyb.","3":"1"},{"1":"Avena sativa x sterilis","2":"hyb.","3":"1"},{"1":"Brachyglottis x 'Sunshine' hort.","2":"hyb.","3":"1"},{"1":"Bromus inermis x pumpellianus","2":"hyb.","3":"1"},{"1":"Centaurea nigra x phrygia","2":"hyb.","3":"1"},{"1":"Chenopodium album x hircinum","2":"hyb.","3":"1"},{"1":"Chenopodium album x missouriense","2":"hyb.","3":"1"},{"1":"Chenopodium album x probstii","2":"hyb.","3":"1"},{"1":"Cirsium x subnuligerum Peterm.","2":"hyb.","3":"1"},{"1":"Corylus avellana x maxima","2":"hyb.","3":"1"},{"1":"Cotoneaster x 'Hybridus pendulus' hort.","2":"hyb.","3":"1"},{"1":"Crataegus heterophylla x monogyna","2":"hyb.","3":"1"},{"1":"Crocus tommasinianus x vernus","2":"hyb.","3":"1"},{"1":"Dianthus caryophyllus x gratianopolitanus","2":"hyb.","3":"1"},{"1":"Dianthus caryophyllus x gratianopolitanus x plumarius","2":"hyb.","3":"1"},{"1":"Dianthus gratianopolitanus x plumarius","2":"hyb.","3":"1"},{"1":"Dipsacus fullonum x sativus","2":"hyb.","3":"1"},{"1":"Epilobium ciliatum x lanceolatum","2":"hyb.","3":"1"},{"1":"Epilobium ciliatum x obscurum","2":"hyb.","3":"1"},{"1":"Festuca arundinacea x Lolium multiflorum","2":"hyb.","3":"1"},{"1":"Festuca rubra x Vulpia myuros","2":"hyb.","3":"1"},{"1":"Fuchsia x 'Corallina'","2":"hyb.","3":"1"},{"1":"Fumaria densiflora x officinalis","2":"hyb.","3":"1"},{"1":"Fumaria officinalis x parviflora","2":"hyb.","3":"1"},{"1":"Galanthus elwesii x nivalis","2":"hyb.","3":"1"},{"1":"Galanthus elwesii x plicatus","2":"hyb.","3":"1"},{"1":"Galanthus nivalis x plicatus","2":"hyb.","3":"1"},{"1":"Helianthus debilis x annuus","2":"hyb.","3":"1"},{"1":"Helianthus pauciflorus x tuberosus","2":"hyb.","3":"1"},{"1":"Heracleum mantegazzianum x ondylium","2":"hyb.","3":"1"},{"1":"Juncus inflexus x pallidus","2":"hyb.","3":"1"},{"1":"Lupinus arboreus x nootkatensis x polyphyllus","2":"hyb.","3":"1"},{"1":"Lysichiton americanus x camtschatcensis","2":"hyb.","3":"1"},{"1":"Myosotis x pseudohida Domin","2":"hyb.","3":"1"},{"1":"Nothofagus nervosa x obliqua","2":"hyb.","3":"1"},{"1":"Oenothera biennis x cambrica","2":"hyb.","3":"1"},{"1":"Oenothera indecora x stricta","2":"hyb.","3":"1"},{"1":"Oreochromis aureus x O. niloticus","2":"hyb.","3":"1"},{"1":"Platanus x hinica Mill. ex Münchh.","2":"hyb.","3":"1"},{"1":"Populus canadensis x jackii","2":"hyb.","3":"1"},{"1":"Populus jackii x nigra","2":"hyb.","3":"1"},{"1":"Quercus cerris x robur","2":"hyb.","3":"1"},{"1":"Rumex conglomeratus x patientia","2":"hyb.","3":"1"},{"1":"Rumex cristatus x palustris","2":"hyb.","3":"1"},{"1":"Rumex cristatus x patientia","2":"hyb.","3":"1"},{"1":"Sorbus aucuparia x intermedia","2":"hyb.","3":"1"},{"1":"Symphytum x 'Hidcote Blue' hort.","2":"hyb.","3":"1"},{"1":"Tragopogon porrifolius x pratensis sub orientalis","2":"hyb.","3":"1"},{"1":"Tripleurormum inodorum x maritimum","2":"hyb.","3":"1"},{"1":"Vaccinium angustifolium x corymbosum","2":"hyb.","3":"1"},{"1":"Verbascum blattaria x phoeniceum","2":"hyb.","3":"1"},{"1":"Verbascum nigrum x pyramidatum","2":"hyb.","3":"1"},{"1":"Verbascum pyramidatum x thapsus","2":"hyb.","3":"1"},{"1":"Veronica x macrorma Schust.","2":"hyb.","3":"1"},{"1":"x Crataemelus gillotii Beck","2":"hyb.","3":"1"},{"1":"x Crataemelus grandiflora","2":"hyb.","3":"1"},{"1":"Xanthium orientale x strumarium","2":"hyb.","3":"1"},{"1":"Aragus officinalis L. officinalis L.","2":"subsp.","3":"1"},{"1":"Calystegia sepium (L.) R. Br. ctabilis Brummitt","2":"subsp.","3":"1"},{"1":"Capparis nosa L. nosa L.","2":"subsp.","3":"1"},{"1":"Centaurea aerocephala L. lusitanica (Boiss. & Reuter) Nyman","2":"subsp.","3":"1"},{"1":"Centaurea ara L. ara L.","2":"subsp.","3":"1"},{"1":"Cerastium brachypetalum De ex Pers. tauricum (Spreng.) Murb.","2":"subsp.","3":"1"},{"1":"Convolvulus arvensis L. critus Franco","2":"subsp.","3":"1"},{"1":"Geranium molle L. brutium (Garr.) Graebner ex Ascherson & Graebner","2":"subsp.","3":"1"},{"1":"Heracleum ondylium L. pyrenaicum (Lam.) Bonnier & Layens","2":"subsp.","3":"1"},{"1":"Heracleum ondylium L. sibiricum (L.) Simonkai","2":"subsp.","3":"1"},{"1":"Heris matronalis L. matronalis","2":"subsp.","3":"1"},{"1":"Heris matronalis L. nivea (Baumg.) Perrier","2":"subsp.","3":"1"},{"1":"Kickxia ria (L.) Dumort integrifolia (Brot.) Fernandes","2":"subsp.","3":"1"},{"1":"Kickxia ria (L.) Dumort ria (L.) Dumort","2":"subsp.","3":"1"},{"1":"Lithormum arvense L. arvense L.","2":"subsp.","3":"1"},{"1":"Mentha cata L. cata L.","2":"subsp.","3":"1"},{"1":"Mentha cata L. glabrata (Lej. & Courtois) Lebeau","2":"subsp.","3":"1"},{"1":"Montia fontana L. chondrorma (Fenzl) Walters","2":"subsp.","3":"1"},{"1":"Oidium Pseudoidium","2":"subsp.","3":"1"},{"1":"Ononis nosa L. hircina (Jacq.) Gams","2":"subsp.","3":"1"},{"1":"Ononis nosa L. nosa L.","2":"subsp.","3":"1"},{"1":"Picris hieracioides L. nulosa (Bertol. ex Guss.) Arcang.","2":"subsp.","3":"1"},{"1":"Pilosella caetosa (Dumort.) Sell & C. West colliniformis (Peter) P.D. Sell & C. West","2":"subsp.","3":"1"},{"1":"Polanisia dodecandra (L.) DC. trachyrma (Torr. & Gray) Iltis","2":"subsp.","3":"1"},{"1":"Sonchus ar (L.) Hill. ar (L.) Hill.","2":"subsp.","3":"1"},{"1":"Thla caerulescens J. & C. Presl. caerulescens J. & C. Presl.","2":"subsp.","3":"1"},{"1":"Tripleurormum maritimum (L.) W.D.J. Koch phaeoccephalum (Rupr.) HÃƒÂ¤met-Ahti","2":"subsp.","3":"1"},{"1":"Tripleurormum maritimum (L.) W.D.J. Koch subpolare (Pobed.) HÃƒÂ¤met-Ahti","2":"subsp.","3":"1"},{"1":"Aristida longeca Poiret longeca Poir.","2":"var.","3":"1"},{"1":"Cannabis sativa L. ntanea Serebr.","2":"var.","3":"1"},{"1":"Galanthus nivalis L. scharlockii Cary.","2":"var.","3":"1"},{"1":"Tranzschelia pruni-nosae discolor","2":"var.","3":"1"},{"1":"Vaccaria hinica (Mill.) Rauschert hinica (Mill.) Rauschert","2":"var.","3":"1"},{"1":"Ve velutina Lepeletier, 1836 nigrithorax \"du Buysson, 1905\"","2":"var.","3":"1"},{"1":"Vicia sativa L. platyrma (Barulina) S.I.Repjev","2":"var.","3":"1"},{"1":"Abgrallas cyanophylli (Signoret, 1869) Coccoidea","2":"NA","3":"1"},{"1":"Ablerus chionadis (Howard, 1914)","2":"NA","3":"1"},{"1":"Ablerus perciosus Girault, 1916","2":"NA","3":"1"},{"1":"Acacia [Australian .]","2":"NA","3":"1"},{"1":"Acaena anserinifolia x inermis","2":"NA","3":"1"},{"1":"Acanthoderes jadea Germar, 1824","2":"NA","3":"1"},{"1":"Acanthormum hidum DC.","2":"NA","3":"1"},{"1":"Acanthormum humile (Sw.) DC.","2":"NA","3":"1"},{"1":"Acanthus nosus L.","2":"NA","3":"1"},{"1":"Acer monssulanum L.","2":"NA","3":"1"},{"1":"Achyranthes ara L.","2":"NA","3":"1"},{"1":"Aclees","2":"NA","3":"1"},{"1":"Adapion (Adapion) validum (Germar 1817)","2":"NA","3":"1"},{"1":"Adapion validum (Germar, 1817)","2":"NA","3":"1"},{"1":"Adelencyrtus aulacadis (Brèthes, 1914)","2":"NA","3":"1"},{"1":"Adiantum hidulum Sw.","2":"NA","3":"1"},{"1":"Adimorpha fabricii Sekerka, 2008","2":"NA","3":"1"},{"1":"Adiotus destructor Signoret 1869 Coccoidea","2":"NA","3":"1"},{"1":"Adiotus nerii (Bouché, 1833) Coccoidea","2":"NA","3":"1"},{"1":"Adomorpha fabricii Serkerka, 2008","2":"NA","3":"1"},{"1":"Aegilops ltoides Tausch","2":"NA","3":"1"},{"1":"Aenium foreziense Legrand [in Sched.]","2":"NA","3":"1"},{"1":"Aganas daci (Weld, 1951)","2":"NA","3":"1"},{"1":"Agaricus birus","2":"NA","3":"1"},{"1":"Agenias citricola Logvinovskaya, 1983","2":"NA","3":"1"},{"1":"Agenias fuscicollis (Dalman, 1920)","2":"NA","3":"1"},{"1":"Aglaora profusa","2":"NA","3":"1"},{"1":"Aix nsa (Linnaeus 1758)","2":"NA","3":"1"},{"1":"Aizoon hinicum L.","2":"NA","3":"1"},{"1":"Alchemilla ciosa Buser","2":"NA","3":"1"},{"1":"Alchemilla endens Christ ex Gremli","2":"NA","3":"1"},{"1":"Aleochara rsa Heer, 1839","2":"NA","3":"1"},{"1":"Aleurocanthus niferus (Quaintance, 1903) aleyrodoidae","2":"NA","3":"1"},{"1":"Aleurodicus dirsus Russell, 1965 Aleyrodoidae","2":"NA","3":"1"},{"1":"Allium aerocephalon L.","2":"NA","3":"1"},{"1":"Amaranthus cris","2":"NA","3":"1"},{"1":"Amaranthus nosus","2":"NA","3":"1"},{"1":"Amelanchier cata (Lam.) K. Koch","2":"NA","3":"1"},{"1":"Amitus niferus (Brèthes, 1914)","2":"NA","3":"1"},{"1":"Ampullaria","2":"NA","3":"1"},{"1":"Anotylus culifrons (Kraatz 1857)","2":"NA","3":"1"},{"1":"Antaxius nibrachius (Fischer, 1853)","2":"NA","3":"1"},{"1":"Antila oinophylla van Nieukerken & Wagner,  n.","2":"NA","3":"1"},{"1":"Antithamnionella rographidis (Schiffner) Wollaston 1968","2":"NA","3":"1"},{"1":"Aodelus albus L.","2":"NA","3":"1"},{"1":"Aodelus fistulosus L.","2":"NA","3":"1"},{"1":"Aondylia borzi (Stefani, 1898)","2":"NA","3":"1"},{"1":"Aondylia buddleia Felt, 1935","2":"NA","3":"1"},{"1":"Apedinella nifera","2":"NA","3":"1"},{"1":"Apera ca-venti","2":"NA","3":"1"},{"1":"Aphanius dir (Rueppell, 1829)","2":"NA","3":"1"},{"1":"Aphis Aphis raecola Patch, 1914 aphidoidea","2":"NA","3":"1"},{"1":"Aphis Aphis raephaga F.P. Müller, 1961 aphidoidea","2":"NA","3":"1"},{"1":"Aphis Aphis raephila Patch, 1914 aphidoidea","2":"NA","3":"1"},{"1":"Aphis raecola Patch, 1914","2":"NA","3":"1"},{"1":"Aphis raephaga F.P. Müller, 1961","2":"NA","3":"1"},{"1":"Aphis raephila Patch, 1914","2":"NA","3":"1"},{"1":"Aphytis diadis (Howard, 1881)","2":"NA","3":"1"},{"1":"Aphytis mytiladis (Le Baron, 1870)","2":"NA","3":"1"},{"1":"Apiognomonia veneta (Sacc. & Speg.) Höhn. (1920) Gloeoridina platani Butin & Kehr (1998)","2":"NA","3":"1"},{"1":"Apopestes ctrum (Er, 1787)","2":"NA","3":"1"},{"1":"Aporrhais pelecani","2":"NA","3":"1"},{"1":"Aragopsis armata Harvey 1855","2":"NA","3":"1"},{"1":"Aragopsis taxiformis","2":"NA","3":"1"},{"1":"Aragus aethiopicus L.","2":"NA","3":"1"},{"1":"Aragus aragoides (L.) Druce","2":"NA","3":"1"},{"1":"Aragus densiflorus (Kunth) Jessop","2":"NA","3":"1"},{"1":"Aragus officinalis L.","2":"NA","3":"1"},{"1":"Aragus setaceus (Kunth) Jessop","2":"NA","3":"1"},{"1":"Aralia nosa L.","2":"NA","3":"1"},{"1":"Argania nosa (L.) Skeels","2":"NA","3":"1"},{"1":"Aristida longeca Poiret","2":"NA","3":"1"},{"1":"Arococcus scaber","2":"NA","3":"1"},{"1":"Arogronops inaequalis (Boheman 1842)","2":"NA","3":"1"},{"1":"Arugo procumbens L.","2":"NA","3":"1"},{"1":"Arula arvensis L.","2":"NA","3":"1"},{"1":"Arula laevigata L.","2":"NA","3":"1"},{"1":"Arula orientalis Boiss. & Hohen.","2":"NA","3":"1"},{"1":"Arula taurina L.","2":"NA","3":"1"},{"1":"Arula tinctoria L.","2":"NA","3":"1"},{"1":"Astroaeriella trochus (Penzig & Saccardo) D. Hawksworth (1981)","2":"NA","3":"1"},{"1":"Atrichum crim (James) Sull. & Lesq.","2":"NA","3":"1"},{"1":"Atriplex aeromorpha","2":"NA","3":"1"},{"1":"Audouinella thoglossi (Børgesen) Garbary, 1987","2":"NA","3":"1"},{"1":"Aulacas tubercularis Newstead, 1906 Coccoidea","2":"NA","3":"1"},{"1":"Aus aus Linnaeus, 1758","2":"NA","3":"1"},{"1":"Ballota hinica (L.) Benth.","2":"NA","3":"1"},{"1":"Bambusas bambusae (Boisduval, 1869) Coccoidea","2":"NA","3":"1"},{"1":"Basidiophora entora Roze & Cornu (1869)","2":"NA","3":"1"},{"1":"Bassia tricus F. Mueller","2":"NA","3":"1"},{"1":"Blechnum cant (L.) Roth","2":"NA","3":"1"},{"1":"Blumeriella jaapii (Rehm) Arx (1961) Phloeorella padi (Lib.) Arx (1961)","2":"NA","3":"1"},{"1":"Boreioglycas brimblecombei Moore, 1964","2":"NA","3":"1"},{"1":"Botryoaeria dothidea (Moug.) Ces. & De Not. (1863) Dothiorella aesculi (Sacc.) Petrak fide Sutton 1980","2":"NA","3":"1"},{"1":"Botryoaeria parva Pennycook & Samuels, (1985) Fusicoccum parvum Pennycook & Samuels (1985)","2":"NA","3":"1"},{"1":"Botryoaeria quercuum (Schwein.) Sacc.(1882)","2":"NA","3":"1"},{"1":"Botryoaeria stevensii Shoemaker (1964) Diplodia mutila (Fr.) Mont. (1834)","2":"NA","3":"1"},{"1":"Botryotinia aerorma","2":"NA","3":"1"},{"1":"Botrytella","2":"NA","3":"1"},{"1":"Brachycorynella aragi (Mordvilko, 1929)","2":"NA","3":"1"},{"1":"Caesalpinia nosa (Molina) Kuntze","2":"NA","3":"1"},{"1":"Calligrapha polyla (Germar, 1821)","2":"NA","3":"1"},{"1":"Callosciurus","2":"NA","3":"1"},{"1":"Calocera pallidothulata D.A. Reid (1974)","2":"NA","3":"1"},{"1":"Calotis hidula (F. Müll.) F. Müll.","2":"NA","3":"1"},{"1":"Caobdella fadejewi","2":"NA","3":"1"},{"1":"Capparis nosa L.","2":"NA","3":"1"},{"1":"Cardiormum grandiflorum Swartz","2":"NA","3":"1"},{"1":"Cardiormum halicacabum L.","2":"NA","3":"1"},{"1":"Carduus cris L.","2":"NA","3":"1"},{"1":"Catalpa ciosa (Warder) Engelm.","2":"NA","3":"1"},{"1":"Cenchrus longinus","2":"NA","3":"1"},{"1":"Centaurea ara L.","2":"NA","3":"1"},{"1":"Centrodora ciosissima (Girault, 1911)","2":"NA","3":"1"},{"1":"Cerastium brachypetalum De ex Pers.","2":"NA","3":"1"},{"1":"Cercora apii Fresen. (1863),","2":"NA","3":"1"},{"1":"Cercora thalictri Thüm.;","2":"NA","3":"1"},{"1":"Ceuthora foliicola (Lib.) Jaap (1912),","2":"NA","3":"1"},{"1":"Chaenomeles ciosa (Sweet) Nakai","2":"NA","3":"1"},{"1":"Chama","2":"NA","3":"1"},{"1":"Chama arella Lamarck, 1819","2":"NA","3":"1"},{"1":"Chamaesyce glomerifera Mill","2":"NA","3":"1"},{"1":"Chamaesyce glyptorma","2":"NA","3":"1"},{"1":"Chamaesyce hypericifolia (L.) Mill","2":"NA","3":"1"},{"1":"Chasmanthe bicolor (Ga ex Ten.) N.E. Br.","2":"NA","3":"1"},{"1":"Chelicorophium curvinum","2":"NA","3":"1"},{"1":"Chenopodium macrormum Hook. f.","2":"NA","3":"1"},{"1":"Chenopodium polyrmum","2":"NA","3":"1"},{"1":"Chilomycterus lostylus Leis & Randall, 1982","2":"NA","3":"1"},{"1":"Chilostoma planora (Lamarck, 1822)","2":"NA","3":"1"},{"1":"Chilostoma planora (Lamarck, 1822) erjaveci","2":"NA","3":"1"},{"1":"Chorira tenella","2":"NA","3":"1"},{"1":"Chorisia ciosa St. Hil.","2":"NA","3":"1"},{"1":"Chrissia","2":"NA","3":"1"},{"1":"Chrysodeixis chalcites (Er, 1789)","2":"NA","3":"1"},{"1":"Chrysomphalus dictyormi (Morgan, 1889) Coccoidea","2":"NA","3":"1"},{"1":"Chrysso niventris (O. P.-Cambridge 1869)","2":"NA","3":"1"},{"1":"Cirrolus ingenuus Gahan,1932","2":"NA","3":"1"},{"1":"Cistus monliensis L.","2":"NA","3":"1"},{"1":"Cladorium macrocarpum Preuss (1848),","2":"NA","3":"1"},{"1":"Cladorium phlei (C.T. Greg.) G.A. de Vries (1952),","2":"NA","3":"1"},{"1":"Clarias","2":"NA","3":"1"},{"1":"Cleome ciosa Raf.","2":"NA","3":"1"},{"1":"Cleome nosa Jacq.","2":"NA","3":"1"},{"1":"Clypeola jonthla","2":"NA","3":"1"},{"1":"Coccus heridum Linnaeus, 1758 Coccoidea","2":"NA","3":"1"},{"1":"Coccus pseudoheridum (Cockerell, 1895) Coccoidea","2":"NA","3":"1"},{"1":"Cochlearia megalorma (Maire) Vogt","2":"NA","3":"1"},{"1":"Cochlostoma septemrale (Razoumowsky, 1789)","2":"NA","3":"1"},{"1":"Coleophora raeella Rebel, 1916","2":"NA","3":"1"},{"1":"Coleorium clematidis","2":"NA","3":"1"},{"1":"Coleorium tussilaginis","2":"NA","3":"1"},{"1":"Conocybe crilla","2":"NA","3":"1"},{"1":"Consolida hinica (Costa) Greuter & Burdet","2":"NA","3":"1"},{"1":"Coptodisca (=Adisca)","2":"NA","3":"1"},{"1":"Cordylophora caa (Pallas 1766)","2":"NA","3":"1"},{"1":"Corirmum algidum Iljin","2":"NA","3":"1"},{"1":"Corirmum declinatum","2":"NA","3":"1"},{"1":"Corirmum elongatum Bunge","2":"NA","3":"1"},{"1":"Corirmum hyssopifolium","2":"NA","3":"1"},{"1":"Corirmum intermedium Schweigger","2":"NA","3":"1"},{"1":"Corirmum leptopterum (Aschers.) Iljin","2":"NA","3":"1"},{"1":"Corirmum marschallii Steven","2":"NA","3":"1"},{"1":"Corirmum membranaceum (Bischoff) Iljin","2":"NA","3":"1"},{"1":"Corirmum orientale Lam.","2":"NA","3":"1"},{"1":"Corirmum pallasii","2":"NA","3":"1"},{"1":"Corirmum redowskii","2":"NA","3":"1"},{"1":"Cornu arsum (O.F. Müller, 1774)","2":"NA","3":"1"},{"1":"Corophium curvinum","2":"NA","3":"1"},{"1":"Corvus endens (Vieillot 1817)","2":"NA","3":"1"},{"1":"Coscinasterias tenuina","2":"NA","3":"1"},{"1":"Cotoneaster concuus Marquand","2":"NA","3":"1"},{"1":"Cotoneaster endens Flink & Hylmö","2":"NA","3":"1"},{"1":"Cradacusta sowerbyi","2":"NA","3":"1"},{"1":"Crambe hinica L.","2":"NA","3":"1"},{"1":"Crematogaster brevinosa Mayr, 1870","2":"NA","3":"1"},{"1":"Crinum bulbirmum (Burm.) Milne-Redh. & Schweick.","2":"NA","3":"1"},{"1":"Crioceris aragi (Linnaeus, 1758)","2":"NA","3":"1"},{"1":"Crocus ciosus M. Bieb.","2":"NA","3":"1"},{"1":"Cryptocoryne critula Engl.","2":"NA","3":"1"},{"1":"Cryptolestes rtii (Curtis, 1834)","2":"NA","3":"1"},{"1":"Cryptorella platanigera","2":"NA","3":"1"},{"1":"Ctenarytaina tulata Taylor, 1967 Psylloidea","2":"NA","3":"1"},{"1":"Cumulora marina","2":"NA","3":"1"},{"1":"Cumulora varia","2":"NA","3":"1"},{"1":"Cyclormum leptophyllum (Pers.) Sprague ex Britt. & Wilson","2":"NA","3":"1"},{"1":"Cydalima perctalis (Walker, 1859)","2":"NA","3":"1"},{"1":"Cydia endana (Hübner, 1799)","2":"NA","3":"1"},{"1":"Cylindropuntia nosior (Engelm.) F.M. Kunth in Backecb.","2":"NA","3":"1"},{"1":"Dahlia coccinea x pinnata","2":"NA","3":"1"},{"1":"Daktuloaira vitifolii (Fitch)","2":"NA","3":"1"},{"1":"Danthonia cata (L.) Beauv. ex Roemer & Schultes","2":"NA","3":"1"},{"1":"Dasysiphonia","2":"NA","3":"1"},{"1":"Delorma cooperi (Hook. f.) L. Bolus","2":"NA","3":"1"},{"1":"Deschampsia cetosa (L.) P.Beauv.","2":"NA","3":"1"},{"1":"Desoria trinata (MacGillivray, 1896)","2":"NA","3":"1"},{"1":"Diadiotus osborni (Newell & Cockerell, 1898) Coccoidea","2":"NA","3":"1"},{"1":"Diadiotus perniciosus (Comstock, 1881) Coccoidea","2":"NA","3":"1"},{"1":"Diadiotus uvae (Comstock 1881) Coccoidea","2":"NA","3":"1"},{"1":"Diaphania perctalis Walker, 1859","2":"NA","3":"1"},{"1":"Dias boisduvalii Signoret 1869 Coccoidea","2":"NA","3":"1"},{"1":"Dias bromeliae (Kerner, 1778) Coccoidea","2":"NA","3":"1"},{"1":"Dias echinocacti (Bouché, 1833) Coccoidea","2":"NA","3":"1"},{"1":"Dicentra ctabilis (L.) Lemaire","2":"NA","3":"1"},{"1":"Didemnum","2":"NA","3":"1"},{"1":"Dikerogammarus binosus Martynov, 1925","2":"NA","3":"1"},{"1":"Dioros kaki L. fil.","2":"NA","3":"1"},{"1":"Dioros lotus L.","2":"NA","3":"1"},{"1":"Dioros virginiana L.","2":"NA","3":"1"},{"1":"Diplostomum parathaceum","2":"NA","3":"1"},{"1":"Diralona hamata (Birge, 1879)","2":"NA","3":"1"},{"1":"Diyma crassifolium (L.) L. Bolus","2":"NA","3":"1"},{"1":"Drepanopeziza aerioides (Pers.) Höhn. (1935) Marssonina salicicola (Bres.) Magnus 1906","2":"NA","3":"1"},{"1":"Dromia nirostris Miers, 1881","2":"NA","3":"1"},{"1":"Drosanthemum hidum (L.) Schwantes","2":"NA","3":"1"},{"1":"Drosophila curvina Watabe & Toda, 1984","2":"NA","3":"1"},{"1":"Dyania glomulifera (Nees) P.G. Wilson","2":"NA","3":"1"},{"1":"Dynopeus sayi (Smith, 1869)","2":"NA","3":"1"},{"1":"Echinops aerocephalus L.","2":"NA","3":"1"},{"1":"Ectocarpus cacus","2":"NA","3":"1"},{"1":"Elachista","2":"NA","3":"1"},{"1":"Elodea callitrichoides (Rich.) Ca","2":"NA","3":"1"},{"1":"Emex nosa (L.) Campd.","2":"NA","3":"1"},{"1":"Encarsia diadicola (Silvestri, 1909)","2":"NA","3":"1"},{"1":"Encarsia hida De Santis, 1948","2":"NA","3":"1"},{"1":"Entadiotus lounsburyi (Marlatt, 1908) Coccoidea","2":"NA","3":"1"},{"1":"Ephialtes tulatus (Townes, 1960)","2":"NA","3":"1"},{"1":"Erigeron ciosus (Lindl.) DC.","2":"NA","3":"1"},{"1":"Erucaria hinica (L.) Druce","2":"NA","3":"1"},{"1":"Eryngium tricudatum L.","2":"NA","3":"1"},{"1":"Erysimum cudatum (M. Beib.) DC.","2":"NA","3":"1"},{"1":"Erysiphe euonymi-japonici (Vienn.-Bourg.) U. Braun & S. Takamatsu Oidium euonymi-japonici E.S. Salmon (= Acrorium euonymi-japonici [E.S. Salmon] Sumst.)","2":"NA","3":"1"},{"1":"Erysiphe symphoricarpi (Howe) U. Braun & S. Takamatsu Leptodothiorella aesculicola (Sacc.) Siwan, Phyllosticta aerpsoidea Ellis & Everh. [as 'aeropsidea'],","2":"NA","3":"1"},{"1":"Erythrina ciosa Andrews","2":"NA","3":"1"},{"1":"Eubosmina longina","2":"NA","3":"1"},{"1":"Exaireta nigera (Wiedemann, 1830)","2":"NA","3":"1"},{"1":"Fargesia thacea Franch.","2":"NA","3":"1"},{"1":"Ferraria cri Burm.","2":"NA","3":"1"},{"1":"Forsythia sunsa (Thunb.) Vahl","2":"NA","3":"1"},{"1":"Fossombronia cri Nees","2":"NA","3":"1"},{"1":"Franklinothrips veformis (Crawford, 1909)","2":"NA","3":"1"},{"1":"Fucus ralis Linnaeus, 1753","2":"NA","3":"1"},{"1":"Furchadas zamiae (Morgan, 1890) Coccoidea","2":"NA","3":"1"},{"1":"Fusarium oxyrum W. R. Jarvis & Shoemaker (1979)","2":"NA","3":"1"},{"1":"Galeopsis ciosa Mill.","2":"NA","3":"1"},{"1":"Galium rium","2":"NA","3":"1"},{"1":"Gastrorium simplex","2":"NA","3":"1"},{"1":"Genista hinica L","2":"NA","3":"1"},{"1":"Genista monssulana (L.) L. Johnson","2":"NA","3":"1"},{"1":"Geoplana (=Australoplana) sanguinea","2":"NA","3":"1"},{"1":"Glaucomys  Thomas, 1908","2":"NA","3":"1"},{"1":"Gloeorium aroniae","2":"NA","3":"1"},{"1":"Glomerella cingulata (Stoneman) Spauld. & H. Schrenk (1903) Colletotrichum gloeorioides (Penz.) Penz. & Sacc. (1884)","2":"NA","3":"1"},{"1":"Glomerella miyabeana (Fukushi) Arx (1957) Colletotrychum gloeorioides","2":"NA","3":"1"},{"1":"Gloniella clavatira","2":"NA","3":"1"},{"1":"Glycas brimblecombei (Moore, 1964) psylloidea","2":"NA","3":"1"},{"1":"Gnaphalium aericum Willd.","2":"NA","3":"1"},{"1":"Gnomonia tetrara","2":"NA","3":"1"},{"1":"Goetheana shakearei Girault, 1920","2":"NA","3":"1"},{"1":"Gonipterus new 2 Oberprieler","2":"NA","3":"1"},{"1":"Gymnas aechmeae Newstead, 1898 Coccoidea","2":"NA","3":"1"},{"1":"Gymnocoronis lanthoides DC.","2":"NA","3":"1"},{"1":"Gymnopilus hidellus Murrill","2":"NA","3":"1"},{"1":"Gymnorangium asiaticum","2":"NA","3":"1"},{"1":"Gymnorangium clavariiforme (Jacq.) DC. (1805),","2":"NA","3":"1"},{"1":"Gymnorangium confusum","2":"NA","3":"1"},{"1":"Gymnorangium cornutum Arthur ex F. Kern (1911),","2":"NA","3":"1"},{"1":"Gymnorangium juniperi-virginianae","2":"NA","3":"1"},{"1":"Gymnorangium sabinae","2":"NA","3":"1"},{"1":"Gymnorangium tremelloides R. Hartig (1882),","2":"NA","3":"1"},{"1":"Haploridium armoricanum","2":"NA","3":"1"},{"1":"Haploridium nelsoni","2":"NA","3":"1"},{"1":"Hemerocallis lilioaodelus","2":"NA","3":"1"},{"1":"Heris matronalis","2":"NA","3":"1"},{"1":"Heris oblongifolia Schur","2":"NA","3":"1"},{"1":"Heris pycnotricha","2":"NA","3":"1"},{"1":"Heris tristis L.","2":"NA","3":"1"},{"1":"Heterocope caa","2":"NA","3":"1"},{"1":"Heterolus cephi Rohwer, 1925","2":"NA","3":"1"},{"1":"Hieracium ciosum Willd. ex Hornem.","2":"NA","3":"1"},{"1":"Hieracium luncarum Arv.-Touv.","2":"NA","3":"1"},{"1":"Hofmannophila pseudoetella (Stainton, 1849)","2":"NA","3":"1"},{"1":"Hogna hinica (Walckenaer 1837)","2":"NA","3":"1"},{"1":"Hyacinthoides hinica (Mill.) Rothm.","2":"NA","3":"1"},{"1":"Hyalomma Scupense Delpy, 1946","2":"NA","3":"1"},{"1":"Hyaloperonora parasitica (Pers.) Constant.(2002)","2":"NA","3":"1"},{"1":"Hyalopeziza nicola","2":"NA","3":"1"},{"1":"Hydnotrya cubira","2":"NA","3":"1"},{"1":"Hygrophila polyrma (Roxb.) T. Anders.","2":"NA","3":"1"},{"1":"Hymenorum flavum (Hook.) F. Müll.","2":"NA","3":"1"},{"1":"Hyperas pantherina Fürsch, 1975","2":"NA","3":"1"},{"1":"Hypnea cifera (Suhr) Harvey, 1847","2":"NA","3":"1"},{"1":"Hypnea eri Bory de Saint-Vincent 1828","2":"NA","3":"1"},{"1":"Hypnea nella (C. Agardh) Kützing, 1847","2":"NA","3":"1"},{"1":"Inula raeifolia L.","2":"NA","3":"1"},{"1":"Iris ria","2":"NA","3":"1"},{"1":"Ischnas longirostris (Signoret, 1882) Coccoidea","2":"NA","3":"1"},{"1":"Josephiella microcarpae Beardsley & Raus, 2001","2":"NA","3":"1"},{"1":"Kickxia ria","2":"NA","3":"1"},{"1":"Kuwanas pseudoleucas Kuwana, 1923 Coccoidea","2":"NA","3":"1"},{"1":"Lagocephalus diceus (Richardson, 1844)","2":"NA","3":"1"},{"1":"Lampranthus ctabilis (Haw.) N.E. Br.","2":"NA","3":"1"},{"1":"Lamprocapnos ctabilis (L.) Endl.","2":"NA","3":"1"},{"1":"Lamprotornis endidus (Vieillot, 1822)","2":"NA","3":"1"},{"1":"Lathyrus aericus Retz.","2":"NA","3":"1"},{"1":"Lathyrus inconcuus L.","2":"NA","3":"1"},{"1":"Legousia culum-veneris (L.) Chaix","2":"NA","3":"1"},{"1":"Leontodon hidus L.","2":"NA","3":"1"},{"1":"Lepidium nosum Ard.","2":"NA","3":"1"},{"1":"Leptoaeria lindquistii Fressi (1968)","2":"NA","3":"1"},{"1":"Leptoaeria lunariae","2":"NA","3":"1"},{"1":"Leptoaerulina trifolii (Rostovzev) Petr. (1959)","2":"NA","3":"1"},{"1":"Leptormum lanigerum (Aiton) Smith","2":"NA","3":"1"},{"1":"Leptormum scoparium Forster & G. Forster","2":"NA","3":"1"},{"1":"Leptothorax longinosus Roger, 1863","2":"NA","3":"1"},{"1":"Leucas podocarpi (Green, 1929) Coccoidea","2":"NA","3":"1"},{"1":"Leucaus delineatus","2":"NA","3":"1"},{"1":"Linaria rtea (L.) Willd.","2":"NA","3":"1"},{"1":"Lindingas rossi (Maskell, 1891) Coccoidea","2":"NA","3":"1"},{"1":"Lithormum arvense","2":"NA","3":"1"},{"1":"Lithormum officinale L.","2":"NA","3":"1"},{"1":"Lithormum sibthorpianum Griseb.","2":"NA","3":"1"},{"1":"Lophocolea binosa (Hook. f. & Taylor) Gottsche et al.","2":"NA","3":"1"},{"1":"Lopholeucas cockerelli (Grandpré & Charmoy, 1899) Coccoidea","2":"NA","3":"1"},{"1":"Lopholeucas japonica Cockerell coccoidea","2":"NA","3":"1"},{"1":"Lophormum erubescens D. Don ex Sweet","2":"NA","3":"1"},{"1":"Lupinus hinicus Boiss. & Reut.","2":"NA","3":"1"},{"1":"Lycium","2":"NA","3":"1"},{"1":"Lymnaea","2":"NA","3":"1"},{"1":"Macalpinomyces rmophorus (Berk. & M.A. Curtis ex de Toni) Vánky, (2003)","2":"NA","3":"1"},{"1":"Manayunkia caca","2":"NA","3":"1"},{"1":"Mastigorium kitzebergense U. Schlöss., Phytopath. Z. 67(3): 257 (1970)","2":"NA","3":"1"},{"1":"Mauremys caca","2":"NA","3":"1"},{"1":"Maylandia","2":"NA","3":"1"},{"1":"Megastigmus cularis Walley, 1932","2":"NA","3":"1"},{"1":"Megastigmus rmotrophus Wachtl, 1893","2":"NA","3":"1"},{"1":"Megastigmus suctus Borries, 1895","2":"NA","3":"1"},{"1":"Megoura ledezae (Essig & Kuwana, 1918) Aphidoidea","2":"NA","3":"1"},{"1":"Melus germanica L.","2":"NA","3":"1"},{"1":"Mentha cata","2":"NA","3":"1"},{"1":"Mesopolobus rmotrophus Husey, 1960","2":"NA","3":"1"},{"1":"Microaera berberidis (DC.) Lév.(1851)","2":"NA","3":"1"},{"1":"Microaera grossulariae (Wallr.) Lév. (1851),","2":"NA","3":"1"},{"1":"Microaera jaczewskii","2":"NA","3":"1"},{"1":"Microaera pseudacaciae (P.D. Marchenko) U. Braun [as pseudoacaciae] (1981)","2":"NA","3":"1"},{"1":"Microcosmus exaratus Heller, 1878","2":"NA","3":"1"},{"1":"Microscolex phooreus (Dugès, 1837)","2":"NA","3":"1"},{"1":"Microterys ciosus Ishii,1923","2":"NA","3":"1"},{"1":"Molopormum peloponnesiacum (L.) Koch","2":"NA","3":"1"},{"1":"Molucella nosa L.","2":"NA","3":"1"},{"1":"Monacha cf. (Menke, 1828) parumcincta","2":"NA","3":"1"},{"1":"Monilinia meli","2":"NA","3":"1"},{"1":"Monotoma nicollis Aubé 1837","2":"NA","3":"1"},{"1":"Morimus ar Mulsant, 1863 funereus","2":"NA","3":"1"},{"1":"Muceddina multinosa","2":"NA","3":"1"},{"1":"Muellerius tenuiculatus Gebauer, 1932","2":"NA","3":"1"},{"1":"Mycoaerella castaneicola Kleb. (1934) Septoria castaneicola Desm. (1847)","2":"NA","3":"1"},{"1":"Mycoaerella cydoniae","2":"NA","3":"1"},{"1":"Mycoaerella dearnessii M.E. Barr (1972) Lecanosticta acicola (Thümen) H. Sydow (1924)","2":"NA","3":"1"},{"1":"Mycoaerella isariophora (Desm.) Johanson (1884),","2":"NA","3":"1"},{"1":"Mycoaerella linicola Naumov (1926)","2":"NA","3":"1"},{"1":"Mycoaerella mori","2":"NA","3":"1"},{"1":"Mycoaerella pini Rostr. (1957) Dothistroma septorum (Dorog.) M. Morelet (1968)","2":"NA","3":"1"},{"1":"Mycoaerella pinodes (Berk. & A. Bloxam) Vestergr. (1912)","2":"NA","3":"1"},{"1":"Mycoaerella podagrariae","2":"NA","3":"1"},{"1":"Mycoaerella rhododendri","2":"NA","3":"1"},{"1":"Mycoaerella ribis (Fuckel) Lindau (1903),","2":"NA","3":"1"},{"1":"Mycocentrora acerina (R. Hartig) Deighton (1972),","2":"NA","3":"1"},{"1":"Mycovellosiella concors (Ca) Deighton (1974)","2":"NA","3":"1"},{"1":"Myosotis rsiflora J.G. Mikan ex Pohl","2":"NA","3":"1"},{"1":"Myriactula","2":"NA","3":"1"},{"1":"Nematora coryli Peglion (1901)","2":"NA","3":"1"},{"1":"Nematus raeae Zaddach, 1883","2":"NA","3":"1"},{"1":"Neosiphonia aerocarpa (Børgesen) M.S. Kim & I.K. Lee, 1999","2":"NA","3":"1"},{"1":"Nigella hinica L.","2":"NA","3":"1"},{"1":"Oceanadiotus nosus (Comstock, 1883) Coccoidea","2":"NA","3":"1"},{"1":"Odonas greeni Cockerell, 1902","2":"NA","3":"1"},{"1":"Odonas greenii (Cockerell, 1902) coccoidea","2":"NA","3":"1"},{"1":"Odonas secreta (Cockerell, 1896) Coccoidea","2":"NA","3":"1"},{"1":"Oenothera brevicata Hudziok","2":"NA","3":"1"},{"1":"Oenothera ciosa Nutt.","2":"NA","3":"1"},{"1":"Onchocleidus dir","2":"NA","3":"1"},{"1":"Ondatralaelaps multinosus (Banks, 1909)","2":"NA","3":"1"},{"1":"Ononis nosa L.","2":"NA","3":"1"},{"1":"Ononis subcata Lag.","2":"NA","3":"1"},{"1":"Opuntas philococcus (Cockerell, 1893) Coccoidea","2":"NA","3":"1"},{"1":"Opuntia caetosa Poepp.","2":"NA","3":"1"},{"1":"Opuntia nulifera Salm-Dyck","2":"NA","3":"1"},{"1":"Opuntia tortina Engelm. & Bigelow","2":"NA","3":"1"},{"1":"Osteormum barberae (Harv.) Norl.","2":"NA","3":"1"},{"1":"Osteormum ecklonis (DC.) Norl.","2":"NA","3":"1"},{"1":"Osteormum jucundum (Phillips) Norl.","2":"NA","3":"1"},{"1":"Otthia raeae (Fuckel) Fuckel (1870)","2":"NA","3":"1"},{"1":"Palaemon adrsus Rathke, 1837","2":"NA","3":"1"},{"1":"Paliurus na-christi Mill.","2":"NA","3":"1"},{"1":"Pallenis nosa (L.) Cass.","2":"NA","3":"1"},{"1":"Palum dilatatum Poiret","2":"NA","3":"1"},{"1":"Palum distichum L.","2":"NA","3":"1"},{"1":"Palum exaltatum J.Presl & C.Presl.","2":"NA","3":"1"},{"1":"Palum notatum Flüggé","2":"NA","3":"1"},{"1":"Palum paloides","2":"NA","3":"1"},{"1":"Palum paniculatum L.","2":"NA","3":"1"},{"1":"Palum pubiflorum Rupr. ex E. Fourn.","2":"NA","3":"1"},{"1":"Palum quadrifarium Lam.","2":"NA","3":"1"},{"1":"Palum saurae (L. Parodi) L. Parodi","2":"NA","3":"1"},{"1":"Palum thunbergii Kunth ex Steud.","2":"NA","3":"1"},{"1":"Palum urvillei Steud.","2":"NA","3":"1"},{"1":"Palum vaginatum Swartz","2":"NA","3":"1"},{"1":"Paneus guttatus Sharp, 1877","2":"NA","3":"1"},{"1":"Paralaeora malardi (Caullery & Mesnil 1897)","2":"NA","3":"1"},{"1":"Paraleptastacus nicaudata","2":"NA","3":"1"},{"1":"Paraperonora leptorma (de Bary) Constant.(1989)","2":"NA","3":"1"},{"1":"Parthenocissus tricudata (Siebold & Zucc.) Planchon","2":"NA","3":"1"},{"1":"Passalora sequoiae (Ellis & Everh.) Y.L. Guo & W.H. Hsieh, 2003 Mycoaerella","2":"NA","3":"1"},{"1":"Passer hiniolensis (Temminck 1820)","2":"NA","3":"1"},{"1":"Pelecanus cris (Bruch, 1832)","2":"NA","3":"1"},{"1":"Pentacora acelata (Uhler, 1877) Heteroptera","2":"NA","3":"1"},{"1":"Peronora aestivalis Syd. (1923),","2":"NA","3":"1"},{"1":"Peronora affinis Rossmann (1863),","2":"NA","3":"1"},{"1":"Peronora arborescens (Berk.) de Bary (1855)","2":"NA","3":"1"},{"1":"Peronora arthurii Farlow","2":"NA","3":"1"},{"1":"Peronora barbareae Gäum. (1918);","2":"NA","3":"1"},{"1":"Peronora berteroae Gäum.","2":"NA","3":"1"},{"1":"Peronora buniadis Gäum. (1918);","2":"NA","3":"1"},{"1":"Peronora camelinae","2":"NA","3":"1"},{"1":"Peronora chlorae","2":"NA","3":"1"},{"1":"Peronora cochleariae","2":"NA","3":"1"},{"1":"Peronora conglomerata Fuckel (1863),","2":"NA","3":"1"},{"1":"Peronora corydalis-intermediae Gäum. (1923);","2":"NA","3":"1"},{"1":"Peronora destructor (Berk.)","2":"NA","3":"1"},{"1":"Peronora digitalis Gäum.(1923)","2":"NA","3":"1"},{"1":"Peronora ducometii Siemaszko & Jankowska","2":"NA","3":"1"},{"1":"Peronora erodii","2":"NA","3":"1"},{"1":"Peronora erysimi Gäum. (1918);","2":"NA","3":"1"},{"1":"Peronora fagopyri","2":"NA","3":"1"},{"1":"Peronora farinosa","2":"NA","3":"1"},{"1":"Peronora grisea (Unger) de Bary (1863),","2":"NA","3":"1"},{"1":"Peronora heridis","2":"NA","3":"1"},{"1":"Peronora iberidis","2":"NA","3":"1"},{"1":"Peronora jaapiana Magnus (1910)","2":"NA","3":"1"},{"1":"Peronora jacksonii","2":"NA","3":"1"},{"1":"Peronora kochiae","2":"NA","3":"1"},{"1":"Peronora lagerheimii Gäum. (1923);","2":"NA","3":"1"},{"1":"Peronora lamii","2":"NA","3":"1"},{"1":"Peronora manshurica (Naumov) Syd. in Gäumann (1923)","2":"NA","3":"1"},{"1":"Peronora matthiolae","2":"NA","3":"1"},{"1":"Peronora mayorii Gäum. (1923);","2":"NA","3":"1"},{"1":"Peronora media Gäum. (1920);","2":"NA","3":"1"},{"1":"Peronora myosotidis de Bary (1863),","2":"NA","3":"1"},{"1":"Peronora naciae","2":"NA","3":"1"},{"1":"Peronora obovata Bonord. (1890),","2":"NA","3":"1"},{"1":"Peronora ornithopi","2":"NA","3":"1"},{"1":"Peronora phyteumatis Fuckel (1865);","2":"NA","3":"1"},{"1":"Peronora rsa Berk. (1862)","2":"NA","3":"1"},{"1":"Peronora scleranthi Rabenh. (1850),","2":"NA","3":"1"},{"1":"Peronora sisymbrii-officinalis Gäum. (1918);","2":"NA","3":"1"},{"1":"Peronora statices Lobik","2":"NA","3":"1"},{"1":"Peronora tomentosa Fuckel (1863),","2":"NA","3":"1"},{"1":"Peronora trifoliorum de Bary (1863)","2":"NA","3":"1"},{"1":"Peronora viciae","2":"NA","3":"1"},{"1":"Peronora violae de Bary (1863),","2":"NA","3":"1"},{"1":"Pestalotiopsis guepinii (Desm.) Steyaert (1949) Pestaloaeria","2":"NA","3":"1"},{"1":"Petasites rius","2":"NA","3":"1"},{"1":"Petroselinum crim","2":"NA","3":"1"},{"1":"Phaeoaeria eustoma (Fuckel) L. Holm (1957),","2":"NA","3":"1"},{"1":"Phaeoaeria salebricola (E. Bommer, M. Rousseau & Sacc.) Leuchtm. (1984)","2":"NA","3":"1"},{"1":"Philaenus marius (Linnaeus, 1758)","2":"NA","3":"1"},{"1":"Philonthus nipes Sharp, 1874","2":"NA","3":"1"},{"1":"Phloeora robiniae (Lib.) Höhn. (1905) Mycoaerella robiniae Siemaszko","2":"NA","3":"1"},{"1":"Phoca caca","2":"NA","3":"1"},{"1":"Physa","2":"NA","3":"1"},{"1":"Phyteuma catum L.","2":"NA","3":"1"},{"1":"Phytophthora megarma Drechsler (1931),","2":"NA","3":"1"},{"1":"Picris engerana (L.) Poir.","2":"NA","3":"1"},{"1":"Pilosella caetosa (Dumort.) Sell & C. West","2":"NA","3":"1"},{"1":"Pilumnus nifer","2":"NA","3":"1"},{"1":"Pinnas adistrae (Signoret, 1869) Coccoidea","2":"NA","3":"1"},{"1":"Pinnas buxi (Bouché, 1851) Coccoidea","2":"NA","3":"1"},{"1":"Pinnas strachani (Cooley, 1899) Coccoidea","2":"NA","3":"1"},{"1":"Pittorum crassifolium Banks & Sol. ex A. Cunn.","2":"NA","3":"1"},{"1":"Pittorum tenuifolium Gaertner","2":"NA","3":"1"},{"1":"Pittorum tobira (Thunb.) W.T. Aiton","2":"NA","3":"1"},{"1":"Pittorum undulatum Vent.","2":"NA","3":"1"},{"1":"Plagiomerus diadis Crawford, 1910","2":"NA","3":"1"},{"1":"Pleonorium caribaeum","2":"NA","3":"1"},{"1":"Pleora herbarum (Pers.) Rabenh. (1854),","2":"NA","3":"1"},{"1":"Poa cri Thuill.","2":"NA","3":"1"},{"1":"Poa flabellata (Lam.) Rail","2":"NA","3":"1"},{"1":"Podoaera clandestina (Wallr.) Lév. (1851),","2":"NA","3":"1"},{"1":"Podoaera leucotricha (Ellis & Everh.) E.S. Salmon (1900),","2":"NA","3":"1"},{"1":"Podoaera mors-uvae (Schwein.) U. Braun & S. Takam (2000)","2":"NA","3":"1"},{"1":"Poecilia enops","2":"NA","3":"1"},{"1":"Polias cycadis Comstock, 1833 Coccoidea","2":"NA","3":"1"},{"1":"Polygonum oxyrmum C.A. Mey. & Bunge ex Ledeb.","2":"NA","3":"1"},{"1":"Polylla polylla Germar, 1821","2":"NA","3":"1"},{"1":"Polyodon thula (Walbaum, 1792)","2":"NA","3":"1"},{"1":"Polyplax nulosa (Burmeister, 1839) Anoplura","2":"NA","3":"1"},{"1":"Polypodium herium Maxon","2":"NA","3":"1"},{"1":"Polypogon monliensis","2":"NA","3":"1"},{"1":"Porphyrostromium","2":"NA","3":"1"},{"1":"Prionoo saccifera Mackie and Hartley, 1990","2":"NA","3":"1"},{"1":"Prunus nosa L.","2":"NA","3":"1"},{"1":"Psammodius ar (Fabricius, 1775)","2":"NA","3":"1"},{"1":"Psammodromus hinicus","2":"NA","3":"1"},{"1":"Pselactus dix (Herbst, 1795)","2":"NA","3":"1"},{"1":"Pseudaulacas cockerelli (Cooley, 1897) Coccoidea","2":"NA","3":"1"},{"1":"Pseudaulacas pentagona (Targioni Tozzetti, 1886) Coccoidea","2":"NA","3":"1"},{"1":"Pseudococcus longinus (Targioni TozzettIT, 1868) Coccoidea","2":"NA","3":"1"},{"1":"Pseudomonas syringae pv. morunorum (Wormald) Young","2":"NA","3":"1"},{"1":"Pseudomyicola nosus","2":"NA","3":"1"},{"1":"Pseudopachymerina nipes (Erichson, 1833)","2":"NA","3":"1"},{"1":"Pseudoperonora cannabina (G.H. Otth) Curzi (1926)","2":"NA","3":"1"},{"1":"Pseudoperonora cubensis (Berk. & M.A. Curtis) Rostovzev (1903)","2":"NA","3":"1"},{"1":"Pseudoperonora humuli (Miyabe & Takah.) G.W. Wilson (1914)","2":"NA","3":"1"},{"1":"Pterorma cristatum","2":"NA","3":"1"},{"1":"Pterorma joergenseni","2":"NA","3":"1"},{"1":"Pterostichus caus (Ménétriés, 1832)","2":"NA","3":"1"},{"1":"Puccinia aragi DC. (1805),","2":"NA","3":"1"},{"1":"Pyrus nosa Forsskål","2":"NA","3":"1"},{"1":"Pythium endens Hans Braun (1925)","2":"NA","3":"1"},{"1":"Reesa velae (Milliron, 1939)","2":"NA","3":"1"},{"1":"Retama aerocarpa (L.) Boiss.","2":"NA","3":"1"},{"1":"Retama monorma (L.) Boiss.","2":"NA","3":"1"},{"1":"Rhincalanus","2":"NA","3":"1"},{"1":"Rhizoaera kalkhoffii Bubák (1914),","2":"NA","3":"1"},{"1":"Rhynchorium orthorum Caldwell (1937),","2":"NA","3":"1"},{"1":"Rhyopsocus dirilis (Pearman, 1931)","2":"NA","3":"1"},{"1":"Ribes catum Robson","2":"NA","3":"1"},{"1":"Ribes uva-cri L.","2":"NA","3":"1"},{"1":"Robinia hida L.","2":"NA","3":"1"},{"1":"Rochelia dirma (L. f.) K. Koch","2":"NA","3":"1"},{"1":"Rosa Hollandica'","2":"NA","3":"1"},{"1":"Rubus ctabilis Pursh","2":"NA","3":"1"},{"1":"Rubus elegantinosus (A.Schumach.) H.E. Weber","2":"NA","3":"1"},{"1":"Rumex cris L.","2":"NA","3":"1"},{"1":"Rytidorma racemosum (R.Br.) H.E. Connor & E. Edgar","2":"NA","3":"1"},{"1":"Rytidorma tenuius (Steud.) Connor & Edgar","2":"NA","3":"1"},{"1":"Rytidorma thomsonii (Buchanan) Connor & Edgar","2":"NA","3":"1"},{"1":"Sabella llanzani","2":"NA","3":"1"},{"1":"Saccharum ntaneum L.","2":"NA","3":"1"},{"1":"Salpingella","2":"NA","3":"1"},{"1":"Salvia endens Ker-Gawl.","2":"NA","3":"1"},{"1":"Salvia nosa L.","2":"NA","3":"1"},{"1":"Saxifraga thularis Brot.","2":"NA","3":"1"},{"1":"Sclerophthora macrora (Sacc.) Thirum. C.G. Shaw & Naras. (1953)","2":"NA","3":"1"},{"1":"Scolecetrix","2":"NA","3":"1"},{"1":"Scolopendra subnipes Leach, 1815","2":"NA","3":"1"},{"1":"Scolymus hinicus L.","2":"NA","3":"1"},{"1":"Scorzonera hinica","2":"NA","3":"1"},{"1":"Sedum ctabile Boreau","2":"NA","3":"1"},{"1":"Sedum hinicum L.","2":"NA","3":"1"},{"1":"Sedum rium","2":"NA","3":"1"},{"1":"Sedum thulifolium Hook.","2":"NA","3":"1"},{"1":"Seimatorium parasiticum","2":"NA","3":"1"},{"1":"Selenadus albus McKenzie, 1953 Coccoidea","2":"NA","3":"1"},{"1":"Septoria betulae Pass. (1867) Mycoaerella","2":"NA","3":"1"},{"1":"Septotis podophyllina (Ellis & Everh.) B. Sutton (1970) Gloeorium podophyllinum Ellis & Everh., ScleRotinia podophyllina (Whetzel) Arx, Septogloeum podophyllinum (Ellis & Everh.) Sacc., Septoriopsis podophyllina (Ellis & Everh.) Whetzel, Septotinia podophyllina (Ellis & Everh.) Whetzel, Septotis podophyllin","2":"NA","3":"1"},{"1":"Serrasalmus","2":"NA","3":"1"},{"1":"Setaria acelata (Schumach.) Stapf & C.E. Hubbard ex M.B. Moss","2":"NA","3":"1"},{"1":"Sida nosa L.","2":"NA","3":"1"},{"1":"Sigmodon hidus Say and Ord 1825","2":"NA","3":"1"},{"1":"Sisymbrella ara (L.) Spach","2":"NA","3":"1"},{"1":"Smilax ara L.","2":"NA","3":"1"},{"1":"Solanum [unidentified ny taxon]","2":"NA","3":"1"},{"1":"Solanum hidum Pers.","2":"NA","3":"1"},{"1":"Soliva pterorma (Juss.) Less.","2":"NA","3":"1"},{"1":"Sonchus ar","2":"NA","3":"1"},{"1":"Spermora subulata","2":"NA","3":"1"},{"1":"Spirulina","2":"NA","3":"1"},{"1":"Spondylus nosus Schreibers, 1793","2":"NA","3":"1"},{"1":"Stenchaetothrips nalis Reyes, 1994","2":"NA","3":"1"},{"1":"Stenocarpella macrora","2":"NA","3":"1"},{"1":"Stephanolepis diaos Fraser-Brunner, 1940","2":"NA","3":"1"},{"1":"Stigmella ciosa (Frey, 1857)","2":"NA","3":"1"},{"1":"Stipa endens Trin.","2":"NA","3":"1"},{"1":"Strandesia nulosa","2":"NA","3":"1"},{"1":"Strebloo benedicti","2":"NA","3":"1"},{"1":"Strebloo gynobranchiata","2":"NA","3":"1"},{"1":"Styloniscus nosus (Patience, 1907)","2":"NA","3":"1"},{"1":"Suillus ctabilis","2":"NA","3":"1"},{"1":"Symphytum arum","2":"NA","3":"1"},{"1":"Synanthedon andrenaeformis (Layres, 1801)","2":"NA","3":"1"},{"1":"Taeniastrotus","2":"NA","3":"1"},{"1":"Teira percillata","2":"NA","3":"1"},{"1":"Telekia ciosa (Schreber) Baumg.","2":"NA","3":"1"},{"1":"Temnothorax longinosus Roger, 1863","2":"NA","3":"1"},{"1":"Tenellia adrsa (Nordmann, 1845)","2":"NA","3":"1"},{"1":"Teratoaeria eucalypti (Cooke & Massee) Crous,(2009)","2":"NA","3":"1"},{"1":"Thla alliaceum","2":"NA","3":"1"},{"1":"Thla arvense","2":"NA","3":"1"},{"1":"Thla brachypetalum Jordan","2":"NA","3":"1"},{"1":"Thla caerulescens J. & C. Presl.","2":"NA","3":"1"},{"1":"Thla kovatsii Heuff.","2":"NA","3":"1"},{"1":"Thla macrophyllum Hoffm.","2":"NA","3":"1"},{"1":"Thla perfoliatum","2":"NA","3":"1"},{"1":"Thuidiopsis rsa (Hook. f. & Wilson) Broth.","2":"NA","3":"1"},{"1":"Tilapia","2":"NA","3":"1"},{"1":"Torpedo sinursici Olfers, 1831","2":"NA","3":"1"},{"1":"Trachelormum jasminoides (Lind.) Lem.","2":"NA","3":"1"},{"1":"Trachemys","2":"NA","3":"1"},{"1":"Trachyra intrusa (Grev.) Arthur (1934),","2":"NA","3":"1"},{"1":"Trachyrmum ammi (L.) Sprague ex Turrill","2":"NA","3":"1"},{"1":"Trechira nivea (Pers.) K.H. Larss.(1995)","2":"NA","3":"1"},{"1":"Triaeris stenas Simon 1891","2":"NA","3":"1"},{"1":"Trichia hida (Linnaeus, 1758)","2":"NA","3":"1"},{"1":"Trichinella ralis (Owen, 1835)","2":"NA","3":"1"},{"1":"Trichocereus chianus (Lem.) Riccob.","2":"NA","3":"1"},{"1":"Trifolium diceum L.","2":"NA","3":"1"},{"1":"Trifolium mosum L.","2":"NA","3":"1"},{"1":"Trigonella monliaca L.","2":"NA","3":"1"},{"1":"Trigonella nosa L.","2":"NA","3":"1"},{"1":"Trimenopon hidum Burmeister, 1838 Amblycera","2":"NA","3":"1"},{"1":"Tripleurormum disciforme (C.A. Mey.) Sch.-Bip.","2":"NA","3":"1"},{"1":"Tripleurormum inodorum","2":"NA","3":"1"},{"1":"Triticum lta L.","2":"NA","3":"1"},{"1":"Trochiscococcus ciosus (De Lotto, 1961) Coccoidea","2":"NA","3":"1"},{"1":"Tropaeolum ciosum Poeppig & Endl.","2":"NA","3":"1"},{"1":"Tylerius nosissimus Regan, 1908","2":"NA","3":"1"},{"1":"Umbas regularis (Newstead, 1911) Coccoidea","2":"NA","3":"1"},{"1":"Unas euonymi (Comstock, 1881) Coccoidea","2":"NA","3":"1"},{"1":"Unas yanonensis (Kuwana, 1923) Coccoidea","2":"NA","3":"1"},{"1":"Urocleidus dir","2":"NA","3":"1"},{"1":"Urormum picroides (L.) Scop. ex F.W. Schmidt","2":"NA","3":"1"},{"1":"Vaccaria hinica","2":"NA","3":"1"},{"1":"Vallisneria ralis","2":"NA","3":"1"},{"1":"Ve velutina nigrithorax du Buysson, 1905","2":"NA","3":"1"},{"1":"Vela germanica (Fabricius, 1793)","2":"NA","3":"1"},{"1":"Vela vulgaris (Linné, 1758)","2":"NA","3":"1"},{"1":"Venturia chlorora (Ces.) P. Karst. (1873),","2":"NA","3":"1"},{"1":"Verbascum ciosum Schrader","2":"NA","3":"1"},{"1":"Veronica cata L.","2":"NA","3":"1"},{"1":"Verruca ngleri","2":"NA","3":"1"},{"1":"Vicia dirma DC.","2":"NA","3":"1"},{"1":"Vicia tetrarma","2":"NA","3":"1"},{"1":"Vipera as","2":"NA","3":"1"},{"1":"Vitula edmandsii (Packard, 1865) s serratilineella Ragonot, 1887","2":"NA","3":"1"},{"1":"Xanthium nosum","2":"NA","3":"1"},{"1":"Xeris ctrum (Linnaeus, 1758)","2":"NA","3":"1"},{"1":"Xerotricha conrcata (Draparnaud, 1801)","2":"NA","3":"1"},{"1":"Zafra selaora (Melvill & Standen, 1901)","2":"NA","3":"1"},{"1":"Zoropsis nimana (Dufour 1820)","2":"NA","3":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Concrete actions to undertake: - scientific names without <code>subtaxon_rank</code>: - <code>Acaena anserinifolia x inermis</code>: species - <code>Dahlia coccinea x pinnata</code>: species - <code>Geoplana (=Australoplana) sanguinea</code>: species - <code>Hyalomma Scupense &quot;Delpy, 1946&quot;</code>: species - <code>Rosa Hollandica'</code>: species - Rest: genera - scientific names with <code>subtaxon_rank</code> = <code>agg.</code>: genus - scientific names with <code>subtaxon_rank</code> = <code>hyb</code>: species - scientific name = <code>Oidium Pseudoidium</code>: wrong scientific name, refers to genus <code>Oidium</code> or <code>Pseudoidium</code></p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Define taxa without <code>subtaxon_rank</code> which are in fact species</p></li>
+<li><p>Map <code>taxonRank</code></p></li>
+<li><p>summarize mapping:</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["rankmarker"],"name":[1],"type":["chr"],"align":["left"]},{"label":["subtaxon_rank"],"name":[2],"type":["chr"],"align":["left"]},{"label":["dwc_taxonRank"],"name":[3],"type":["chr"],"align":["left"]},{"label":["records"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"sp.","2":"NA","3":"species","4":"10193"},{"1":"NA","2":"NA","3":"genus","4":"637"},{"1":"infrasp.","2":"subsp.","3":"infraspecificname","4":"494"},{"1":"sp.","2":"hyb.","3":"species","4":"323"},{"1":"infrasp.","2":"var.","3":"infraspecificname","4":"135"},{"1":"infrasp.","2":"NA","3":"infraspecificname","4":"107"},{"1":"NA","2":"hyb.","3":"species","4":"60"},{"1":"NA","2":"subsp.","3":"subspecies","4":"28"},{"1":"morph","2":"NA","3":"morphovar","4":"18"},{"1":"sp.","2":"var.","3":"species","4":"18"},{"1":"NA","2":"agg.","3":"genus","4":"14"},{"1":"morph","2":"subsp.","3":"morphovar","4":"11"},{"1":"cv.","2":"hyb.","3":"cultivar","4":"10"},{"1":"NA","2":"var.","3":"variety","4":"7"},{"1":"sp.","2":"agg.","3":"species","4":"6"},{"1":"NA","2":"NA","3":"species","4":"4"},{"1":"pv.","2":"NA","3":"pathovar","4":"4"},{"1":"sp.","2":"","3":"species","4":"4"},{"1":"sp.","2":"subsp.","3":"species","4":"4"},{"1":"var.","2":"var.","3":"variety","4":"4"},{"1":"NA","2":"f. sp.","3":"form","4":"3"},{"1":"cv.","2":"NA","3":"cultivar","4":"3"},{"1":"infrasp.","2":"x","3":"infraspecificname","4":"3"},{"1":"var.","2":"subsp.","3":"variety","4":"3"},{"1":"infrasp.","2":"f.","3":"infraspecificname","4":"2"},{"1":"infrasp.","2":"f. sp.","3":"infraspecificname","4":"2"},{"1":"infrasubsp.","2":"NA","3":"infrasubspecificname","4":"2"},{"1":"strain","2":"subsp.","3":"strain","4":"2"},{"1":"var.","2":"NA","3":"variety","4":"2"},{"1":"NA","2":"","3":"species","4":"1"},{"1":"NA","2":"Crous","3":"species","4":"1"},{"1":"NA","2":"Cytosporina sp.","3":"species","4":"1"},{"1":"f.","2":"var.","3":"form","4":"1"},{"1":"infrasp.","2":"agg.","3":"infraspecificname","4":"1"},{"1":"infrasp.","2":"subspecies","3":"infraspecificname","4":"1"},{"1":"infrasp.","2":"var","3":"infraspecificname","4":"1"},{"1":"infrasubsp.","2":"hyb.","3":"infrasubspecificname","4":"1"},{"1":"morph","2":"var.","3":"morphovar","4":"1"},{"1":"sp.","2":"sp.","3":"species","4":"1"},{"1":"subf.","2":"var.","3":"subform","4":"1"},{"1":"subvar.","2":"subsp.","3":"subvariety","4":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="taxonremarks" class="section level2">
+<h2><span class="header-section-number">3.18</span> taxonRemarks</h2>
+<p><code>taxon</code> includes a reference to the consulted source via <code>sourceid</code>. We map the sources under <code>taxonRemarks</code>.</p>
+<p>Rename <code>source</code> to <code>taxonRemarks</code>:</p>
+</div>
+</div>
+<div id="post-processing" class="section level1">
+<h1><span class="header-section-number">4</span> Post-processing</h1>
+<ol style="list-style-type: decimal">
+<li><p>Only keep the Darwin Core columns</p></li>
+<li><p>Drop the <code>dwc_</code> prefix</p></li>
+<li><p>Sort on taxonID</p></li>
+<li><p>Export all taxonID’s (required for filtering the records in the extensions):</p></li>
+<li><p>Export <code>core_taxa</code>:</p></li>
+<li><p>Preview data</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["language"],"name":[1],"type":["chr"],"align":["left"]},{"label":["license"],"name":[2],"type":["chr"],"align":["left"]},{"label":["rightsHolder"],"name":[3],"type":["chr"],"align":["left"]},{"label":["datasetID"],"name":[4],"type":["chr"],"align":["left"]},{"label":["institutionCode"],"name":[5],"type":["chr"],"align":["left"]},{"label":["datasetName"],"name":[6],"type":["chr"],"align":["left"]},{"label":["taxonID"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["scientificName"],"name":[8],"type":["chr"],"align":["left"]},{"label":["kingdom"],"name":[9],"type":["chr"],"align":["left"]},{"label":["phylum"],"name":[10],"type":["chr"],"align":["left"]},{"label":["class"],"name":[11],"type":["chr"],"align":["left"]},{"label":["order"],"name":[12],"type":["chr"],"align":["left"]},{"label":["family"],"name":[13],"type":["chr"],"align":["left"]},{"label":["genus"],"name":[14],"type":["chr"],"align":["left"]},{"label":["specificEpithet"],"name":[15],"type":["chr"],"align":["left"]},{"label":["infraspecificEpithet"],"name":[16],"type":["chr"],"align":["left"]},{"label":["taxonRank"],"name":[17],"type":["chr"],"align":["left"]},{"label":["taxonRemarks"],"name":[18],"type":["chr"],"align":["left"]}],"data":[{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"5","8":"Telaranea murphyae Paton","9":"Plantae","10":"Marchantiophyta","11":"Jungermanniopsida","12":"Jungermanniales","13":"Lepidoziaceae","14":"Telaranea","15":"murphyae","16":"NA","17":"species","18":"Davis PH et al (eds) (1967) Flora of Turkey and the East Aegean Islands, vol 2. University Press, Edinburgh"},{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"6","8":"Telaranea tetradactyla","9":"Plantae","10":"Marchantiophyta","11":"Jungermanniopsida","12":"Jungermanniales","13":"Lepidoziaceae","14":"Telaranea","15":"tetradactyla","16":"NA","17":"species","18":"Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192."},{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"7","8":"Lophocolea binosa (Hook. f. & Taylor) Gottsche et al.","9":"Plantae","10":"Marchantiophyta","11":"Jungermanniopsida","12":"Jungermanniales","13":"Geocalycaceae","14":"Lophocolea","15":"bispinosa","16":"NA","17":"genus","18":"Navajas M et al. (2010) Mites and ticks (Acari). Chapter 7.4. In: Roques A et al. (Eds) Arthropod invasions in Europe. BioRisk 4(1): 149–192."},{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"8","8":"Lophocolea semiteres (Lehm.) Mitt.","9":"Plantae","10":"Marchantiophyta","11":"Jungermanniopsida","12":"Jungermanniales","13":"Geocalycaceae","14":"Lophocolea","15":"semiteres","16":"NA","17":"species","18":"<U+0391><U+03C1>aµpat<U+03B6><U+03AE><U+03C2> T. (ed) (2001) T<U+03AC>µ<U+03BD><U+03BF><U+03B9> <U+03BA>a<U+03B9> d<U+03AD><U+03BD>t<U+03C1>a st<U+03B7><U+03BD> <U+0395><U+03BB><U+03BB><U+03AC>da, t<U+03CC>µ<U+03BF><U+03C2> <U+0399><U+0399>. <U+039F><U+03B9><U+03BA><U+03BF><U+03BB><U+03BF><U+03B3><U+03B9><U+03BA><U+03AE> <U+039A><U+03AF><U+03BD><U+03B7>s<U+03B7> <U+0394><U+03C1><U+03AC>µa<U+03C2> - <U+03A4>e<U+03C7><U+03BD><U+03BF><U+03BB><U+03BF><U+03B3><U+03B9><U+03BA><U+03CC> <U+0395><U+03BA>pa<U+03B9>de<U+03C5>t<U+03B9><U+03BA><U+03CC> <U+038A>d<U+03C1><U+03C5>µa <U+039A>aß<U+03AC><U+03BB>a<U+03C2>, <U+0394><U+03C1><U+03AC>µa"},{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"9","8":"Sphaerocarpos michelii Bellardi","9":"Plantae","10":"Marchantiophyta","11":"Marchantiopsida","12":"Sphaerocarpales","13":"Sphaerocarpaceae","14":"Sphaerocarpos","15":"michelii","16":"NA","17":"species","18":"Greuter W, Burdet HM, Long G (eds) (1984) Med - Checklist, vol 1. Conservatoire et Jardin botaniques de la Ville de Genève, Genève"},{"1":"en","2":"http://creativecommons.org/licenses/by/4.0/","3":"CEH","4":"","5":"CEH","6":"DAISIE - Inventory of alien invasive species in Europe","7":"10","8":"Sphaerocarpos texanus Austin","9":"Plantae","10":"Marchantiophyta","11":"Marchantiopsida","12":"Sphaerocarpales","13":"Sphaerocarpaceae","14":"Sphaerocarpos","15":"texanus","16":"NA","17":"species","18":"Greuter W, Burdet HM, Long G (eds) (1984) Med - Checklist, vol 1. Conservatoire et Jardin botaniques de la Ville de Genève, Genève"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>7.Save to CSV:</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
