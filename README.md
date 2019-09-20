@@ -1,12 +1,12 @@
-# Inventory of alien species in Europe (DAISIE)
+# DAISIE - Inventory of alien species in Europe
 
 ## Rationale
 
-This repository contains the functionality to standardize the data of the [Inventory of alien species in Europe (DAISIE)](http://www.europe-aliens.org/) --> to a [Darwin Core checklist](https://www.gbif.org/dataset-classes) that can be harvested by [GBIF](http://www.gbif.org).
+This repository contains the functionality to standardize the data of the [DAISIE - Inventory of alien species in Europe](http://www.europe-aliens.org/) to a [Darwin Core checklist](https://www.gbif.org/dataset-classes) that can be harvested by [GBIF](http://www.gbif.org).
 
 ## Workflow
 
-[source data](data/raw) <!-- Additionally, you can write here where that raw data came from, e.g. "(downloaded as [Supplementary Material 1](http://neobiota.pensoft.net//lib/ajax_srv/article_elements_srv.php?action=download_suppl_file&instance_id=31&article_id=4007))" --> → Darwin Core [mapping script](src/dwc_mapping.Rmd) → generated [Darwin Core files](data/processed)
+[source data](https://github.com/trias-project/daisie-checklist/blob/master/data/raw) → Darwin Core [mapping script](src/dwc_mapping.Rmd) → generated [Darwin Core files](https://github.com/trias-project/daisie-checklist/blob/master/data/processed)
 
 ## Published dataset
 
@@ -46,8 +46,8 @@ The repository structure is based on [Cookiecutter Data Science](http://drivenda
 
 ## Contributors
 
-[List of contributors](<!-- Add the URL to the GitHub contributors of your repository here, e.g. https://github.com/trias-project/checklist-recipe/contributors -->)
+[List of contributors](https://github.com/trias-project/daisie-checklist/contributors)
 
 ## License
 
-[MIT License](LICENSE) for the code and documentation in this repository. The included data is released under another license.
+[MIT License](https://github.com/trias-project/daisie-checklist/blob/master/LICENSE) for the code and documentation in this repository. The included data is released under another license.

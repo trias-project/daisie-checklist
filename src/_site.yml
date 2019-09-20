@@ -1,13 +1,24 @@
-name: "my_dataset_title"
+name: "DAISIE - Inventory of alien invasive species in Europe"
 output_dir: "../docs"
 navbar:
-  title: "my_dataset_shortname"
+  title: "daisie-checklist"
   left:
-    - text: "Darwin Core mapping"
-      href: dwc_mapping.html
+    - text: "Workflow"
+      href: ""
+      menu:
+      - text: "Prepare datasets for processing"
+        href: 1_pre_processing.html
+      - text: "Map taxon core"
+        href: 2_dwc_taxon_mapping.html
+      - text: "Map vernacular name extension"
+        href: 3_dwc_vernacularname_mapping.html
+      - text: "Map distribution extension"
+        href: 4_dwc_distribution_mapping.html
+      - text: "Map description extension"
+        href: 5_dwc_description_extension
   right:
     - icon: fa-github fa-lg
-      href: my_dataset_repository
+      href: https://github.com/trias-project/daisie-checklist
 output:
   html_document:
     theme: yeti

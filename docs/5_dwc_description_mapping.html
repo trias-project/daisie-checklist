@@ -9,9 +9,12 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Lien Reyserhove" />
+<meta name="author" content="David Roy" />
 
+<meta name="date" content="2019-09-20" />
 
-<title></title>
+<title>Darwin Core mapping script for Description Extension</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +22,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -268,6 +274,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -323,69 +424,89 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Darwin Core mapping script for Description Extension</h1>
+<h3 class="subtitle"><em>For: Inventory of alien species in Europe (DAISIE)</em></h3>
+<h4 class="author"><em>Lien Reyserhove</em></h4>
+<h4 class="author"><em>David Roy</em></h4>
+<h4 class="date"><em>2019-09-20</em></h4>
 
 </div>
 
 
-<div id="daisie---inventory-of-alien-species-in-europe" class="section level1">
-<h1>DAISIE - Inventory of alien species in Europe</h1>
-<div id="rationale" class="section level2">
-<h2>Rationale</h2>
-<p>This repository contains the functionality to standardize the data of the <a href="http://www.europe-aliens.org/">DAISIE - Inventory of alien species in Europe</a> to a <a href="https://www.gbif.org/dataset-classes">Darwin Core checklist</a> that can be harvested by <a href="http://www.gbif.org">GBIF</a>.</p>
+<p>This file describes the steps required to map the data to <a href="https://tools.gbif.org/dwca-validator/extension.do?id=gbif:Description">Darwin Core Description</a></p>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<p>Load libraries:</p>
 </div>
-<div id="workflow" class="section level2">
-<h2>Workflow</h2>
-<p><a href="https://github.com/trias-project/daisie-checklist/blob/master/data/raw">source data</a> → Darwin Core <a href="src/dwc_mapping.Rmd">mapping script</a> → generated <a href="https://github.com/trias-project/daisie-checklist/blob/master/data/processed">Darwin Core files</a></p>
-</div>
-<div id="published-dataset" class="section level2">
-<h2>Published dataset</h2>
-<ul>
-<li><a href="!--%20Add%20the%20URL%20of%20the%20dataset%20on%20the%20IPT%20here%20--">Dataset on the IPT</a></li>
-<li><a href="!--%20Add%20the%20DOI%20of%20the%20dataset%20on%20GBIF%20here%20--">Dataset on GBIF</a></li>
-</ul>
-</div>
-<div id="repo-structure" class="section level2">
-<h2>Repo structure</h2>
-<p>The repository structure is based on <a href="http://drivendata.github.io/cookiecutter-data-science/">Cookiecutter Data Science</a> and the <a href="https://github.com/trias-project/checklist-recipe">Checklist recipe</a>. Files and directories indicated with <code>GENERATED</code> should not be edited manually.</p>
-<pre><code>├── README.md              : Description of this repository
-├── LICENSE                : Repository license
-├── daisie-checklist.Rproj : RStudio project file
-├── .gitignore             : Files and directories to be ignored by git
-│
-├── data
-│   ├── raw                : Source data, input for mapping script
-│   └── processed          : Darwin Core output of mapping script GENERATED
-│
-├── docs                   : Repository website GENERATED
-│
-└── src
-    ├── dwc_mapping.Rmd    : Darwin Core mapping script, core functionality of this repository
-    ├── _site.yml          : Settings to build website in docs/
-    └── index.Rmd          : Template for website homepage</code></pre>
-</div>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
+<div id="read-data" class="section level1">
+<h1><span class="header-section-number">2</span> Read data</h1>
 <ol style="list-style-type: decimal">
-<li>Clone this repository to your computer</li>
-<li>Open the RStudio project file</li>
-<li>Open the <code>dwc_mapping.Rmd</code> <a href="https://rmarkdown.rstudio.com/">R Markdown file</a> in RStudio</li>
-<li>Install any required packages</li>
-<li>Click <code>Run &gt; Run All</code> to generate the processed data</li>
-<li>Alternatively, click <code>Build &gt; Build website</code> to generate the processed data and build the website in <code>docs/</code> (advanced)</li>
+<li><p>Define data types</p></li>
+<li><p>Read habitat data (raw data)</p></li>
+<li><p>Read native range (raw data)</p></li>
+<li><p>Read <code>ecofunctional_group</code> (interim)</p></li>
+<li><p>Read <code>interim_literature_references</code> (interim)</p></li>
+<li><p>Read <code>remove_taxa</code> (interim)</p></li>
+<li><p>Read <code>core_taxa</code></p></li>
 </ol>
 </div>
-<div id="contributors" class="section level2">
-<h2>Contributors</h2>
-<p><a href="https://github.com/trias-project/daisie-checklist/contributors">List of contributors</a></p>
+<div id="create-transformation-functions" class="section level1">
+<h1><span class="header-section-number">3</span> Create transformation functions</h1>
+<p>The description extension will be a combination of the following descriptors: - habitat - native range - ecofunctional group</p>
+<p>Each descriptor is imported as a separate dataset. We need to imply the same transformation steps to each dataset:</p>
+<ol style="list-style-type: decimal">
+<li>Remove all empty values (if applicable)</li>
+<li>Keep distinct vaules only (if applicable)</li>
+<li>Map <code>description</code></li>
+<li>Map <code>type</code></li>
+<li>Select relevant columns</li>
+</ol>
+<p>As these steps are repeated for each of the description datasets, we write a function here.</p>
 </div>
-<div id="license" class="section level2">
-<h2>License</h2>
-<p><a href="https://github.com/trias-project/daisie-checklist/blob/master/LICENSE">MIT License</a> for the code and documentation in this repository. The included data is released under another license.</p>
+<div id="habitat" class="section level1">
+<h1><span class="header-section-number">4</span> Habitat</h1>
+<p>Generate <code>eunis_habitat</code></p>
+<p>Apply transformation function:</p>
 </div>
+<div id="native-range" class="section level1">
+<h1><span class="header-section-number">5</span> Native range</h1>
+</div>
+<div id="ecofunctional-group" class="section level1">
+<h1><span class="header-section-number">6</span> Ecofunctional group</h1>
+</div>
+<div id="descriptors-extention-mapping" class="section level1">
+<h1><span class="header-section-number">7</span> Descriptors extention mapping</h1>
+<ol style="list-style-type: decimal">
+<li><p>Combine <code>habitat</code>, <code>native_range</code> and <code>ecofunctional_group</code></p></li>
+<li><p>Link with <code>sourceid</code> from <code>literature_references</code></p></li>
+<li><p>Keep column names for description extension only and rename</p></li>
+<li><p>Remove all taxonID’s that are not included in the taxon core</p></li>
+<li><p>Scan for dupliated taxa (see <a href="https://github.com/trias-project/daisie-checklist/issues/23">this issue</a>):</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["taxonID"],"name":[1],"type":["chr"],"align":["left"]}],"data":[],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Change data type of <code>taxonid</code> to numeric:</p></li>
+<li><p>Sort on <code>taxonid</code></p></li>
+<li><p>Preview data:</p></li>
+</ol>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["taxonID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["description"],"name":[2],"type":["chr"],"align":["left"]},{"label":["type"],"name":[3],"type":["chr"],"align":["left"]},{"label":["source"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Littoral sediment (A2 level 2)","3":"eunis habitat","4":"NA"},{"1":"5","2":"Woodland fringes and clearings and tall forb stands (E5 level 2)","3":"eunis habitat","4":"NA"},{"1":"5","2":"Coniferous woodland (G3 level 2)","3":"eunis habitat","4":"DAISIE (2007) European Database of Alien Species"},{"1":"5","2":"Treeline ecotones (X20 level 2)","3":"eunis habitat","4":"NA"},{"1":"5","2":"Pasture woods (with a tree layer overlying pasture) (X9 level 2)","3":"eunis habitat","4":"NA"},{"1":"5","2":"Northern America","3":"native range","4":"Mosyakin, S. L., Yavorska, O. G. 2003. The Nonnative Flora of the Kyiv (Kiev) Urban Area, Ukraine: A Checklist and Brief Analysis. Urban habitats. Vol.: 1, p: 45-65"},{"1":"6","2":"Littoral sediment (A2 level 2)","3":"eunis habitat","4":"NA"},{"1":"6","2":"Sublittoral sediment (A5 level 2)","3":"eunis habitat","4":"NA"},{"1":"6","2":"Broadleaved deciduous woodland (G1 level 2)","3":"eunis habitat","4":"Söderström L., Urmi E. & Vána J. (2002) Distribution of Hepaticae and Anthocerotae in Europe and Macaronesia. Lindbergia 27, 3-47."},{"1":"6","2":"Broadleaved evergreen woodland (G2 level 2)","3":"eunis habitat","4":"Söderström L., Urmi E. & Vána J. (2002) Distribution of Hepaticae and Anthocerotae in Europe and Macaronesia. Lindbergia 27, 3-47."}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol start="8" style="list-style-type: decimal">
+<li>Export as .csv</li>
+</ol>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
