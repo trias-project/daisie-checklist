@@ -694,6 +694,12 @@ distribution %<>% mutate(dwc_occurrenceRemarks = paste0(
 ))
 ```
 
+Some records in `occurrenceRemarks` contain a carriage return. We remove these here:
+
+```{r}
+distribution %<>% mutate(dwc_occurrenceRemarks = str_remove(dwc_occurrenceRemarks, "\r")) 
+```
+
 ## source
 
 There's no `sourceid` to link the sources in `literature_references` with the distribution extension. For this, we need the file `distribution_sources`, generated earlier. 
@@ -822,5 +828,6 @@ distribution %>% head()
 4. Save to CSV
 
 ```{r}
-write_csv(distribution, here::here("data", "processed", "distribution.csv"), na = "")
+write_csv(distribution, path = here::here("data", "processed", "distribution.csv"), 
+            na = "")
 ```
