@@ -121,7 +121,7 @@ Two of these fields refer to verbatim location information (mapped to `locality`
 - `region_coast`
 
 Two of these fields contain a location code (mapped to `locationID`):
-- `code_region`  (for location linked to coountries)
+- `code_region`  (for location linked to countries)
 - `code_coast` (forl location linked to coastal areas)
 
 The codes in `code_region` and `code_coast` refer to standards used/developed for the codes (mapped to `locationID`), respectively:
