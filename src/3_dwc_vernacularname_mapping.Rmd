@@ -49,18 +49,20 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 vernacular_names <- read_delim(
-  file = here::here("data","raw","input_vernacular_names.csv"), 
+  file = here::here("data", "raw", "input_vernacular_names.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 3. Read literature references
 
 ```{r}
 literature_references <- read_delim(
-  file = here::here("data","interim","interim_literature_references.csv"), 
+  file = here::here("data", "interim", "interim_literature_references.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 4. Read `core_taxa`
@@ -89,13 +91,13 @@ vernacular_names %<>% filter(idspecies %in% core_taxa$taxonID)
 2. Map taxonID
 
 ```{r}
-vernacular_names %<>% mutate(dwc_taxonID = as.numeric(idspecies)) 
+vernacular_names %<>% mutate(dwc_taxonID = as.numeric(idspecies))
 ```
 
 ## vernacularName
 
 ```{r}
-vernacular_names %<>% mutate(dwc_vernacularName = name) 
+vernacular_names %<>% mutate(dwc_vernacularName = name)
 ```
 
 ## source
@@ -103,17 +105,17 @@ vernacular_names %<>% mutate(dwc_vernacularName = name)
 Join `vernacular_names` with `source` information in `literature_references`:
 
 ```{r}
-vernacular_names %<>% 
+vernacular_names %<>%
   left_join(
     select(literature_references, sourceid, source),
     by = "sourceid"
-) 
+  )
 ```
 
 Rename `source` to `dwc_source`
 
 ```{r}
-vernacular_names %<>% rename("dwc_source" = "source") 
+vernacular_names %<>% rename("dwc_source" = "source")
 ```
 
 ## language
@@ -121,8 +123,8 @@ vernacular_names %<>% rename("dwc_source" = "source")
 1. Show unique values for `language`
 
 ```{r}
-vernacular_names %>% 
-  group_by(language) %>% 
+vernacular_names %>%
+  group_by(language) %>%
   summarize(records = n())
 ```
 
@@ -160,8 +162,8 @@ vernacular_names %<>% mutate(dwc_language = recode(language,
 ```
 
 ```{r}
-vernacular_names %>% 
-  group_by(language, dwc_language) %>% 
+vernacular_names %>%
+  group_by(language, dwc_language) %>%
   summarize(records = n())
 ```
 
@@ -188,13 +190,14 @@ vernacular_names %>% head()
 4. Sort on `taxonID`:
 
 ```{r}
-vernacular_names %<>% arrange(taxonID) 
+vernacular_names %<>% arrange(taxonID)
 ```
 
 5. Save to CSV:
 
 ```{r}
 write_csv(vernacular_names,
-          here::here("data","processed","vernacularname.csv"),
-          na = "")
+  here::here("data", "processed", "vernacularname.csv"),
+  na = ""
+)
 ```

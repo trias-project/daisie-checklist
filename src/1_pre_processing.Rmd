@@ -48,27 +48,30 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 literature_references <- read_delim(
-  file = here::here("data","raw","input_literature_references.csv"), 
+  file = here::here("data", "raw", "input_literature_references.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 3. Read taxon data
 
 ```{r}
 taxon <- read_delim(
-  file = here::here("data","raw","input_taxon.csv"), 
+  file = here::here("data", "raw", "input_taxon.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 4. Read distribution data:
 
 ```{r}
 distribution <- read_delim(
-  file = here::here("data","raw","input_distribution.csv"), 
+  file = here::here("data", "raw", "input_distribution.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 # Compile reference data
@@ -78,7 +81,7 @@ The file `literature_references` includes all sources used to compile the DAISIE
 1. Inspect `literature_references`:
 
 ```{r}
-literature_references %>% head(n=10)
+literature_references %>% head(n = 10)
 ```
 
 Each source can be identified by its `sourceid` and is composed of:
@@ -94,8 +97,8 @@ Most input files use the field `sourceid` to link with the sources included in `
 2. Inspect longref:
 
 ```{r, echo=FALSE}
-literature_references %>% 
-  group_by(longref) %>% 
+literature_references %>%
+  group_by(longref) %>%
   summarize(records = n()) %>%
   arrange(longref)
 ```
@@ -111,14 +114,14 @@ literature_references %<>% mutate(longref = str_replace(longref, "^[0-9]", NA_ch
 4. Verify if numbers are removed (should be `TRUE`)
 
 ```{r}
-unique(literature_references %>%  str_detect("^[0-9]")) == FALSE
+unique(literature_references %>% str_detect("^[0-9]")) == FALSE
 ```
 
 5. Inspect `shortref`
 
 ```{r}
-literature_references %>% 
-  group_by(shortref) %>% 
+literature_references %>%
+  group_by(shortref) %>%
   summarize(records = n()) %>%
   arrange(shortref)
 ```
@@ -128,8 +131,8 @@ Cleaning of this fiels is outside the scope of this mapping.
 6. Inspect `url`
 
 ```{r}
-literature_references %>% 
-  group_by(url) %>% 
+literature_references %>%
+  group_by(url) %>%
   summarize(records = n()) %>%
   arrange(url)
 ```
@@ -139,14 +142,14 @@ This information is, in most cases, wrong: `url` often refers to scientific name
 7. Remove non-valid url values
 
 ```{r}
-literature_references %<>%  mutate(url = if_else(str_detect(url, pattern = "^http"), url, NA_character_))
+literature_references %<>% mutate(url = if_else(str_detect(url, pattern = "^http"), url, NA_character_))
 ```
 
 8. Verify cleaning step
 
 ```{r}
-literature_references %>% 
-  group_by(url) %>% 
+literature_references %>%
+  group_by(url) %>%
   summarize(records = n()) %>%
   arrange(url)
 ```
@@ -158,77 +161,101 @@ For most records, one or more of the abovementioned fields are empty. We need to
 ```{r}
 overview_references <- arrange(
   bind_cols(
-        data.frame(matrix(c(
-                            "x","x","",          
-                            "x","","",          
-                            "x", "x", "x",   
-                            "x","", "x",
-                            
-                            "","","",                            
-                            "", "x","",
-                            "","", "x",
-                            "", "x", "x"),
-                       nrow = 8, byrow = TRUE, 
-                       dimnames = list(c(1:8), c("longref", "shortref", "url"))
-                       )),
-        data.frame(bind_rows(
+    data.frame(matrix(c(
+      "x", "x", "",
+      "x", "", "",
+      "x", "x", "x",
+      "x", "", "x",
 
-          # "x","x",""  
-          summarize(filter(literature_references,
-                           !is.na(longref) &
-                             !is.na(shortref) &
-                             is.na(url)),
-                     records = n()),
-          
-          # "x","",""
-           summarize(filter(literature_references,
-                           !is.na(longref) &
-                             is.na(shortref) &
-                             is.na(url)), 
-                     records = n()),
-          
-          # "x", "x", "x",   
-           summarize(filter(literature_references,
-                           !is.na(longref) &
-                             !is.na(shortref) &
-                             !is.na(url)),
-                    records = n()),
-        
-          # "x","", "x",
-           summarize(filter(literature_references,
-                           !is.na(longref) &
-                             is.na(shortref) &
-                             !is.na(url)),
-                    records = n()),          
-          # "","","",        
-           summarize(filter(literature_references, 
-                           is.na(longref) & 
-                           is.na(shortref) & 
-                           is.na(url)),
-                    records = n()),
-                              
-          # "", "x",""
-          summarize(filter(literature_references, 
-                           is.na(longref) &
-                             !is.na(shortref) &
-                             is.na(url)),
-                    records = n()),
-  
-          # "","", "x"
-          summarize(filter(literature_references,
-                            is.na(longref) &
-                            is.na(shortref) &
-                           !is.na(url)),
-                    records = n()),  
-          
-          # "", "x", "x"                
-          summarize(filter(literature_references,
-                           is.na(longref) &
-                             !is.na(shortref) &
-                             !is.na(url)),
-                    records = n())                    
-                    
-        ))
+      "", "", "",
+      "", "x", "",
+      "", "", "x",
+      "", "x", "x"
+    ),
+    nrow = 8, byrow = TRUE,
+    dimnames = list(c(1:8), c("longref", "shortref", "url"))
+    )),
+    data.frame(bind_rows(
+
+      # "x","x",""
+      summarize(filter(
+        literature_references,
+        !is.na(longref) &
+          !is.na(shortref) &
+          is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "x","",""
+      summarize(filter(
+        literature_references,
+        !is.na(longref) &
+          is.na(shortref) &
+          is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "x", "x", "x",
+      summarize(filter(
+        literature_references,
+        !is.na(longref) &
+          !is.na(shortref) &
+          !is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "x","", "x",
+      summarize(filter(
+        literature_references,
+        !is.na(longref) &
+          is.na(shortref) &
+          !is.na(url)
+      ),
+      records = n()
+      ),
+      # "","","",
+      summarize(filter(
+        literature_references,
+        is.na(longref) &
+          is.na(shortref) &
+          is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "", "x",""
+      summarize(filter(
+        literature_references,
+        is.na(longref) &
+          !is.na(shortref) &
+          is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "","", "x"
+      summarize(filter(
+        literature_references,
+        is.na(longref) &
+          is.na(shortref) &
+          !is.na(url)
+      ),
+      records = n()
+      ),
+
+      # "", "x", "x"
+      summarize(filter(
+        literature_references,
+        is.na(longref) &
+          !is.na(shortref) &
+          !is.na(url)
+      ),
+      records = n()
+      )
+    ))
   )
 )
 
@@ -243,37 +270,38 @@ We use the following rules to generate `source`:
 
 ```{r}
 overview_references %>% mutate(source = case_when(
-   
-# Longref provided:
-  longref == "x" & shortref == "x" & url == ""  ~ "longref",
-  longref == "x" & shortref == ""  & url == ""  ~ "longref",
-  longref == "x" & shortref == "x" & url == "x" ~ "longref + url",  
-  longref == "x" & shortref == "" & url  == "x" ~ "longref + url",
 
-# No longref provided:
-  longref == ""  & shortref == ""  & url == ""  ~ "",
-  longref == ""  & shortref == "x" & url == ""  ~ "shortref",
-  longref == ""  & shortref == ""  & url == "x" ~ "url",
-  longref == ""  & shortref == "x" & url == "x" ~ "shortref + url"))
+  # Longref provided:
+  longref == "x" & shortref == "x" & url == "" ~ "longref",
+  longref == "x" & shortref == "" & url == "" ~ "longref",
+  longref == "x" & shortref == "x" & url == "x" ~ "longref + url",
+  longref == "x" & shortref == "" & url == "x" ~ "longref + url",
+
+  # No longref provided:
+  longref == "" & shortref == "" & url == "" ~ "",
+  longref == "" & shortref == "x" & url == "" ~ "shortref",
+  longref == "" & shortref == "" & url == "x" ~ "url",
+  longref == "" & shortref == "x" & url == "x" ~ "shortref + url"
+))
 ```
 
 9. Generate full reference (`source`)
 
 ```{r}
 literature_references %<>% mutate(source = case_when(
-  
-# Longref provided:
+
+  # Longref provided:
   !is.na(longref) & !is.na(shortref) & is.na(url) ~ paste(longref),
-  !is.na(longref) & is.na(shortref)  & is.na(url) ~ paste(longref),  
-  !is.na(longref) & !is.na(shortref) & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),  
-  !is.na(longref) & is.na(shortref)  & !is.na(url) ~ paste(longref, paste0("(",url,")"), sep = ""),  
-  
-# No longref provided:
-  is.na(longref)  & is.na(shortref)  & is.na(url) ~ "",
-  is.na(longref)  & !is.na(shortref) & is.na(url) ~ paste(shortref),
-  is.na(longref)  & is.na(shortref)  & !is.na(url) ~ paste(url),  
-  is.na(longref)  & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(",url,")"), sep = "")
-))  
+  !is.na(longref) & is.na(shortref) & is.na(url) ~ paste(longref),
+  !is.na(longref) & !is.na(shortref) & !is.na(url) ~ paste(longref, paste0("(", url, ")"), sep = ""),
+  !is.na(longref) & is.na(shortref) & !is.na(url) ~ paste(longref, paste0("(", url, ")"), sep = ""),
+
+  # No longref provided:
+  is.na(longref) & is.na(shortref) & is.na(url) ~ "",
+  is.na(longref) & !is.na(shortref) & is.na(url) ~ paste(shortref),
+  is.na(longref) & is.na(shortref) & !is.na(url) ~ paste(url),
+  is.na(longref) & !is.na(shortref) & !is.na(url) ~ paste(shortref, paste0("(", url, ")"), sep = "")
+))
 ```
 
 We can now use `literature_references` to add the full reference to the generated Darwin Core files (except the distribution extension, see further), using `sourceid` as the link.
@@ -290,18 +318,19 @@ We save this information in a separate dataframe `distribution_sources` here and
 1. Generate `distribution_sources
 
 ```{r}
-distribution_sources <- 
-  literature_references %>% 
-    filter(!is.na(id_sp_region)) %>% 
-    select(id_sp_region, field_name, sourceid, source)
+distribution_sources <-
+  literature_references %>%
+  filter(!is.na(id_sp_region)) %>%
+  select(id_sp_region, field_name, sourceid, source)
 ```
 
 2. Export as `distribution_sources`
 
 ```{r}
-write_csv(distribution_sources, 
-          here::here("data","interim","distribution_sources.csv"),
-          na = "")
+write_csv(distribution_sources,
+  here::here("data", "interim", "distribution_sources.csv"),
+  na = ""
+)
 ```
 
 ## Generate interim_literature_references
@@ -318,9 +347,10 @@ interim_literature_references <-
 2. Export as `interim_literature_references`:
 
 ```{r}
-write_csv(interim_literature_references, 
-          here::here("data","interim","interim_literature_references.csv"),
-          na = "")
+write_csv(interim_literature_references,
+  here::here("data", "interim", "interim_literature_references.csv"),
+  na = ""
+)
 ```
 
 # Generate additional files for description extension
@@ -333,10 +363,10 @@ We will integrate this information in the description extension.
 1. Save information on ecofunctional groups (create `ecofunct_group`):
 
 ```{r}
-ecofunctional_group <- 
-  taxon %>% 
-    select(idspecies, ecofunct_group, sourceid) %>% 
-    distinct(idspecies, ecofunct_group, .keep_all = TRUE)
+ecofunctional_group <-
+  taxon %>%
+  select(idspecies, ecofunct_group, sourceid) %>%
+  distinct(idspecies, ecofunct_group, .keep_all = TRUE)
 ```
 
 2. Remove records for which `ecofunct_group` is empty:
@@ -348,8 +378,9 @@ ecofunctional_group %<>% filter(!is.na(ecofunct_group))
 3. Export as `ecofunctional_group`
 
 ```{r}
-write_csv(ecofunctional_group, 
-          here::here("data","interim","ecofunctional_group.csv"),
-          na = "")
+write_csv(ecofunctional_group,
+  here::here("data", "interim", "ecofunctional_group.csv"),
+  na = ""
+)
 ```
 

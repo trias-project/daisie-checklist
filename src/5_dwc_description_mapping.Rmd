@@ -49,45 +49,50 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 habitat <- read_delim(
-  file = here::here("data","raw","input_habitat.csv"), 
+  file = here::here("data", "raw", "input_habitat.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 3. Read native range (raw data)
 
 ```{r}
 native_range <- read_delim(
-  file = here::here("data","raw","input_native_range.csv"), 
+  file = here::here("data", "raw", "input_native_range.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 4. Read `ecofunctional_group` (interim)
 
 ```{r}
 ecofunctional_group <- read_delim(
-  file = here::here("data","interim","ecofunctional_group.csv"), 
+  file = here::here("data", "interim", "ecofunctional_group.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 5. Read `interim_literature_references` (interim)
 
 ```{r}
 literature_references <- read_delim(
-  file = here::here("data","interim","interim_literature_references.csv"), 
+  file = here::here("data", "interim", "interim_literature_references.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 6. Read `remove_taxa` (interim)
 
 ```{r}
 remove_taxa <- read_delim(
-  file = here::here("data","interim","remove_taxa.csv"), 
+  file = here::here("data", "interim", "remove_taxa.csv"),
   delim = ",",
-  col_types = col_types)
+  col_types = col_types
+)
 ```
 
 4. Read `core_taxa`
@@ -116,26 +121,27 @@ Each descriptor is imported as a separate dataset. We need to imply the same tra
 As these steps are repeated for each of the description datasets, we write a function here.
 
 ```{r}
-map_to_description <- function(data_frame, column_name, descriptor){
-    data_frame %>% 
-    
+map_to_description <- function(data_frame, column_name, descriptor) {
+  data_frame %>%
+
     # Remove empty values
     filter(
-      (!!as.symbol(column_name)) != "" | 
-        !is.na(!!as.symbol(column_name))) %>% 
+      (!!as.symbol(column_name)) != "" |
+        !is.na(!!as.symbol(column_name))
+    ) %>%
 
     # keep distinct values only
-    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>% 
-    
+    distinct(idspecies, (!!as.symbol(column_name)), .keep_all = TRUE) %>%
+
     # Map description
-    mutate(description = (!!as.symbol(column_name))) %>% 
+    mutate(description = (!!as.symbol(column_name))) %>%
 
     # Map type:
-    mutate(type = descriptor) %>% 
-  
+    mutate(type = descriptor) %>%
+
     # Keep only `idspecies`, `description` and `type`:
     select(idspecies, description, type, sourceid)
-} 
+}
 ```
 
 # Habitat
@@ -145,40 +151,41 @@ Generate `eunis_habitat`
 ```{r}
 habitat %<>% mutate(eunis_habitat = case_when(
   !is.na(habitat) ~ paste0(habitat, " (", ideunis, " level ", level, ")"),
-  TRUE ~ ideunis)
-)
+  TRUE ~ ideunis
+))
 ```
 
 Apply transformation function:
 
 ```{r}
-habitat <- 
+habitat <-
   map_to_description(
-    data_frame = habitat, 
-    column_name = "eunis_habitat", 
-    descriptor = "eunis habitat")
+    data_frame = habitat,
+    column_name = "eunis_habitat",
+    descriptor = "eunis habitat"
+  )
 ```
 
 # Native range
 
 ```{r}
-native_range <- 
+native_range <-
   map_to_description(
-    data_frame = native_range, 
-    column_name = "region", 
+    data_frame = native_range,
+    column_name = "region",
     descriptor = "native range"
-    )
+  )
 ```
 
 # Ecofunctional group
 
 ```{r}
-ecofunctional_group <- 
+ecofunctional_group <-
   map_to_description(
     data_frame = ecofunctional_group,
     column_name = "ecofunct_group",
     descriptor = "ecofunctional group"
-    )
+  )
 ```
 
 # Descriptors extention mapping
@@ -192,19 +199,20 @@ description <- bind_rows(habitat, native_range, ecofunctional_group)
 2. Link with `sourceid` from `literature_references`
 
 ```{r}
-description %<>% 
+description %<>%
   left_join(
     select(literature_references, sourceid, source),
-    by = "sourceid")
+    by = "sourceid"
+  )
 ```
 
 3. Keep column names for description extension only and rename
 
 ```{r}
-description <- 
-  description %>% 
-    select(idspecies, description, type, source) %>% 
-    rename("taxonID" = "idspecies")
+description <-
+  description %>%
+  select(idspecies, description, type, source) %>%
+  rename("taxonID" = "idspecies")
 ```
 
 4. Remove all taxonID's that are not included in the taxon core
@@ -216,18 +224,18 @@ description %<>% filter(taxonID %in% core_taxa$taxonID)
 4. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
-taxonID_to_replace <- 
-  description %>% 
-    filter(taxonID %in% remove_taxa$idspecies) %>% 
-    select(taxonID) %>% 
-    unique()
+taxonID_to_replace <-
+  description %>%
+  filter(taxonID %in% remove_taxa$idspecies) %>%
+  select(taxonID) %>%
+  unique()
 taxonID_to_replace
 ```
 
 5. Change data type of `taxonid` to numeric:
 
 ```{r}
-description %<>% mutate(taxonID = as.numeric(taxonID))  
+description %<>% mutate(taxonID = as.numeric(taxonID))
 ```
 
 6. Sort on `taxonid`
@@ -239,14 +247,15 @@ description %<>% arrange(taxonID)
 7. Preview data:
 
 ```{r}
-head(description, n=10)
+head(description, n = 10)
 ```
 
 8. Export as .csv
 
 ```{r}
-write_csv(description, 
-          here::here("data","processed","description.csv"), 
-          na = "")
+write_csv(description,
+  here::here("data", "processed", "description.csv"),
+  na = ""
+)
 ```
 

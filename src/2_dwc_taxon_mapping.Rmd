@@ -49,18 +49,20 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 taxon <- read_delim(
-  file = here::here("data","raw","input_taxon.csv"), 
+  file = here::here("data", "raw", "input_taxon.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 3. Read literature references
 
 ```{r}
 literature_references <- read_delim(
-  file = here::here("data","interim","interim_literature_references.csv"), 
+  file = here::here("data", "interim", "interim_literature_references.csv"),
   delim = ",",
-  col_types = col_types) 
+  col_types = col_types
+)
 ```
 
 # Map taxon core
@@ -76,13 +78,13 @@ Start with record-level terms which contain metadata about the dataset (which is
 ## language
 
 ```{r}
-taxon %<>% mutate(dwc_language = "en") 
+taxon %<>% mutate(dwc_language = "en")
 ```
 
 ## license
 
 ```{r}
-taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/") 
+taxon %<>% mutate(dwc_license = "http://creativecommons.org/licenses/by/4.0/")
 ```
 
 ## rightsHolder
@@ -94,13 +96,13 @@ taxon %<>% mutate(dwc_rightsHolder = "CEH")
 ## datasetID
 
 ```{r}
-taxon %<>% mutate(dwc_datasetID = "https://doi.org/10.15468/ybwd3x") 
+taxon %<>% mutate(dwc_datasetID = "https://doi.org/10.15468/ybwd3x")
 ```
 
 ## institutionCode
 
 ```{r}
-taxon %<>% mutate(dwc_institutionCode = "CEH") 
+taxon %<>% mutate(dwc_institutionCode = "CEH")
 ```
 
 ## datasetName
@@ -124,19 +126,20 @@ The information in `scientificName` will be a compilation of several fields: `sp
 1. Clean authorships:
 
 ```{r}
-taxon %<>% mutate(authority = str_replace_all(authority, pattern = '"', replacement = ''))
+taxon %<>% mutate(authority = str_replace_all(authority, pattern = '"', replacement = ""))
 ```
 
 2. Paste information together
 
 ```{r}
 taxon %<>% mutate(
-  dwc_scientificName = paste(genus, 
-                             species, 
-                             authority, 
-                             subtaxon, 
-                             subtaxon_authority, 
-                             sep = " ")
+  dwc_scientificName = paste(genus,
+    species,
+    authority,
+    subtaxon,
+    subtaxon_authority,
+    sep = " "
+  )
 )
 ```
 
@@ -144,20 +147,20 @@ taxon %<>% mutate(
 
 ```{r}
 taxon <-
-  taxon %>% 
-    mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "NA", "")) %>% 
-    mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "(\\s){2,}", " ")) %>% 
-    mutate(dwc_scientificName = trimws(dwc_scientificName))
+  taxon %>%
+  mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "NA", "")) %>%
+  mutate(dwc_scientificName = str_replace_all(dwc_scientificName, "(\\s){2,}", " ")) %>%
+  mutate(dwc_scientificName = trimws(dwc_scientificName))
 ```
 
 4. We use the [GBIF nameparser](https://www.gbif.org/tools/name-parser) to retrieve nomenclatural information for the scientific names in the checklist.
 
 ```{r}
-parsed_names <- 
+parsed_names <-
   taxon %>%
-    distinct(dwc_scientificName) %>%
-    pull() %>% # Create vector from dataframe
-    parsenames() # An rgbif function
+  distinct(dwc_scientificName) %>%
+  pull() %>% # Create vector from dataframe
+  parsenames() # An rgbif function
 ```
 
 5. Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed (`parsed = TRUE` and `parsedpartially` = `FALSE`. Note: these are not necessarily incorrect):
@@ -165,8 +168,8 @@ parsed_names <-
 ```{r}
 parsed_names %>%
   select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
-  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
-  head(n=10)
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>%
+  head(n = 10)
 ```
 
 6. Total Amount of scientific names with nomenclatural issues:
@@ -174,14 +177,14 @@ parsed_names %>%
 ```{r}
 parsed_names %>%
   select(scientificname, type, parsed, parsedpartially, rankmarker) %>%
-  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>% 
+  filter(!(type == "SCIENTIFIC" & parsed == "TRUE" & parsedpartially == "FALSE")) %>%
   nrow()
 ```
 
 Cleaning of taxa with nomenclatural issues is not within the scope of this mapping. However, we can perform some rough cleaning to eliminate the `INFORMAL` taxa, by removing `sp.:
 
 ```{r}
-taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName,"sp."))
+taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName, "sp."))
 ```
 
 Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
@@ -190,29 +193,29 @@ Some other taxa need special inspection, especially the doubtful ones (probably 
 7. All taxa should be unique. We here scan for duplicated taxa:
 
 ```{r}
-taxon %>% 
-  get_dupes(dwc_scientificName) %>% 
-  select(dwc_scientificName, idspecies, ordo, family, genus) 
+taxon %>%
+  get_dupes(dwc_scientificName) %>%
+  select(dwc_scientificName, idspecies, ordo, family, genus)
 ```
 
 8. Specify the scientificnames and associated values of `idspecies` to be removed from the taxon core
 
 ```{r}
 # Define idspecies to select on:
-remove_idspecies <- c("900966","52845","900977","900984","900995","900997","901002")
+remove_idspecies <- c("900966", "52845", "900977", "900984", "900995", "900997", "901002")
 
 # Filter on these values:
-remove_taxa <- 
-  taxon %>% 
-    filter(idspecies %in% remove_idspecies) %>% 
-    select(dwc_scientificName, idspecies)
+remove_taxa <-
+  taxon %>%
+  filter(idspecies %in% remove_idspecies) %>%
+  select(dwc_scientificName, idspecies)
 ```
 
 9. Link those with the replacement values for `idspecies`
 
 ```{r}
 # identify replacement idspecies:
-replacement_idspecies <- c("52831","900975","52847","52858","52877","52878","52889")
+replacement_idspecies <- c("52831", "900975", "52847", "52858", "52877", "52878", "52889")
 
 remove_taxa %<>% mutate(replacement_idspecies = replacement_idspecies)
 ```
@@ -226,7 +229,7 @@ taxon %<>% filter(!(idspecies %in% remove_idspecies))
 11. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
 
 ```{r}
-write_csv(remove_taxa, here::here("data","interim","remove_taxa.csv"))
+write_csv(remove_taxa, here::here("data", "interim", "remove_taxa.csv"))
 ```
 
 ## kingdom
@@ -234,17 +237,17 @@ write_csv(remove_taxa, here::here("data","interim","remove_taxa.csv"))
 No kingdom information is provided. This is not an obligatory field but strongly recommended. It can easily be derived from information in `phylum`:
 
 ```{r}
-taxon %>% 
-  group_by(phylum) %>% 
+taxon %>%
+  group_by(phylum) %>%
   summarise(records = n())
 ```
 
 However, for 389 taxa have no phylum, there's no information available. For these records, we try to derive phylum and kingdom information from `class`:
 
 ```{r}
-taxon %>% 
-  filter(is.na(phylum)) %>% 
-  group_by(class) %>% 
+taxon %>%
+  filter(is.na(phylum)) %>%
+  group_by(class) %>%
   summarize(records = n())
 ```
 
@@ -264,14 +267,15 @@ taxon %<>% mutate(phylum_complete = case_when(
   class == "mollusca" ~ "Mollusca",
   class == "nematoda" ~ "Nematoda",
   class == "platyhelminthes" ~ "Platyhelminthes",
-  TRUE ~ phylum))
+  TRUE ~ phylum
+))
 ```
 
 Some of these classes are not correct, e.g. `Nematoda` is a phylum, not a class. Cleaning this information is not within the scope of this mapping.
 
 ```{r}
-taxon %>% 
-  group_by(phylum, phylum_complete) %>% 
+taxon %>%
+  group_by(phylum, phylum_complete) %>%
   summarise(records = n())
 ```
 
@@ -287,79 +291,79 @@ taxon %<>% mutate(phylum_complete = trimws(phylum_complete))
 
 ```{r}
 taxon <-
-  taxon %>% 
-    mutate(phylum_complete = recode(phylum_complete, "Labyrinthista" = "Bigyra"))
+  taxon %>%
+  mutate(phylum_complete = recode(phylum_complete, "Labyrinthista" = "Bigyra"))
 ```
 
 4. Based on this information, map `kingdom`:
 
 ```{r}
 taxon %<>% mutate(dwc_kingdom = case_when(
-phylum_complete == "Acanthocephala" |
-  phylum_complete == "Annelida" |
-  phylum_complete == "Arthropoda" |
-  phylum_complete == "Bryozoa" |
-  phylum_complete == "Chaetognatha" |
-  phylum_complete == "Choradata" |
-  phylum_complete == "Chordata" |
-  phylum_complete == "Cnidaria" |
-  phylum_complete == "Ctenophora" |
-  phylum_complete == "Entoprocta" |
-  phylum_complete == "Echinodermata" |
-  phylum_complete == "Mollusca" |
-  phylum_complete == "Myxozoa" |
-  phylum_complete == "Nematoda" |
-  phylum_complete == "Nemertea" |
-  phylum_complete == "Phoronida" |
-  phylum_complete == "Platyhelminthes" |
-  phylum_complete == "Porifera" |
-  phylum_complete == "Rotifera" |
-  phylum_complete == "Sipunculida" ~ "Animalia",
+  phylum_complete == "Acanthocephala" |
+    phylum_complete == "Annelida" |
+    phylum_complete == "Arthropoda" |
+    phylum_complete == "Bryozoa" |
+    phylum_complete == "Chaetognatha" |
+    phylum_complete == "Choradata" |
+    phylum_complete == "Chordata" |
+    phylum_complete == "Cnidaria" |
+    phylum_complete == "Ctenophora" |
+    phylum_complete == "Entoprocta" |
+    phylum_complete == "Echinodermata" |
+    phylum_complete == "Mollusca" |
+    phylum_complete == "Myxozoa" |
+    phylum_complete == "Nematoda" |
+    phylum_complete == "Nemertea" |
+    phylum_complete == "Phoronida" |
+    phylum_complete == "Platyhelminthes" |
+    phylum_complete == "Porifera" |
+    phylum_complete == "Rotifera" |
+    phylum_complete == "Sipunculida" ~ "Animalia",
 
-phylum_complete == "Ascomycota" |
-  phylum_complete == "Basidiomycota" |
-  phylum_complete == "Chytridiomycota" |
-  phylum_complete == "Fungi" |
-  phylum_complete == "Oomycota" ~ "Fungi",
+  phylum_complete == "Ascomycota" |
+    phylum_complete == "Basidiomycota" |
+    phylum_complete == "Chytridiomycota" |
+    phylum_complete == "Fungi" |
+    phylum_complete == "Oomycota" ~ "Fungi",
 
-phylum_complete == "Bacteria" |
-  phylum_complete == "Bacteroidetes" |
-  phylum_complete == "Cyanobacteria" |
-  phylum_complete == "Firmicutes" |
-  phylum_complete == "Proteobacteria" ~ "Bacteria",
+  phylum_complete == "Bacteria" |
+    phylum_complete == "Bacteroidetes" |
+    phylum_complete == "Cyanobacteria" |
+    phylum_complete == "Firmicutes" |
+    phylum_complete == "Proteobacteria" ~ "Bacteria",
 
-phylum_complete == "Anthocerotophyta" |
-  phylum_complete == "Bryophyta" |
-  phylum_complete == "Chlorophyta" |
-  phylum_complete == "Cycadophyta" |
-  phylum_complete == "Equisetophyta" |
-  phylum_complete == "Ginkgoophyta" |
-  phylum_complete == "Gnetophyta" |
-  phylum_complete == "Lycopodiophyta" |
-  phylum_complete == "Magnoliophyta" |
-  phylum_complete == "Marchantiophyta" |
-  phylum_complete == "Monocotyledonae" |
-  phylum_complete == "Pinophyta" |
-  phylum_complete == "Polypodiophyta" |
-  phylum_complete == "Rhodophyta" ~ "Plantae",
+  phylum_complete == "Anthocerotophyta" |
+    phylum_complete == "Bryophyta" |
+    phylum_complete == "Chlorophyta" |
+    phylum_complete == "Cycadophyta" |
+    phylum_complete == "Equisetophyta" |
+    phylum_complete == "Ginkgoophyta" |
+    phylum_complete == "Gnetophyta" |
+    phylum_complete == "Lycopodiophyta" |
+    phylum_complete == "Magnoliophyta" |
+    phylum_complete == "Marchantiophyta" |
+    phylum_complete == "Monocotyledonae" |
+    phylum_complete == "Pinophyta" |
+    phylum_complete == "Polypodiophyta" |
+    phylum_complete == "Rhodophyta" ~ "Plantae",
 
-phylum_complete == "Cercozoa" |
-  phylum_complete == "Ciliophora" |
-  phylum_complete == "Cryptophyta" |
-  phylum_complete == "Dinozoa" |
-  phylum_complete == "Foraminifera" |
-  phylum_complete == "Haptophyta" |
-  phylum_complete == "Labyrinthulomycota" |
-  phylum_complete == "Bigyra" |
-  phylum_complete == "Heterokontophyta" ~ "Chromista",
+  phylum_complete == "Cercozoa" |
+    phylum_complete == "Ciliophora" |
+    phylum_complete == "Cryptophyta" |
+    phylum_complete == "Dinozoa" |
+    phylum_complete == "Foraminifera" |
+    phylum_complete == "Haptophyta" |
+    phylum_complete == "Labyrinthulomycota" |
+    phylum_complete == "Bigyra" |
+    phylum_complete == "Heterokontophyta" ~ "Chromista",
 
-TRUE ~ ""
+  TRUE ~ ""
 ))
 ```
 
 ```{r}
-taxon %>% 
-  group_by(dwc_kingdom, phylum_complete) %>% 
+taxon %>%
+  group_by(dwc_kingdom, phylum_complete) %>%
   summarize(records = n())
 ```
 
@@ -372,37 +376,37 @@ taxon %<>% mutate(dwc_phylum = phylum_complete)
 ## class
 
 ```{r}
-taxon %<>% mutate(dwc_class = class) 
+taxon %<>% mutate(dwc_class = class)
 ```
 
 ## order
 
 ```{r}
-taxon %<>% mutate(dwc_order = ordo) 
+taxon %<>% mutate(dwc_order = ordo)
 ```
 
 ## family
 
 ```{r}
-taxon %<>% mutate(dwc_family = family) 
+taxon %<>% mutate(dwc_family = family)
 ```
 
 ## genus
 
 ```{r}
-taxon %<>% mutate(dwc_genus = genus) 
+taxon %<>% mutate(dwc_genus = genus)
 ```
 
 ## specificEpithet
 
 ```{r}
-taxon %<>% mutate(dwc_specificEpithet = species) 
+taxon %<>% mutate(dwc_specificEpithet = species)
 ```
 
 ## infraspecificEpithet
 
 ```{r}
-taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon) 
+taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon)
 ```
 
 ## taxonRank
@@ -410,28 +414,29 @@ taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon)
 Information for `taxonRank` is provided in the field `subtaxon_rank`, but is only given for varieties, aggregates, hybrids, subspecies or forms. Taxon rank information can also be retrieved by the GBIF nameparser function. This information was retrievd earlier in this script, in the dataframe `parsed_names`. We add the information to `taxon`.
 
 ```{r}
-taxon %<>% 
+taxon %<>%
   left_join(
     select(parsed_names, scientificname, rankmarker),
-    by = c("dwc_scientificName" = "scientificname"))
+    by = c("dwc_scientificName" = "scientificname")
+  )
 ```
 
 1. Inspect `rankmarker` values generated by the GBIF nameparser and and compare with `subtaxon_rank` information from the DAISIE checklist:
 
 ```{r}
-taxon %>% 
-  group_by(rankmarker, subtaxon_rank) %>% 
-  summarize(records = n()) %>% 
-  arrange(desc(records)) 
+taxon %>%
+  group_by(rankmarker, subtaxon_rank) %>%
+  summarize(records = n()) %>%
+  arrange(desc(records))
 ```
 
 We decided to use the information contained in `rankmarker` because GBIF rankmarker will provide cleaner information than `subtaxon_rank`, even if there might be some loss of information. However, rankmarker also contains `NA`. We inspect `dwc_scientificName` and `subtaxon_rank` for these values:
 
 ```{r}
-taxon %>% 
-  filter(is.na(rankmarker)) %>% 
-  group_by(dwc_scientificName, subtaxon_rank) %>% 
-  summarize(records = n()) %>% 
+taxon %>%
+  filter(is.na(rankmarker)) %>%
+  group_by(dwc_scientificName, subtaxon_rank) %>%
+  summarize(records = n()) %>%
   arrange(subtaxon_rank)
 ```
 
@@ -450,29 +455,31 @@ Concrete actions to undertake:
 2. Define taxa without `subtaxon_rank` which are in fact species
 
 ```{r}
-species_names <- c("Acaena anserinifolia x inermis", 
-                   "Dahlia coccinea x pinnata",
-                   "Geoplana (=Australoplana) sanguinea",
-                   'Hyalomma Scupense "Delpy, 1946"',
-                   "Rosa Hollandica'")
+species_names <- c(
+  "Acaena anserinifolia x inermis",
+  "Dahlia coccinea x pinnata",
+  "Geoplana (=Australoplana) sanguinea",
+  'Hyalomma Scupense "Delpy, 1946"',
+  "Rosa Hollandica'"
+)
 ```
 
 3. Map `taxonRank`
 
 ```{r}
 taxon %<>% mutate(dwc_taxonRank = case_when(
-  rankmarker == "sp."         ~ "species",
-  rankmarker == "infrasp."    ~ "infraspecificname",
-  rankmarker == "cv."         ~ "cultivar",
+  rankmarker == "sp." ~ "species",
+  rankmarker == "infrasp." ~ "infraspecificname",
+  rankmarker == "cv." ~ "cultivar",
   rankmarker == "infrasubsp." ~ "infrasubspecificname",
-  rankmarker == "var."        ~ "variety",
-  rankmarker == "subvar."     ~ "subvariety",
-  rankmarker == "subf."       ~ "subform",
-  rankmarker == "subsp."      ~ "subspecies",
-  rankmarker == "f."          ~ "form", 
-  rankmarker ==  "morph"      ~ "morphovar",
-  rankmarker == "pv."         ~ "pathovar",
-  rankmarker == "subtrib."    ~ "subtribe",
+  rankmarker == "var." ~ "variety",
+  rankmarker == "subvar." ~ "subvariety",
+  rankmarker == "subf." ~ "subform",
+  rankmarker == "subsp." ~ "subspecies",
+  rankmarker == "f." ~ "form",
+  rankmarker == "morph" ~ "morphovar",
+  rankmarker == "pv." ~ "pathovar",
+  rankmarker == "subtrib." ~ "subtribe",
   is.na(rankmarker) & is.na(subtaxon_rank) & !(dwc_scientificName %in% species_names) ~ "genus",
   is.na(rankmarker) & is.na(subtaxon_rank) & dwc_scientificName %in% species_names ~ "species",
   is.na(rankmarker) & subtaxon_rank == "agg." ~ "genus",
@@ -484,16 +491,17 @@ taxon %<>% mutate(dwc_taxonRank = case_when(
   is.na(rankmarker) & subtaxon_rank == "Crous" ~ "species",
   is.na(rankmarker) & subtaxon_rank == "Cytosporina sp." ~ "species",
 
-  TRUE ~ rankmarker))
+  TRUE ~ rankmarker
+))
 ```
 
 4. summarize mapping:
 
 ```{r}
-taxon %>% 
-  group_by(rankmarker, subtaxon_rank, dwc_taxonRank) %>% 
-  summarize(records = n()) %>% 
-  arrange(desc(records)) 
+taxon %>%
+  group_by(rankmarker, subtaxon_rank, dwc_taxonRank) %>%
+  summarize(records = n()) %>%
+  arrange(desc(records))
 ```
 
 ## taxonRemarks
@@ -503,7 +511,8 @@ taxon %>%
 ```{r}
 taxon %<>% left_join(
   select(literature_references, sourceid, source),
-  by = "sourceid")
+  by = "sourceid"
+)
 ```
 
 Rename `source` to `taxonRemarks`:
@@ -535,13 +544,15 @@ taxon %<>% arrange(taxonID)
 4. Export all taxonID's (required for filtering the records in the extensions):
 
 ```{r}
-core_taxa <- taxon %>% pull(taxonID) %>% tibble(.name_repair = ~ c("taxonID"))
+core_taxa <- taxon %>%
+  pull(taxonID) %>%
+  tibble(.name_repair = ~ c("taxonID"))
 ```
 
 5. Export `core_taxa`:
 
 ```{r}
-write_csv(core_taxa, here::here("data","interim","core_taxa.csv"), na = "")
+write_csv(core_taxa, here::here("data", "interim", "core_taxa.csv"), na = "")
 ```
 
 6. Preview data
@@ -553,6 +564,6 @@ taxon %>% head()
 7.Save to CSV:
 
 ```{r}
-write_csv(taxon, here::here("data","processed","taxon.csv"), na = "")
+write_csv(taxon, here::here("data", "processed", "taxon.csv"), na = "")
 ```
 

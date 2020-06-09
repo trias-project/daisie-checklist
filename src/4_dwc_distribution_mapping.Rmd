@@ -47,28 +47,27 @@ col_types <- cols(.default = col_character())
 
 ```{r}
 # Raw data
-input_distribution <- 
+input_distribution <-
   read_csv(here::here("data", "raw", "input_distribution.csv"), col_types = col_types)
 
-input_donor_area <- 
+input_donor_area <-
   read_csv(here::here("data", "raw", "input_donor_area.csv"), col_type = col_types)
 
-input_pathways <- 
+input_pathways <-
   read_csv(here::here("data", "raw", "input_pathways.csv"), col_type = col_types)
 
-input_impact <- 
+input_impact <-
   read_csv(here::here("data", "raw", "input_impact.csv"), col_type = col_types)
 
 # Preprocessed interim data
-distribution_sources <- 
+distribution_sources <-
   read_csv(here::here("data", "interim", "distribution_sources.csv"), col_types = col_types)
 
-remove_taxa <- 
+remove_taxa <-
   read_csv(here::here("data", "interim", "remove_taxa.csv"), col_types = col_types)
 
 core_taxa <-
   read_csv(here::here("data", "interim", "core_taxa.csv"), col_types = col_types)
-
 ```
 
 3. Merge source data:
@@ -100,16 +99,16 @@ distribution %<>% filter(idspecies %in% core_taxa$taxonID)
 2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
-distribution %>% 
-  filter(idspecies %in% remove_taxa$idspecies) %>% 
-  select(idspecies) %>% 
+distribution %>%
+  filter(idspecies %in% remove_taxa$idspecies) %>%
+  select(idspecies) %>%
   unique()
 ```
 
 3. Map `taxonID`
 
 ```{r}
-distribution %<>% mutate(dwc_taxonID = as.numeric(idspecies)) 
+distribution %<>% mutate(dwc_taxonID = as.numeric(idspecies))
 ```
 
 ## locationID and locality
@@ -150,8 +149,10 @@ distribution %<>% mutate(
     TRUE ~ paste(
       paste(system_country, code_region, sep = ":"),
       paste(system_coast, code_coast, sep = ":"),
-      sep = " | ")
-))
+      sep = " | "
+    )
+  )
+)
 ```
 
 3. Map `locality`
@@ -159,9 +160,10 @@ distribution %<>% mutate(
 ```{r}
 distribution %<>% mutate(
   dwc_locality = case_when(
-    is.na(region_coast)  ~ paste(region_country),
+    is.na(region_coast) ~ paste(region_country),
     !is.na(region_coast) ~ paste(region_country, region_coast, sep = " | ")
-))
+  )
+)
 ```
 
 Some information in the description extension (e.g. for `impact on use` or `impact on ecolgy`) is a property of a particular taxon in a particular _region_, identified by `id_sp_region`, rather than a property of a species as a whole. To emphasize that this descriptor is linked to a taxon in a particular region, we will add the `locationID` to the descriptor:
@@ -174,18 +176,19 @@ idspecies | sp_in_region | description | description_with_locationID
 We here save the link between `id_sp_region` and `locationID` in a separate dataframe, to use it later in the mapping of the description extension:
 
 ```{r}
-sp_in_region_with_location <- 
-  distribution %>% 
-    select(idspecies, id_sp_region, dwc_locationID) %>% 
-    distinct()  # Remove all duplicates
+sp_in_region_with_location <-
+  distribution %>%
+  select(idspecies, id_sp_region, dwc_locationID) %>%
+  distinct() # Remove all duplicates
 ```
 
 4. Export `sp_in_region_with_location` as .csv
 
 ```{r}
 write_csv(sp_in_region_with_location,
-          here::here("data","interim","sp_in_region_with_location.csv"),
-          na = "")
+  here::here("data", "interim", "sp_in_region_with_location.csv"),
+  na = ""
+)
 ```
 
 ## countryCode
@@ -193,94 +196,96 @@ write_csv(sp_in_region_with_location,
 Map countryCode to the [ISO 3166 Code](https://www.iso.org/iso-3166-country-codes.html)
 
 ```{r}
-distribution %<>% mutate(dwc_countryCode = 
-  recode(region_country, 
-    "Åland"                   = "AX",
-    "Albania"	                = "AL",
-    "Algeria"	                = "DZ",
-    "Andorra"	                = "AD",
-    "Austria"	                = "AT",
-    "Azores"                  = "PT",
-    "Baleares"	              = "ES",
-    "Belarus"	                = "BY",
-    "Belgium"	                = "BE",
-    "Bosnia-Herzegovina"	    = "BA",
-    "Bulgaria"	              = "BG",
-    "Canary Is."	            = "ES",
-    "Channel Is."	            = "UK",
-    "Corse (Corsica)"	        = "FR",
-    "Croatia"	                = "HR",
-    "Cyprus"	                = "CY",
-    "Czech Republic"	        = "CZ",
-    "Denmark"	                = "DK",
-    "Egypt"                 	= "EG",
-    "England"	                = "UK",
-    "Estonia"                 = "ES",
-    "Europe"	                = "",
-    "European part of Russia"	= "RU",
-    "Faroyar (Faroes)"	      = "FO",
-    "Finland"	                = "FI",
-    "France"	                = "FR",
-    "Germany"	                = "DE",
-    "Gilbraltar"	            = "GI",
-    "Great Britain"	          = "UK",
-    "Greece"	                = "GR",
-    "Greece (East Aegean)"	  = "GR",
-    "Greece (Ionian Islands)" = "GR",
-    "Greece (North Aegean)"   = "GR",
-    "Greece (South Aegean)"   = "GR",
-    "Greenland"	              = "GL",
-    "Hungary"	                = "HU",
-    "Iceland"	                = "IS",
-    "Ireland"	                = "IE",
-    "Israel"	                = "IL",
-    "Italy"	                  = "IT",
-    "Kriti (Crete)"	          = "GR",
-    "Latvia"	                = "LV",
-    "Lebanon"	                = "LB",
-    "Libya"	                  = "LY",
-    "Liechtenstein"	          = "LI",
-    "Lithuania"	              = "LT",
-    "Luxembourg"	            = "LU",
-    "Macedonia"	              = "MK",
-    "Madeira"	                = "PT",
-    "Malta"	                  = "MT",
-    "Moldova"	                = "MD",
-    "Monaco"	                = "MC",
-    "Montenegro"	            = "YU",
-    "Morocco"	                = "MA",
-    "Netherlands"	            = "NL",
-    "Northern Ireland"	      = "UK",
-    "Norway"	                = "NO",
-    "Poland"	                = "PL",
-    "Portugal"	              = "PT",
-    "Romania"	                = "RO",
-    "Russian Far East"	      = "RU",
-    "San Marino"	            = "SM",
-    "Sardegna (Sardinia)"	    = "IT",
-    "Scotland"	              = "UK",
-    "Serbia"	                = "YU",
-    "Sicilia"	                = "IT",
-    "Sicilia (Sicily)"	      = "IT",
-    "Slovakia"	              = "SK",
-    "Slovenia"	              = "SI",
-    "Spain"	                  = "ES",
-    "Svalbard"	              = "SJ",
-    "Sweden"	                = "SE",
-    "Switzerland"	            = "CH",
-    "Syria"	                  = "SY",
-    "Tunisia"	                = "TN",
-    "Turkey (in Europe)"	    = "TR",
-    "Ukraine"	                = "UA",
-    "United Kingdom"	        = "UK",
-    "Wales"	                  = "UK",
-    "Yugoslavia"	            = ""
-))
+distribution %<>% mutate(
+  dwc_countryCode =
+    recode(region_country,
+      "Åland"                   = "AX",
+      "Albania"                   = "AL",
+      "Algeria"                   = "DZ",
+      "Andorra"                   = "AD",
+      "Austria"                   = "AT",
+      "Azores"                  = "PT",
+      "Baleares"                = "ES",
+      "Belarus"                   = "BY",
+      "Belgium"                   = "BE",
+      "Bosnia-Herzegovina"            = "BA",
+      "Bulgaria"                = "BG",
+      "Canary Is."                    = "ES",
+      "Channel Is."                   = "UK",
+      "Corse (Corsica)"           = "FR",
+      "Croatia"                   = "HR",
+      "Cyprus"                    = "CY",
+      "Czech Republic"            = "CZ",
+      "Denmark"                   = "DK",
+      "Egypt"                     = "EG",
+      "England"                   = "UK",
+      "Estonia"                 = "ES",
+      "Europe"                    = "",
+      "European part of Russia"   = "RU",
+      "Faroyar (Faroes)"        = "FO",
+      "Finland"                   = "FI",
+      "France"                    = "FR",
+      "Germany"                   = "DE",
+      "Gilbraltar"                    = "GI",
+      "Great Britain"               = "UK",
+      "Greece"                    = "GR",
+      "Greece (East Aegean)"        = "GR",
+      "Greece (Ionian Islands)" = "GR",
+      "Greece (North Aegean)"   = "GR",
+      "Greece (South Aegean)"   = "GR",
+      "Greenland"               = "GL",
+      "Hungary"                   = "HU",
+      "Iceland"                   = "IS",
+      "Ireland"                   = "IE",
+      "Israel"                    = "IL",
+      "Italy"                       = "IT",
+      "Kriti (Crete)"               = "GR",
+      "Latvia"                    = "LV",
+      "Lebanon"                   = "LB",
+      "Libya"                       = "LY",
+      "Liechtenstein"               = "LI",
+      "Lithuania"               = "LT",
+      "Luxembourg"                    = "LU",
+      "Macedonia"               = "MK",
+      "Madeira"                   = "PT",
+      "Malta"                       = "MT",
+      "Moldova"                   = "MD",
+      "Monaco"                    = "MC",
+      "Montenegro"                    = "YU",
+      "Morocco"                   = "MA",
+      "Netherlands"                   = "NL",
+      "Northern Ireland"        = "UK",
+      "Norway"                    = "NO",
+      "Poland"                    = "PL",
+      "Portugal"                = "PT",
+      "Romania"                   = "RO",
+      "Russian Far East"        = "RU",
+      "San Marino"                    = "SM",
+      "Sardegna (Sardinia)"           = "IT",
+      "Scotland"                = "UK",
+      "Serbia"                    = "YU",
+      "Sicilia"                   = "IT",
+      "Sicilia (Sicily)"        = "IT",
+      "Slovakia"                = "SK",
+      "Slovenia"                = "SI",
+      "Spain"                       = "ES",
+      "Svalbard"                = "SJ",
+      "Sweden"                    = "SE",
+      "Switzerland"                   = "CH",
+      "Syria"                       = "SY",
+      "Tunisia"                   = "TN",
+      "Turkey (in Europe)"            = "TR",
+      "Ukraine"                   = "UA",
+      "United Kingdom"            = "UK",
+      "Wales"                       = "UK",
+      "Yugoslavia"                    = ""
+    )
+)
 ```
 
 ```{r}
-distribution %>% 
-  group_by(region_country, dwc_countryCode) %>% 
+distribution %>%
+  group_by(region_country, dwc_countryCode) %>%
   summarise(records = n())
 ```
 
@@ -289,8 +294,8 @@ distribution %>%
 Information to map `occurrenceStatus` is contained `abundance` and `population_status`.
 
 ```{r}
-distribution %>% 
-  group_by(abundance, population_status) %>% 
+distribution %>%
+  group_by(abundance, population_status) %>%
   summarize(records = n())
 ```
 
@@ -321,29 +326,29 @@ We decided to set `occurrencesStatus` as `extinct`, irrespective of the content 
 
 ```{r}
 distribution %<>% mutate(dwc_occurrenceStatus = case_when(
-  
-# Mapping of occurrenceStatus for extinct taxa:
-  population_status == "Extinct" ~ "extinct",
-    
-# Mapping of absent or extinct taxa, depending on the value of population_status:
-  abundance == "Absent or extinct" & population_status !="Extinct"     ~ "absent",
-  abundance == "Absent or extinct" & is.na(population_status)          ~ "absent",
 
-# Mapping of occurrenceStatus values based on abundance values (irrespective of population_status):  
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Abundant"       ~ "common",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Common"        ~ "common",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Local"         ~ "present",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Rare"          ~ "rare",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Single record" ~ "present",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Sporadic"      ~ "irregular",
-  (population_status != "Extinct" | is.na(population_status))  & abundance == "Unknown"       ~ "doubtful",
-  (population_status != "Extinct" | is.na(population_status))  & is.na(abundance)             ~ ""
+  # Mapping of occurrenceStatus for extinct taxa:
+  population_status == "Extinct" ~ "extinct",
+
+  # Mapping of absent or extinct taxa, depending on the value of population_status:
+  abundance == "Absent or extinct" & population_status != "Extinct" ~ "absent",
+  abundance == "Absent or extinct" & is.na(population_status) ~ "absent",
+
+  # Mapping of occurrenceStatus values based on abundance values (irrespective of population_status):
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Abundant" ~ "common",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Common" ~ "common",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Local" ~ "present",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Rare" ~ "rare",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Single record" ~ "present",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Sporadic" ~ "irregular",
+  (population_status != "Extinct" | is.na(population_status)) & abundance == "Unknown" ~ "doubtful",
+  (population_status != "Extinct" | is.na(population_status)) & is.na(abundance) ~ ""
 ))
 ```
 
 ```{r}
-distribution %>% 
-  group_by(abundance, population_status, dwc_occurrenceStatus) %>% 
+distribution %>%
+  group_by(abundance, population_status, dwc_occurrenceStatus) %>%
   summarize(records = n())
 ```
 
@@ -352,8 +357,8 @@ distribution %>%
 Information for the mapping of `establishmentMeans` is contained in `species_status`:
 
 ```{r}
-distribution %>% 
-  group_by(species_status) %>% 
+distribution %>%
+  group_by(species_status) %>%
   summarize(records = n())
 ```
 
@@ -361,12 +366,13 @@ For mapping `soecies_status` to `establishmentMeans`, see [issue 15](https://git
 
 ```{r}
 distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
-    "Alien"          = "introduced",
-    "Cryptogenic"    = "uncertain",
-    "<NA>"           = "",
-    "Naturalized"    = "introduced",
-    "Casual"         = "introduced",
-    "Alien_invasive" = "introduced")) 
+  "Alien"          = "introduced",
+  "Cryptogenic"    = "uncertain",
+  "<NA>"           = "",
+  "Naturalized"    = "introduced",
+  "Casual"         = "introduced",
+  "Alien_invasive" = "introduced"
+))
 ```
 
 ## eventDate
@@ -376,9 +382,9 @@ distribution %<>% mutate(dwc_establishmentMeans = recode(species_status,
 Inspect content of `start_year`, which contains the information for `eventDate`:
 
 ```{r}
-distribution %>% 
+distribution %>%
   mutate(start_year = as.character(start_year)) %>%
-  group_by(start_year) %>% 
+  group_by(start_year) %>%
   summarize(records = n()) %>%
   arrange(desc(records))
 ```
@@ -411,7 +417,8 @@ Get an overview of the amount of records with just a `YYYY` year format:
 ```{r}
 distribution %>%
   select(start_year) %>%
-  filter(str_detect(start_year, "^[0-9]{4}$")) %>% nrow()
+  filter(str_detect(start_year, "^[0-9]{4}$")) %>%
+  nrow()
 ```
 
 We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
@@ -419,7 +426,8 @@ We also have an amount of negative years to take into account. Let's just consid
 ```{r}
 distribution %>%
   select(start_year) %>%
-  filter(str_detect(start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+  filter(str_detect(start_year, "^(-[0-9]{4}|-[0-9]{3})")) %>%
+  nrow()
 ```
 
 Let's clean the start years information step by step:
@@ -427,7 +435,7 @@ Let's clean the start years information step by step:
 1. Everything that is NA or should be NA, make it NA:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(start_year = as.character(start_year)) %>%
   mutate(start_year = replace(start_year, start_year == "Unknown", NA)) %>%
   mutate(start_year = replace(start_year, start_year == "unknown", NA)) %>%
@@ -435,30 +443,34 @@ distribution %<>%
   mutate(start_year = replace(start_year, start_year == "?", NA)) %>%
   mutate(start_year = replace(start_year, start_year == "since long", NA)) %>%
   mutate(start_year = replace(start_year, start_year == "Since long", NA))
-
 ```
 
 2. For all negative values, make it NA:
 
 ```{r}
-distribution %<>% 
-  mutate(start_year = 
-           if_else(str_detect(start_year, "^-[0-9]*"),
-                   NA_character_, start_year))
+distribution %<>%
+  mutate(
+    start_year =
+      if_else(str_detect(start_year, "^-[0-9]*"),
+        NA_character_, start_year
+      )
+  )
 ```
 
 3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(start_year = str_replace(start_year, "<|>|\\?", ""))
 ```
 
 4. When a full date is available, parse it to ISO 8601 date format:
 
 ```{r}
-full_date_indices <- str_detect(distribution$start_year, 
-                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$start_year)
+full_date_indices <- str_detect(
+  distribution$start_year,
+  "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*"
+) & !is.na(distribution$start_year)
 parsed_dates <- parse_date_time(distribution$start_year[full_date_indices], orders = "dmy")
 parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
 distribution$start_year[full_date_indices] <- parsed_dates_char
@@ -468,12 +480,15 @@ distribution$start_year[full_date_indices] <- parsed_dates_char
 
 ```{r}
 # ignore already parsed dates for this replacement
-not_date_indices <- !str_detect(distribution$start_year, 
-                               "[0-9]{4}-[0-9]{2}-[0-9]{2}") & !is.na(distribution$start_year)
+not_date_indices <- !str_detect(
+  distribution$start_year,
+  "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+) & !is.na(distribution$start_year)
 records_to_parse <- distribution$start_year[not_date_indices]
 extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
-                           records_to_parse,
-                           str_extract(records_to_parse, "[0-9]{4}"))
+  records_to_parse,
+  str_extract(records_to_parse, "[0-9]{4}")
+)
 distribution$start_year[not_date_indices] <- extracted_years
 ```
 
@@ -482,7 +497,7 @@ distribution$start_year[not_date_indices] <- extracted_years
 First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
 
 ```{r}
-distribution  %>%
+distribution %>%
   select(start_year) %>%
   filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
@@ -490,7 +505,7 @@ distribution  %>%
 and replace those values:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(start_year = replace(start_year, start_year == "20. century", "1900")) %>%
   mutate(start_year = replace(start_year, start_year == "90`s", "1990"))
 ```
@@ -498,7 +513,7 @@ distribution %<>%
 recheck cleanup action:
 
 ```{r}
-distribution  %>%
+distribution %>%
   select(start_year) %>%
   filter(!str_detect(start_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
@@ -506,8 +521,8 @@ distribution  %>%
 Show content:
 
 ```{r}
-distribution %>% 
-  group_by(start_year) %>% 
+distribution %>%
+  group_by(start_year) %>%
   summarize(records = n())
 ```
 
@@ -516,9 +531,9 @@ distribution %>%
 Inspect content of `end_year`, which contains the information for `eventDate`:
 
 ```{r}
-distribution %>% 
+distribution %>%
   mutate(end_year = as.character(end_year)) %>%
-  group_by(end_year) %>% 
+  group_by(end_year) %>%
   summarize(records = n()) %>%
   arrange(desc(records))
 ```
@@ -544,7 +559,8 @@ Get an overview of the amount of records with just a `YYYY` year format:
 ```{r}
 distribution %>%
   select(end_year) %>%
-  filter(str_detect(end_year, "^[0-9]{4}$")) %>% nrow()
+  filter(str_detect(end_year, "^[0-9]{4}$")) %>%
+  nrow()
 ```
 
 We also have an amount of negative years to take into account. Let's just consider these with 3 or 4 digits:
@@ -552,7 +568,8 @@ We also have an amount of negative years to take into account. Let's just consid
 ```{r}
 distribution %>%
   select(end_year) %>%
-  filter(str_detect(end_year, "^(-[0-9]{4}|-[0-9]{3})")) %>% nrow()
+  filter(str_detect(end_year, "^(-[0-9]{4}|-[0-9]{3})")) %>%
+  nrow()
 ```
 
 Let's clean the end years information step by step:
@@ -560,35 +577,40 @@ Let's clean the end years information step by step:
 1. Everything that is NA or should be NA, make it NA:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(end_year = as.character(end_year)) %>%
-  mutate(end_year = replace(end_year, end_year == " ", NA)) %>% 
-  mutate(end_year = replace(end_year, end_year == "        ", NA)) %>% 
+  mutate(end_year = replace(end_year, end_year == " ", NA)) %>%
+  mutate(end_year = replace(end_year, end_year == "        ", NA)) %>%
   mutate(end_year = replace(end_year, end_year == "unknown", NA)) %>%
-  mutate(end_year = replace(end_year, end_year == "?", NA)) 
+  mutate(end_year = replace(end_year, end_year == "?", NA))
 ```
 
 2. For all negative values, make it NA:
 
 ```{r}
-distribution %<>% 
-  mutate(end_year = 
-           if_else(str_detect(end_year, "^-[0-9]*"),
-                   NA_character_, end_year))
+distribution %<>%
+  mutate(
+    end_year =
+      if_else(str_detect(end_year, "^-[0-9]*"),
+        NA_character_, end_year
+      )
+  )
 ```
 
 3. When using a `<` or `>` sign, with a `?` or `\n` added, just take the year:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(end_year = str_replace(end_year, "<|>|\\?", ""))
 ```
 
 4. When a full date is available, parse it to ISO 8601 date format:
 
 ```{r}
-full_date_indices <- str_detect(distribution$end_year, 
-                                "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*") & !is.na(distribution$end_year)
+full_date_indices <- str_detect(
+  distribution$end_year,
+  "[0-9]*/[0-9]*/[0-9]*|[0-9]*\\.[0-9]*\\.[0-9]*"
+) & !is.na(distribution$end_year)
 parsed_dates <- parse_date_time(distribution$end_year[full_date_indices], orders = "dmy")
 parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
 distribution$end_year[full_date_indices] <- parsed_dates_char
@@ -598,12 +620,15 @@ distribution$end_year[full_date_indices] <- parsed_dates_char
 
 ```{r}
 # ignore already parsed dates for this replacement
-not_date_indices <- !str_detect(distribution$end_year, 
-                               "[0-9]{4}-[0-9]{2}-[0-9]{2}") & !is.na(distribution$end_year)
+not_date_indices <- !str_detect(
+  distribution$end_year,
+  "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+) & !is.na(distribution$end_year)
 records_to_parse <- distribution$end_year[not_date_indices]
 extracted_years <- if_else(is.na(str_extract(records_to_parse, "[0-9]{4}")),
-                           records_to_parse,
-                           str_extract(records_to_parse, "[0-9]{4}"))
+  records_to_parse,
+  str_extract(records_to_parse, "[0-9]{4}")
+)
 distribution$end_year[not_date_indices] <- extracted_years
 ```
 
@@ -612,7 +637,7 @@ distribution$end_year[not_date_indices] <- extracted_years
 First have a look at the specials remaining, not being a integer year (1 or more digits [0-9]) or a formatted date format:
 
 ```{r}
-distribution  %>%
+distribution %>%
   select(end_year) %>%
   filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
@@ -620,7 +645,7 @@ distribution  %>%
 and replace those values:
 
 ```{r}
-distribution %<>% 
+distribution %<>%
   mutate(end_year = replace(end_year, end_year == "19th century", "1800")) %>%
   mutate(end_year = replace(end_year, end_year == "1950's", "1950"))
 ```
@@ -628,7 +653,7 @@ distribution %<>%
 recheck cleanup action:
 
 ```{r}
-distribution  %>%
+distribution %>%
   select(end_year) %>%
   filter(!str_detect(end_year, "^[0-9]+$|^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
 ```
@@ -636,24 +661,26 @@ distribution  %>%
 Show content:
 
 ```{r}
-distribution %>% 
-  group_by(end_year) %>% 
+distribution %>%
+  group_by(end_year) %>%
   summarize(records = n())
 ```
 
 Inspect all combinations for `start_year` and `end_year`:
 
 ```{r}
-distribution %>% group_by(start_year, end_year) %>% summarize(records = n())
+distribution %>%
+  group_by(start_year, end_year) %>%
+  summarize(records = n())
 ```
 
 Inspect which `end_year` falls before `start_year`:
 
 ```{r}
-distribution %>% 
-  mutate(end_year = as.numeric(end_year)) %>% 
-  mutate(start_year = as.numeric(start_year)) %>% 
-  filter(end_year < start_year) %>% 
+distribution %>%
+  mutate(end_year = as.numeric(end_year)) %>%
+  mutate(start_year = as.numeric(start_year)) %>%
+  filter(end_year < start_year) %>%
   select(idspecies, end_year, start_year)
 ```
 
@@ -664,7 +691,7 @@ distribution %<>% mutate(dwc_eventDate = case_when(
   is.na(start_year) & is.na(end_year) ~ "",
   is.na(start_year) & !is.na(end_year) ~ end_year,
   !is.na(start_year) & is.na(end_year) ~ start_year,
-  !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep="/")
+  !is.na(start_year) & !is.na(end_year) ~ paste(start_year, end_year, sep = "/")
 ))
 ```
 
@@ -698,9 +725,9 @@ Some records in `occurrenceRemarks` contain a carriage return. We remove these h
 
 ```{r}
 distribution <-
-  distribution %>% 
-    mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\r", ", ")) %>%
-    mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\n", "")) 
+  distribution %>%
+  mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\r", ", ")) %>%
+  mutate(dwc_occurrenceRemarks = str_replace_all(dwc_occurrenceRemarks, "\n", ""))
 ```
 
 ## source
@@ -745,14 +772,14 @@ distribution_sources %<>% spread(field_name, source)
 2. Clean column names in `distribution_sources`:
 
 ```{r}
-distribution_sources %<>% clean_names() 
+distribution_sources %<>% clean_names()
 ```
 
 3. Inspect column names:
 
 ```{r}
-distribution_sources %>% 
-  select(-id_sp_region, -sourceid) %>% 
+distribution_sources %>%
+  select(-id_sp_region, -sourceid) %>%
   colnames()
 ```
 
@@ -776,11 +803,12 @@ Some remarks:
 
 ```{r}
 distribution_sources %<>% mutate(source = paste(
-  distribution, 
-  general_references, 
-  introduction_dates, 
-  introduction_history, 
-  sep = "|")) 
+  distribution,
+  general_references,
+  introduction_dates,
+  introduction_history,
+  sep = "|"
+))
 ```
 
 5. Remove `|NA`:
@@ -791,7 +819,7 @@ distribution_sources %<>% mutate(source = str_replace_all(source, "(\\|NA)|(^NA\
 
 
 ```{r}
-distribution_sources %<>% mutate(source = str_remove(source, "^\\|")) 
+distribution_sources %<>% mutate(source = str_remove(source, "^\\|"))
 ```
 
 6. Add source information to `distribution` using `id_sp_region`:
@@ -799,7 +827,8 @@ distribution_sources %<>% mutate(source = str_remove(source, "^\\|"))
 ```{r}
 distribution %<>% left_join(
   select(distribution_sources, id_sp_region, source),
-  by = "id_sp_region")
+  by = "id_sp_region"
+)
 ```
 
 7. Rename `source`:
@@ -831,6 +860,8 @@ distribution %>% head()
 4. Save to CSV
 
 ```{r}
-write_csv(distribution, path = here::here("data", "processed", "distribution.csv"), 
-            na = "")
+write_csv(distribution,
+  path = here::here("data", "processed", "distribution.csv"),
+  na = ""
+)
 ```
