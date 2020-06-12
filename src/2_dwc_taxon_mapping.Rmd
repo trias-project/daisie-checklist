@@ -184,7 +184,7 @@ parsed_names %>%
 Cleaning of taxa with nomenclatural issues is not within the scope of this mapping. However, we can perform some rough cleaning to eliminate the `INFORMAL` taxa, by removing `sp.`:
 
 ```{r}
-taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName, "sp."))
+taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName, fixed("sp.")))
 ```
 
 Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
