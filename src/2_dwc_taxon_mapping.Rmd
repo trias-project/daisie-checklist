@@ -163,7 +163,7 @@ parsed_names <-
   parsenames() # An rgbif function
 ```
 
-5. Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed (`parsed = TRUE` and `parsedpartially` = `FALSE`. Note: these are not necessarily incorrect):
+5. Show scientific names with nomenclatural issues, i.e. not of `type = SCIENTIFIC` or that could not be fully parsed (`parsed = TRUE` and `parsedpartially` = `FALSE`). Note: these are not necessarily incorrect:
 
 ```{r}
 parsed_names %>%
@@ -172,7 +172,7 @@ parsed_names %>%
   head(n = 10)
 ```
 
-6. Total Amount of scientific names with nomenclatural issues:
+6. Total amount of scientific names with nomenclatural issues:
 
 ```{r}
 parsed_names %>%
@@ -181,14 +181,13 @@ parsed_names %>%
   nrow()
 ```
 
-Cleaning of taxa with nomenclatural issues is not within the scope of this mapping. However, we can perform some rough cleaning to eliminate the `INFORMAL` taxa, by removing `sp.:
+Cleaning of taxa with nomenclatural issues is not within the scope of this mapping. However, we can perform some rough cleaning to eliminate the `INFORMAL` taxa, by removing `sp.`:
 
 ```{r}
 taxon %<>% mutate(dwc_scientificName = str_remove_all(dwc_scientificName, "sp."))
 ```
 
 Some other taxa need special inspection, especially the doubtful ones (probably due to UTF-8 issues)
-
 
 7. All taxa should be unique. We here scan for duplicated taxa:
 
@@ -411,7 +410,7 @@ taxon %<>% mutate(dwc_infraspecificEpithet = subtaxon)
 
 ## taxonRank
 
-Information for `taxonRank` is provided in the field `subtaxon_rank`, but is only given for varieties, aggregates, hybrids, subspecies or forms. Taxon rank information can also be retrieved by the GBIF nameparser function. This information was retrievd earlier in this script, in the dataframe `parsed_names`. We add the information to `taxon`.
+Information for `taxonRank` is provided in the field `subtaxon_rank`, but is only given for varieties, aggregates, hybrids, subspecies or forms. Taxon rank information can also be retrieved by the GBIF nameparser function. This information was retrieved earlier in this script, in the dataframe `parsed_names`. We add the information to `taxon`.
 
 ```{r}
 taxon %<>%

@@ -96,7 +96,7 @@ distribution %>% head(n = 5)
 distribution %<>% filter(idspecies %in% core_taxa$taxonID)
 ```
 
-2. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+2. Scan for duplicated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
 distribution %>%
@@ -121,7 +121,7 @@ Two of these fields refer to verbatim location information (mapped to `locality`
 
 Two of these fields contain a location code (mapped to `locationID`):
 - `code_region`  (for location linked to countries)
-- `code_coast` (forl location linked to coastal areas)
+- `code_coast` (for location linked to coastal areas)
 
 The codes in `code_region` and `code_coast` refer to standards used/developed for the codes (mapped to `locationID`), respectively:
 - TDWG or DAISIE consortium (`system_country`) and
@@ -408,9 +408,9 @@ Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) a
   * range of years: 1889-1892  -> take first year
   * options: '2000, 2001'; 1992 or 2010, 2000 OR 2004 -> take first year occurrence
 - specials: 20. century, 1957*; 2008**, , 2004, earlier unconformed records, March,1993, 90`s
-  * try to extract a 4-digit year (or use Damianos improvd funtionality)
+  * try to extract a 4-digit year (or use Damiano's improved functionality)
 
-The remaining will probably require some claenup manually. 
+The remaining will probably require some cleanup manually. 
 
 Get an overview of the amount of records with just a `YYYY` year format:
 
@@ -476,7 +476,7 @@ parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
 distribution$start_year[full_date_indices] <- parsed_dates_char
 ```
 
-5. When textwise containing a single or multiple years, exrtact the first year in the text:
+5. When textwise containing a single or multiple years, extract the first year in the text:
 
 ```{r}
 # ignore already parsed dates for this replacement
@@ -550,9 +550,9 @@ Besides a lot of `NA` values, we have many `YYYY` formatted years (good to go) a
   * year with question mark, 2004? -> year itself is best guess, so extract year
 - full dates: 15.06.2003.
 - specials: 20. century, 1950's*
-  try to extract a 4-digit year (or use Damianos improvd funtionality)
+  try to extract a 4-digit year (or use Damiano's improved functionality)
 
-The remaining will probably require some claenup manually. 
+The remaining will probably require some cleanup manually. 
 
 Get an overview of the amount of records with just a `YYYY` year format:
 
@@ -616,7 +616,7 @@ parsed_dates_char <- strftime(parsed_dates, "%Y-%m-%d")
 distribution$end_year[full_date_indices] <- parsed_dates_char
 ```
 
-5. When textwise containing a single or multiple years, exrtact the first year in the text:
+5. When textwise containing a single or multiple years, extract the first year in the text:
 
 ```{r}
 # ignore already parsed dates for this replacement

@@ -103,7 +103,7 @@ literature_references %>%
   arrange(longref)
 ```
 
-Cleaning the conent of this field is outside scope op this mapping). However, several `longref` values start with a number (e.g. `1`, `1, 28`). These can easily be removed.
+Cleaning the content of this field is outside scope op this mapping). However, several `longref` values start with a number (e.g. `1`, `1, 28`). These can easily be removed.
 
 3. Remove numbers from `longref`
 
@@ -126,7 +126,7 @@ literature_references %>%
   arrange(shortref)
 ```
 
-Cleaning of this fiels is outside the scope of this mapping.
+Cleaning of this fields is outside the scope of this mapping.
 
 6. Inspect `url`
 
@@ -156,7 +156,7 @@ literature_references %>%
 
 8. Show mapping of full reference from `shortref`, `longref` and `url`
 
-For most records, one or more of the abovementioned fields are empty. We need to know which (and how many) meaningfull combinations of these fields occur in `literature_references`: 
+For most records, one or more of the above-mentioned fields are empty. We need to know which (and how many) meaningful combinations of these fields occur in `literature_references`: 
 
 ```{r}
 overview_references <- arrange(
@@ -335,7 +335,7 @@ write_csv(distribution_sources,
 
 ## Generate interim_literature_references
 
-Wemove duplicated sources in `literature_references` (duplicates are only needed for the mapping of the distribution extension) and export them as interim file.
+Remove duplicated sources in `literature_references` (duplicates are only needed for the mapping of the distribution extension) and export them as interim file.
 
 1. Remove duplicates:
 

@@ -113,7 +113,7 @@ The description extension will be a combination of the following descriptors:
 Each descriptor is imported as a separate dataset. We need to imply the same transformation steps to each dataset:
 
 1. Remove all empty values (if applicable)
-2. Keep distinct vaules only (if applicable)
+2. Keep distinct values only (if applicable)
 3. Map `description`
 4. Map `type`
 5. Select relevant columns
@@ -188,7 +188,7 @@ ecofunctional_group <-
   )
 ```
 
-# Descriptors extention mapping
+# Descriptors extension mapping
 
 1. Combine `habitat`, `native_range` and `ecofunctional_group`
 
@@ -221,7 +221,7 @@ description <-
 description %<>% filter(taxonID %in% core_taxa$taxonID)
 ```
 
-4. Scan for dupliated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
+4. Scan for duplicated taxa (see [this issue](https://github.com/trias-project/daisie-checklist/issues/23)):
 
 ```{r}
 taxonID_to_replace <-
