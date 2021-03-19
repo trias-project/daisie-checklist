@@ -12,11 +12,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-#  pdf_document:
-#    df_print: kable
-#    number_sections: yes
-#    toc: yes
-#    toc_depth: 3
 ---
 
 This file describes the steps required to map the data to [Darwin Core Taxon](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml).
@@ -229,7 +224,7 @@ taxon %<>% filter(!(idspecies %in% remove_idspecies))
 11. Save `remove_taxa` to scan other extension files for the presence of duplicated taxa 
 
 ```{r}
-write_csv(remove_taxa, here::here("data", "interim", "remove_taxa.csv"))
+write_csv(remove_taxa, here::here("data", "interim", "remove_taxa.csv"), na = "")
 ```
 
 ## kingdom

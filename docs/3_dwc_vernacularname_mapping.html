@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Lien Reyserhove" />
 <meta name="author" content="David Roy" />
 
-<meta name="date" content="2019-09-20" />
+<meta name="date" content="2021-03-19" />
 
 <title>Darwin Core mapping script for Vernacular Names Extension</title>
 
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -30,8 +31,19 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -78,11 +90,9 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="static\css\trias.css" type="text/css" />
+<link rel="stylesheet" href="static/css/trias.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -96,7 +106,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -201,8 +210,6 @@ $(document).ready(function () {
 });
 </script>
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
 
 <style type="text/css">
@@ -247,6 +254,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -259,48 +267,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -314,6 +283,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -349,8 +324,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -359,6 +332,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -426,21 +409,21 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Darwin Core mapping script for Vernacular Names Extension</h1>
-<h3 class="subtitle"><em>For: Inventory of alien species in Europe (DAISIE)</em></h3>
-<h4 class="author"><em>Lien Reyserhove</em></h4>
-<h4 class="author"><em>David Roy</em></h4>
-<h4 class="date"><em>2019-09-20</em></h4>
+<h3 class="subtitle">For: Inventory of alien species in Europe (DAISIE)</h3>
+<h4 class="author">Lien Reyserhove</h4>
+<h4 class="author">David Roy</h4>
+<h4 class="date">2021-03-19</h4>
 
 </div>
 
 
 <p>This file describes the steps required to map the data to <a href="http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml">Vernacular Names</a>.</p>
-<div id="setup" class="section level1">
-<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="setup" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Setup</h1>
 <p>Load libraries:</p>
 </div>
-<div id="read-data" class="section level1">
-<h1><span class="header-section-number">2</span> Read data</h1>
+<div id="read-data" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Read data</h1>
 <ol style="list-style-type: decimal">
 <li><p>Define data types</p></li>
 <li><p>Read vernacular names data</p></li>
@@ -448,31 +431,31 @@ div.tocify {
 <li><p>Read <code>core_taxa</code></p></li>
 </ol>
 </div>
-<div id="map-vernacular-names-extension" class="section level1">
-<h1><span class="header-section-number">3</span> Map vernacular names extension</h1>
+<div id="map-vernacular-names-extension" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Map vernacular names extension</h1>
 <p>Preview of the data:</p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["idspecies"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["language"],"name":[3],"type":["chr"],"align":["left"]},{"label":["sourceid"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Murphy's Threadwort","3":"English","4":"NA"},{"1":"6","2":"Long's Threadwort","3":"English","4":"NA"},{"1":"7","2":"Great Crestwort","3":"English","4":"NA"},{"1":"8","2":"Southern Crestwort","3":"English","4":"NA"},{"1":"9","2":"Micheli's Balloonwort","3":"English","4":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div id="taxonid" class="section level2">
-<h2><span class="header-section-number">3.1</span> taxonID</h2>
+<div id="taxonid" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> taxonID</h2>
 <ol style="list-style-type: decimal">
 <li><p>Remove all taxonID’s that are not included in the taxon core</p></li>
 <li><p>Map taxonID</p></li>
 </ol>
 </div>
-<div id="vernacularname" class="section level2">
-<h2><span class="header-section-number">3.2</span> vernacularName</h2>
+<div id="vernacularname" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> vernacularName</h2>
 </div>
-<div id="source" class="section level2">
-<h2><span class="header-section-number">3.3</span> source</h2>
+<div id="source" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> source</h2>
 <p>Join <code>vernacular_names</code> with <code>source</code> information in <code>literature_references</code>:</p>
 <p>Rename <code>source</code> to <code>dwc_source</code></p>
 </div>
-<div id="language" class="section level2">
-<h2><span class="header-section-number">3.4</span> language</h2>
+<div id="language" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> language</h2>
 <ol style="list-style-type: decimal">
 <li>Show unique values for <code>language</code></li>
 </ol>
@@ -491,8 +474,8 @@ div.tocify {
 </div>
 </div>
 </div>
-<div id="post-processing" class="section level1">
-<h1><span class="header-section-number">4</span> Post-processing</h1>
+<div id="post-processing" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Post-processing</h1>
 <ol style="list-style-type: decimal">
 <li><p>Only keep the Darwin Core columns:</p></li>
 <li><p>Drop the <code>dwc_</code> prefix:</p></li>
@@ -520,13 +503,56 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

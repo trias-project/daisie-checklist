@@ -12,11 +12,6 @@ output:
     toc: yes
     toc_depth: 3
     toc_float: yes
-#  pdf_document:
-#    df_print: kable
-#    number_sections: yes
-#    toc: yes
-#    toc_depth: 3
 ---
 
 This file describes the steps required to reorganize the input datasets. The goal of this reorganization is to improve the readability of the mapping scripts later.
